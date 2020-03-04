@@ -1,0 +1,117 @@
+$suppressed-color: #666;
+$header-color: #23231b;
+$icon-border: #197eaf;
+$icon-front: #d0edf5;
+$icon-back: #99ccdf;
+
+header {
+    background-color: $header-color;
+    height: 50px;
+
+    .header-logo {
+        height: 100%;
+
+        img {
+            height: 100%;
+        }
+    }
+
+    .header-item.avatar img {
+        width: 30px;
+        height: 30px;
+        border: 1 solid white;
+        border-radius: 2px;
+    }
+}
+
+.profile {
+    .profile-avatar {
+        border: 1px solid #e1e4e8;
+        border-radius: 3px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 3px;
+        }
+    }
+
+    .profile-info {
+        .profile-info__fullname {
+            font-size: 26px;
+            line-height: 30px;
+            font-weight: 600;
+        }
+
+        .profile-info__username {
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 24px;
+            color: $suppressed-color;
+        }
+    }
+}
+
+.project {
+
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-3px);
+        transition-duration: .1s;
+    }
+
+    .project__owner {
+        color: $suppressed-color;
+        text-transform: lowercase;
+        line-height: 1;
+        font-size: .9rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-xl {
+        max-width: 1280px;
+    }
+}
+
+// .dropdown-menu::before {
+//     border-bottom: 9px solid rgba(0, 0, 0, 0.2);
+//     border-left: 9px solid rgba(0, 0, 0, 0);
+//     border-right: 9px solid rgba(0, 0, 0, 0);
+//     content: "";
+//     display: inline-block;
+//     left: 86px;
+//     position: absolute;
+//     top: -8px;
+// }
+
+// .dropdown-menu::after {
+//     border-bottom: 8px solid #FFFFFF;
+//     border-left: 9px solid rgba(0, 0, 0, 0);
+//     border-right: 9px solid rgba(0, 0, 0, 0);
+//     content: "";
+//     display: inline-block;
+//     left: 86px;
+//     position: absolute;
+//     top: -7px;
+// }
+
+.medium-icon {
+    height: 20px;
+}
+
+.icon-wrapper::after {
+    content: "";
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid $icon-border;
+    z-index: -1;
+    // border: 1 solid $icon-border;
+    background-color: $icon-front;
+    display: block;
+    position: relative;
+    top: -23px;
+    left: -3px;
+}
