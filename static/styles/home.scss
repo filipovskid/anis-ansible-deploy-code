@@ -1,28 +1,5 @@
-$suppressed-color: #666;
-$header-color: #23231b;
-$icon-border: #197eaf;
-$icon-front: #d0edf5;
-$icon-back: #99ccdf;
-
-header {
-    background-color: $header-color;
-    height: 50px;
-
-    .header-logo {
-        height: 100%;
-
-        img {
-            height: 100%;
-        }
-    }
-
-    .header-item.avatar img {
-        width: 30px;
-        height: 30px;
-        border: 1 solid white;
-        border-radius: 2px;
-    }
-}
+@import "../partials/pallete";
+@import "../partials/header";
 
 .profile {
     .profile-avatar {
@@ -74,28 +51,6 @@ header {
         max-width: 1280px;
     }
 }
-
-// .dropdown-menu::before {
-//     border-bottom: 9px solid rgba(0, 0, 0, 0.2);
-//     border-left: 9px solid rgba(0, 0, 0, 0);
-//     border-right: 9px solid rgba(0, 0, 0, 0);
-//     content: "";
-//     display: inline-block;
-//     left: 86px;
-//     position: absolute;
-//     top: -8px;
-// }
-
-// .dropdown-menu::after {
-//     border-bottom: 8px solid #FFFFFF;
-//     border-left: 9px solid rgba(0, 0, 0, 0);
-//     border-right: 9px solid rgba(0, 0, 0, 0);
-//     content: "";
-//     display: inline-block;
-//     left: 86px;
-//     position: absolute;
-//     top: -7px;
-// }
 
 .medium-icon {
     height: 20px;

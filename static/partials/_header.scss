@@ -1,0 +1,41 @@
+header {
+    background-color: $header-color;
+    height: 50px;
+
+    .header-logo {
+        height: 100%;
+
+        img {
+            height: 100%;
+        }
+    }
+
+    .header-item.avatar img {
+        width: 30px;
+        height: 30px;
+        border: 1 solid white;
+        border-radius: 2px;
+    }
+}
+
+// .dropdown-menu::before {
+//     border-bottom: 9px solid rgba(0, 0, 0, 0.2);
+//     border-left: 9px solid rgba(0, 0, 0, 0);
+//     border-right: 9px solid rgba(0, 0, 0, 0);
+//     content: "";
+//     display: inline-block;
+//     left: 86px;
+//     position: absolute;
+//     top: -8px;
+// }
+
+// .dropdown-menu::after {
+//     border-bottom: 8px solid #FFFFFF;
+//     border-left: 9px solid rgba(0, 0, 0, 0);
+//     border-right: 9px solid rgba(0, 0, 0, 0);
+//     content: "";
+//     display: inline-block;
+//     left: 86px;
+//     position: absolute;
+//     top: -7px;
+// }
