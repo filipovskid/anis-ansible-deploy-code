@@ -1,0 +1,11 @@
+{
+    "version": 3,
+    "mappings": "AEAA,AAAA,MAAM,CAAC;EACH,gBAAgB,EDAL,OAAO;ECClB,MAAM,EAAE,IAAI;CAgBf;;AAlBD,AAII,MAJE,CAIF,YAAY,CAAC;EACT,MAAM,EAAE,IAAI;CAKf;;AAVL,AAOQ,MAPF,CAIF,YAAY,CAGR,GAAG,CAAC;EACA,MAAM,EAAE,IAAI;CACf;;AATT,AAYI,MAZE,CAYF,YAAY,AAAA,OAAO,CAAC,GAAG,CAAC;EACpB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,aAAa;EACrB,aAAa,EAAE,GAAG;CACrB;;AFdL,AAAA,UAAU,CAAC;EACP,KAAK,EAAE,KAAK;CAKf",
+    "sources": [
+        "login.scss",
+        "../partials/_pallete.scss",
+        "../partials/_header.scss"
+    ],
+    "names": [],
+    "file": "login.css"
+}
