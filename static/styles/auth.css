@@ -1,0 +1,24 @@
+header {
+  background-color: #23231b;
+  height: 50px;
+}
+
+header .header-logo {
+  height: 100%;
+}
+
+header .header-logo img {
+  height: 100%;
+}
+
+header .header-item.avatar img {
+  width: 30px;
+  height: 30px;
+  border: 1 solid white;
+  border-radius: 2px;
+}
+
+.auth-form {
+  width: 300px;
+}
+/*# sourceMappingURL=auth.css.map */
