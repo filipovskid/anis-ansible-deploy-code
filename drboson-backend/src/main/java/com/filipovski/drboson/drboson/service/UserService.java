@@ -3,6 +3,7 @@ package com.filipovski.drboson.drboson.service;
 import com.filipovski.drboson.drboson.model.User;
 import com.filipovski.drboson.drboson.repository.UserRepository;
 import com.filipovski.drboson.drboson.service.dtos.UserRegistrationDto;
+import com.filipovski.drboson.drboson.service.exceptions.UsernameAlreadyExistsException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User registerNewUserAccount(UserRegistrationDto user) {
+    public User registerNewUserAccount(UserRegistrationDto user) throws UsernameAlreadyExistsException {
+        if(usernameExists(user.getUsername()))
+            throw new UsernameAlreadyExistsException("The username already exists");
+
         User registeringUser = User.withUsername(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getEmail())
@@ -26,5 +30,9 @@ public class UserService implements IUserService {
                 .build();
 
         return userRepository.save(registeringUser);
+    }
+
+    private boolean usernameExists(String username) {
+        return userRepository.existsUserByUsername(username);
     }
 }

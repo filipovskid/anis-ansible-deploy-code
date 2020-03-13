@@ -2,15 +2,17 @@ package com.filipovski.drboson.drboson.web.controllers;
 
 import com.filipovski.drboson.drboson.service.IUserService;
 import com.filipovski.drboson.drboson.service.dtos.UserRegistrationDto;
+import com.filipovski.drboson.drboson.service.exceptions.UsernameAlreadyExistsException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 
-@Controller
+@RestController
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path = "/auth", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 public class RegistrationController {
 
@@ -21,7 +23,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/join")
-    public void registerUser(@RequestBody @Valid UserRegistrationDto user) {
+    @ResponseStatus(HttpStatus.OK)
+    public void registerUser(@RequestBody @Valid UserRegistrationDto user) throws UsernameAlreadyExistsException {
         userService.registerNewUserAccount(user);
     }
 
