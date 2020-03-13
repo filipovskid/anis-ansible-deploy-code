@@ -1,5 +1,9 @@
-import axios from '../axios/axios-config'
+import axios_instance from '../axios/axios-config'
 
-const register = (user) => {
-    console.log('Darko');
+const AuthenticationService = {
+    registerUser: (userData) => {
+        return axios_instance.post('/auth/join', userData);
+    }
 };
+
+export default AuthenticationService;

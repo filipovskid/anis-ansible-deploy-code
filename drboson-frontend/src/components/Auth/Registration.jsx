@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AuthenticationService from '../../actions/auth';
 
 class Registration extends Component {
 
@@ -21,14 +22,22 @@ class Registration extends Component {
         });
     }
 
+    registerUser = (e) => {
+        e.preventDefault();
+
+        AuthenticationService.registerUser({
+            ...this.state
+        });
+    }
+
     render() {
         return (
             <div className="auth-form mx-auto mt-5" style={{ width: '500px' }}>
-                <form>
+                <form onSubmit={this.registerUser}>
                     <div className="auth-form__body border rounded p-4">
                         <div className="form-group">
-                            <label for="username">Username</label>
-                            <input type="email" className="form-control" aria-describedby="emailHelp"
+                            <label htmlFor="username">Username</label>
+                            <input type="text" className="form-control" aria-describedby="emailHelp"
                                 placeholder="Username"
                                 id="username"
                                 name="username"
@@ -36,7 +45,7 @@ class Registration extends Component {
                                 onChange={this.handleChange} />
                         </div>
                         <div className="form-group">
-                            <label for="email-input">Email address</label>
+                            <label htmlFor="email-input">Email address</label>
                             <input type="email" className="form-control" aria-describedby="emailHelp"
                                 placeholder="johny@email.com"
                                 id="email"
@@ -45,7 +54,7 @@ class Registration extends Component {
                                 onChange={this.handleChange} />
                         </div>
                         <div className="form-group">
-                            <label for="pass-input">Password</label>
+                            <label htmlFor="pass-input">Password</label>
                             <input type="password" className="form-control" placeholder="Password"
                                 id="pass-input"
                                 name="password"
@@ -54,14 +63,14 @@ class Registration extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label for="pass-confirm">Confirm password</label>
+                            <label htmlFor="pass-confirm">Confirm password</label>
                             <input type="password" className="form-control" placeholder="Password"
                                 id="pass-confirm"
                                 name="passwordConfirmation"
                                 value={this.state.passwordConfirmation}
                                 onChange={this.handleChange} />
                         </div>
-                        <button type="submit" className="btn btn-primary">Login</button>
+                        <button type="submit" className="btn btn-primary">Register</button>
                     </div>
                 </form>
             </div>

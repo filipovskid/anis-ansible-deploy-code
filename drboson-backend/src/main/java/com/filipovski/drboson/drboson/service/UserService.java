@@ -20,7 +20,7 @@ public class UserService implements IUserService {
         if(usernameExists(user.getUsername()))
             throw new UsernameAlreadyExistsException("The username already exists");
 
-        User registeringUser = User.withUsername(user.getUsername())
+        User registeringUser = User.withUsername(user.getUsername().toLowerCase())
                 .password(user.getPassword())
                 .email(user.getEmail())
                 .accountExpired(false)
