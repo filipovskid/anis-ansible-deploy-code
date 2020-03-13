@@ -1,17 +1,13 @@
 package com.filipovski.drboson.drboson.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.SpringSecurityCoreVersion;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 
@@ -24,12 +20,11 @@ public class User implements UserDetails, CredentialsContainer {
     @GeneratedValue(generator = "uuid2")
     private UUID id;
 
-    private String password;
-
     private String username;
 
-    @ManyToMany
-    private Set<Role> authorities;
+    private String password;
+
+    private String email;
 
     private boolean accountNonExpired;
 
@@ -39,9 +34,9 @@ public class User implements UserDetails, CredentialsContainer {
 
     private boolean enabled;
 
-    public User(String username, String password, boolean enabled,
+    public User(String username, String password, String email, boolean enabled,
                 boolean accountNonExpired, boolean credentialsNonExpired,
-                boolean accountNonLocked, Collection<? extends Role> authorities) {
+                boolean accountNonLocked) {
 
         if (((username == null) || "".equals(username)) || (password == null)) {
             throw new IllegalArgumentException(
@@ -50,11 +45,11 @@ public class User implements UserDetails, CredentialsContainer {
 
         this.username = username;
         this.password = password;
+        this.email = email;
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
-        this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));
     }
 
     @Override
@@ -62,41 +57,9 @@ public class User implements UserDetails, CredentialsContainer {
         password = null;
     }
 
-    private static SortedSet<Role> sortAuthorities(
-            Collection<? extends Role> authorities) {
-        Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
-        // Ensure array iteration order is predictable (as per
-        // UserDetails.getAuthorities() contract and SEC-717)
-        SortedSet<Role> sortedAuthorities = new TreeSet<>(
-                new AuthorityComparator());
-
-        for (Role grantedAuthority : authorities) {
-            Assert.notNull(grantedAuthority,
-                    "GrantedAuthority list cannot contain any null elements");
-            sortedAuthorities.add(grantedAuthority);
-        }
-
-        return sortedAuthorities;
-    }
-
-    private static class AuthorityComparator implements Comparator<GrantedAuthority>,
-            Serializable {
-
-        public int compare(GrantedAuthority g1, GrantedAuthority g2) {
-            // Neither should ever be null as each entry is checked before adding it to
-            // the set.
-            // If the authority is null, it is a custom authority and should precede
-            // others.
-            if (g2.getAuthority() == null) {
-                return -1;
-            }
-
-            if (g1.getAuthority() == null) {
-                return 1;
-            }
-
-            return g1.getAuthority().compareTo(g2.getAuthority());
-        }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new HashSet<>();
     }
 
     @Override
@@ -108,15 +71,23 @@ public class User implements UserDetails, CredentialsContainer {
         return false;
     }
 
+    public static UserBuilder withUsername(String username) {
+        return builder().username(username);
+    }
+
+    public static UserBuilder builder() {
+        return new UserBuilder();
+    }
+
     @Override
     public int hashCode() {
         return username.hashCode();
     }
 
-    public class UserBuilder {
+    public static class UserBuilder {
         private String username;
         private String password;
-        private List<Role> authorities;
+        private String email;
         private boolean accountExpired;
         private boolean accountLocked;
         private boolean credentialsExpired;
@@ -135,14 +106,8 @@ public class User implements UserDetails, CredentialsContainer {
             return this;
         }
 
-        public UserBuilder roles(String... roles) {
-            List<Role> authorities = new ArrayList<>();
-
-            for (String role : roles) {
-                authorities.add(new Role("ROLE_" + role));
-            }
-
-            this.authorities = authorities;
+        public UserBuilder email(String email) {
+            this.email = email;
             return this;
         }
 
@@ -167,15 +132,15 @@ public class User implements UserDetails, CredentialsContainer {
         }
 
         public UserBuilder passwordEncoder(Function<String, String> encoder) {
-            Assert.notNull(encoder, "encoder cannot be null");
+            Assert.notNull(encoder, "Encoder cannot be null");
             this.passwordEncoder = encoder;
             return this;
         }
 
-        public UserDetails build() {
+        public User build() {
             String encodedPassword = this.passwordEncoder.apply(password);
-            return new User(username, encodedPassword, !disabled, !accountExpired,
-                    !credentialsExpired, !accountLocked, authorities);
+            return new User(username, encodedPassword, email, !disabled, !accountExpired,
+                    !credentialsExpired, !accountLocked);
         }
     }
 }
