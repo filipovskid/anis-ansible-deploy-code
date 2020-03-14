@@ -26,6 +26,8 @@ public class User implements UserDetails, CredentialsContainer {
 
     private String email;
 
+    private String name;
+
     private boolean accountNonExpired;
 
     private boolean accountNonLocked;
@@ -34,7 +36,7 @@ public class User implements UserDetails, CredentialsContainer {
 
     private boolean enabled;
 
-    public User(String username, String password, String email, boolean enabled,
+    public User(String username, String password, String email, String name, boolean enabled,
                 boolean accountNonExpired, boolean credentialsNonExpired,
                 boolean accountNonLocked) {
 
@@ -46,6 +48,7 @@ public class User implements UserDetails, CredentialsContainer {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.name = name;
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
@@ -88,6 +91,7 @@ public class User implements UserDetails, CredentialsContainer {
         private String username;
         private String password;
         private String email;
+        private String name;
         private boolean accountExpired;
         private boolean accountLocked;
         private boolean credentialsExpired;
@@ -108,6 +112,11 @@ public class User implements UserDetails, CredentialsContainer {
 
         public UserBuilder email(String email) {
             this.email = email;
+            return this;
+        }
+
+        public UserBuilder name(String name) {
+            this.name = name;
             return this;
         }
 
@@ -139,7 +148,7 @@ public class User implements UserDetails, CredentialsContainer {
 
         public User build() {
             String encodedPassword = this.passwordEncoder.apply(password);
-            return new User(username, encodedPassword, email, !disabled, !accountExpired,
+            return new User(username, encodedPassword, email, name, !disabled, !accountExpired,
                     !credentialsExpired, !accountLocked);
         }
     }
