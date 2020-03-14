@@ -3,8 +3,10 @@ package com.filipovski.drboson.drboson.util;
 import com.filipovski.drboson.drboson.config.JwtConfig;
 import com.filipovski.drboson.drboson.model.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -34,13 +36,17 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtConfig.getSecret())
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parser()
+                    .setSigningKey(jwtConfig.getSecret())
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException ex) {
+            return ex.getClaims();
+        }
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -57,5 +63,9 @@ public class JwtUtil {
         String username = extractUsername(token);
 
         return (!isTokenExpired(token) && user.getUsername().equals(username));
+    }
+
+    public String getCookieName() {
+        return  jwtConfig.getCookieName();
     }
 }

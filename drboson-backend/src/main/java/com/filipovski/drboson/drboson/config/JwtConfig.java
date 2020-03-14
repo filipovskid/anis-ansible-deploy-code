@@ -12,6 +12,9 @@ public class JwtConfig {
     @Value("${jwt.header:Authorization}")
     private String header;
 
+    @Value("${jwt.cookie.name:drbosonJWT}")
+    private String cookieName;
+
     @Value("${jwt.prefix:Bearer }")
     private String prefix;
 

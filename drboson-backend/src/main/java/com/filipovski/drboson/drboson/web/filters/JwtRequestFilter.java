@@ -14,9 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,14 +40,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String tokenHeader = httpServletRequest.getHeader(jwtConfig.getHeader());
+        Cookie tokenCookie = WebUtils.getCookie(httpServletRequest, "drbosonJWT");
 
         String jwtToken = null;
         String username = null;
 
-        if(StringUtils.isNotEmpty(tokenHeader) && tokenHeader.startsWith(jwtConfig.getPrefix())) {
-            jwtToken = tokenHeader.substring(jwtConfig.getPrefix().length());
-            username = jwtUtil.extractUsername(jwtToken);
+        if(tokenCookie != null && StringUtils.isNotEmpty(tokenCookie.getValue())) {
+            jwtToken = tokenCookie.getValue();
+            username = !jwtUtil.isTokenExpired(jwtToken) ? jwtUtil.extractUsername(jwtToken) : username;
         }
 
         if(StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
