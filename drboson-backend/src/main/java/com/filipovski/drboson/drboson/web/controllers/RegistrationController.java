@@ -12,11 +12,11 @@ import javax.validation.Valid;
 import javax.xml.ws.Response;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping(path = "/auth", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 public class RegistrationController {
 
-    private IUserService userService;
+    private final IUserService userService;
 
     public RegistrationController(IUserService userService) {
         this.userService = userService;

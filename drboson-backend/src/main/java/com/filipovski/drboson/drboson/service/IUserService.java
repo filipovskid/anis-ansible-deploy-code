@@ -7,4 +7,5 @@ import com.filipovski.drboson.drboson.service.exceptions.UsernameAlreadyExistsEx
 public interface IUserService {
 
     User registerNewUserAccount(UserRegistrationDto user) throws UsernameAlreadyExistsException;
+
 }

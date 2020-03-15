@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import AuthenticationService from '../../actions/auth';
 
-class Registration extends Component {
+class Login extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             username: '',
-            email: '',
-            password: '',
-            passwordConfirmation: ''
-        }
+            password: ''
+        };
     }
 
     handleChange = (e) => {
@@ -23,20 +22,23 @@ class Registration extends Component {
         });
     }
 
-    registerUser = (e) => {
+    loginUser = (e) => {
         e.preventDefault();
 
-        AuthenticationService.registerUser({
+        AuthenticationService.loginUser({
             ...this.state
         }).then(response => {
-            this.props.history.push("/login");
+            this.props.onUserLogin(true);
+            this.props.history.push('/');
+        }).catch(error => {
+            this.props.onUserLogin(false);
         });
     }
 
     render() {
         return (
-            <div className="auth-form mx-auto mt-5" style={{ width: '500px' }}>
-                <form onSubmit={this.registerUser}>
+            <div className="auth-form mx-auto mt-5" style={{ width: '300px' }}>
+                <form onSubmit={this.loginUser}>
                     <div className="auth-form__body border rounded p-4">
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
@@ -48,15 +50,6 @@ class Registration extends Component {
                                 onChange={this.handleChange} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="email-input">Email address</label>
-                            <input type="email" className="form-control" aria-describedby="emailHelp"
-                                placeholder="johny@email.com"
-                                id="email"
-                                name="email"
-                                value={this.state.email}
-                                onChange={this.handleChange} />
-                        </div>
-                        <div className="form-group">
                             <label htmlFor="pass-input">Password</label>
                             <input type="password" className="form-control" placeholder="Password"
                                 id="pass-input"
@@ -64,21 +57,13 @@ class Registration extends Component {
                                 value={this.state.password}
                                 onChange={this.handleChange} />
                         </div>
-
-                        <div className="form-group">
-                            <label htmlFor="pass-confirm">Confirm password</label>
-                            <input type="password" className="form-control" placeholder="Password"
-                                id="pass-confirm"
-                                name="passwordConfirmation"
-                                value={this.state.passwordConfirmation}
-                                onChange={this.handleChange} />
-                        </div>
-                        <button type="submit" className="btn btn-primary">Register</button>
+                        <button type="submit" className="btn btn-primary">Login</button>
                     </div>
                 </form>
             </div>
         );
     }
+
 }
 
-export default withRouter(Registration);
+export default withRouter(Login);
