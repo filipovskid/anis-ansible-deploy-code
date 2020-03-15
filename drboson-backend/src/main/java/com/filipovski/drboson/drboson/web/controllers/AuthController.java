@@ -1,57 +1,41 @@
 package com.filipovski.drboson.drboson.web.controllers;
 
-import com.filipovski.drboson.drboson.model.User;
 import com.filipovski.drboson.drboson.model.jwt.AuthenticationRequest;
 import com.filipovski.drboson.drboson.model.jwt.AuthenticationResponse;
-import com.filipovski.drboson.drboson.repository.UserRepository;
-import com.filipovski.drboson.drboson.service.UserDetailsServiceImpl;
-import com.filipovski.drboson.drboson.service.dtos.UserProjection;
-import com.filipovski.drboson.drboson.util.JwtUtil;
+import com.filipovski.drboson.drboson.service.IUserService;
+import com.filipovski.drboson.drboson.service.UserService;
+import com.filipovski.drboson.drboson.service.dtos.UserRegistrationDto;
+import com.filipovski.drboson.drboson.service.exceptions.UsernameAlreadyExistsException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Response;
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@RequestMapping(path = "/auth", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final IUserService userService;
 
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserDetailsServiceImpl userDetailsService,
-                          JwtUtil jwtUtil, UserRepository userRepository) {
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
-        this.userRepository = userRepository;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest authenticationRequest,
                                                             HttpServletResponse response) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()));
+        AuthenticationResponse authenticationResponse = userService.userLogin(authenticationRequest, response);
 
-        User user = (User) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        String jwt = jwtUtil.generateToken(user);
+        return ResponseEntity.ok(authenticationResponse);
+    }
 
-        Cookie cookie = new Cookie(jwtUtil.getCookieName(), jwt);
-        cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    @PostMapping("/join")
+    @ResponseStatus(HttpStatus.OK)
+    public void registerUser(@RequestBody @Valid UserRegistrationDto user) throws UsernameAlreadyExistsException {
+        userService.registerNewUserAccount(user);
     }
 }
