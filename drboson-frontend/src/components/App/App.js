@@ -13,6 +13,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       isAuthenticated: false
     }
@@ -28,11 +29,12 @@ class App extends Component {
   }
 
   checkLoginStatus = () => {
-    AuthenticationService.checkLoginStatus().then(response => {
-      this.setState({ isAuthenticated: true });
-    }).catch(error => {
-      this.setState({ isAuthenticated: false });
-    });
+    AuthenticationService.checkLoginStatus()
+      .then(response => {
+        this.setState({ isAuthenticated: true });
+      }).catch(error => {
+        this.setState({ isAuthenticated: false });
+      });
   }
 
   render() {

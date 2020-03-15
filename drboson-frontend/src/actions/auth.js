@@ -8,7 +8,7 @@ const AuthenticationService = {
         return axios_instance.post('/auth/login', userCredentials);
     },
     checkLoginStatus: () => {
-        return axios_instance.get('/user/me');
+        return axios_instance.get('/user/me')
     }
 };
 

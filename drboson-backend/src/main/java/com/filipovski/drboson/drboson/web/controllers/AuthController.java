@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Response;
 
 @RestController
-@CrossOrigin (origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -53,16 +53,5 @@ public class AuthController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
-    }
-
-    @GetMapping("user/me")
-    public ResponseEntity<UserProjection> me(Authentication authentication) {
-        if(!authentication.isAuthenticated())
-            return ResponseEntity.badRequest().build();
-
-        User user = (User) authentication.getPrincipal();
-        UserProjection userProjection = userRepository.getUserProjectionByUsername(user.getUsername());
-
-        return ResponseEntity.ok(userProjection);
     }
 }

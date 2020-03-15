@@ -24,7 +24,7 @@ class Login extends Component {
 
     loginUser = (e) => {
         e.preventDefault();
-        // this.props.onUserLogin(this.state);
+
         AuthenticationService.loginUser({
             ...this.state
         }).then(response => {
