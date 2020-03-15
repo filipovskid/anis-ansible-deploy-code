@@ -29,7 +29,7 @@ class Registration extends Component {
         AuthenticationService.registerUser({
             ...this.state
         }).then(response => {
-            this.props.history.push("/");
+            this.props.history.push("/login");
         });
     }
 

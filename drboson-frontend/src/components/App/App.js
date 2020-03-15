@@ -48,7 +48,7 @@ class App extends Component {
           <Route exact path='/login'>
             <Login onUserLogin={this.onUserLogin} />
           </Route>
-          <ProtectedRoute exact authenticated={this.state.isAuthenticated} path="/" />
+          <ProtectedRoute exact authenticated={this.state.isAuthenticated} path="/"> </ProtectedRoute>
         </div>
       </Router>
     );
