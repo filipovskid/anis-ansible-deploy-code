@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
 import AuthenticationService from '../../actions/auth';
 
 class Login extends Component {
@@ -15,17 +16,29 @@ class Login extends Component {
     handleChange = (e) => {
         const target = e.target;
         const name = target.name;
-        console.log(name, target.value);
 
         this.setState({
             [name]: target.value
         });
     }
 
+    loginUser = (e) => {
+        e.preventDefault();
+        // this.props.onUserLogin(this.state);
+        AuthenticationService.loginUser({
+            ...this.state
+        }).then(response => {
+            this.props.onUserLogin(true);
+            this.props.history.push('/');
+        }).catch(error => {
+            this.props.onUserLogin(false);
+        });
+    }
+
     render() {
         return (
             <div className="auth-form mx-auto mt-5" style={{ width: '300px' }}>
-                <form onSubmit={this.registerUser}>
+                <form onSubmit={this.loginUser}>
                     <div className="auth-form__body border rounded p-4">
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
@@ -53,4 +66,4 @@ class Login extends Component {
 
 }
 
-export default Login;
+export default withRouter(Login);

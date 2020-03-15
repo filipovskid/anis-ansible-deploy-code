@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
 import AuthenticationService from '../../actions/auth';
 
 class Registration extends Component {
@@ -27,6 +28,8 @@ class Registration extends Component {
 
         AuthenticationService.registerUser({
             ...this.state
+        }).then(response => {
+            this.props.history.push("/");
         });
     }
 
@@ -78,4 +81,4 @@ class Registration extends Component {
     }
 }
 
-export default Registration;
+export default withRouter(Registration);
