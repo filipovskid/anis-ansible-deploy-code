@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router, Route
 } from "react-router-dom";
-import './App.css';
+// import './App.css';
+import '../../styles/main.css';
 import Header from '../Header/header';
 import Registration from '../Auth/Registration'
 import Login from '../Auth/Login'
 import AuthenticationService from '../../actions/auth';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import HomePage from '../Page/HomePage/homePage';
 
 class App extends Component {
 
@@ -48,7 +50,10 @@ class App extends Component {
           <Route exact path='/login'>
             <Login onUserLogin={this.onUserLogin} />
           </Route>
-          <ProtectedRoute exact authenticated={this.state.isAuthenticated} path="/"> </ProtectedRoute>
+          {/* <ProtectedRoute exact authenticated={this.state.isAuthenticated} path="/">  </ProtectedRoute> */}
+          <Route>
+            <HomePage />
+          </Route>
         </div>
       </Router>
     );

@@ -28,6 +28,9 @@ public class User implements UserDetails, CredentialsContainer {
 
     private String name;
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Project> projects;
+
     private boolean accountNonExpired;
 
     private boolean accountNonLocked;
@@ -53,6 +56,16 @@ public class User implements UserDetails, CredentialsContainer {
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
+    }
+
+    public void addProject(Project project) {
+        projects.add(project);
+        project.setOwner(this);
+    }
+
+    public void removeProject(Project project) {
+        projects.remove(project);
+        project.setOwner(null);
     }
 
     @Override

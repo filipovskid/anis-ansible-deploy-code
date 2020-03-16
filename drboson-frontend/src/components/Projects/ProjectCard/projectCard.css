@@ -1,0 +1,15 @@
+.project:hover {
+  cursor: pointer;
+  -webkit-transform: translateY(-3px);
+          transform: translateY(-3px);
+  -webkit-transition-duration: .1s;
+          transition-duration: .1s;
+}
+
+.project .project__owner {
+  color: #666;
+  text-transform: lowercase;
+  line-height: 1;
+  font-size: .9rem;
+}
+/*# sourceMappingURL=projectCard.css.map */
