@@ -1,34 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-    Redirect,
-    BrowserRouter as Route,
-    // Switch,
-    // Route,
-    // Link
+    Route, Redirect
 } from "react-router-dom";
 
-class ProtectedRoute extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            authenticated: this.props.authenticated
-        }
-    }
+const ProtectedRoute = ({ component: Component, isAuthenticated, ...rest }) => {
+    console.log(isAuthenticated + " - isAuthenticated");
 
-    render() {
-        const { component: Component, ...props } = this.props;
-
-        return (
-            <Route
-                {...props}
-                render={props => (
-                    this.state.authenticated ?
-                        <Component {...props} /> :
-                        <Redirect to='/login' />
-                )}
-            />
-        )
-    }
+    return (
+        <Route {...rest} render={(props) => {
+            if (isAuthenticated) {
+                return <Component />;
+            } else return <Redirect to='/login' />
+        }} />
+    );
 }
 
 export default ProtectedRoute;

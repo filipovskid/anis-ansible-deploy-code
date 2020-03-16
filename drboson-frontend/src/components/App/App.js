@@ -8,7 +8,7 @@ import Header from '../Header/header';
 import Registration from '../Auth/Registration'
 import Login from '../Auth/Login'
 import AuthenticationService from '../../actions/auth';
-// import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../Page/HomePage/homePage';
 
 class App extends Component {
@@ -17,7 +17,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isAuthenticated: false,
+      isAuthenticated: null,
       userDetails: {}
     }
   }
@@ -33,7 +33,6 @@ class App extends Component {
   checkLoginStatus = () => {
     AuthenticationService.checkLoginStatus()
       .then(response => {
-        console.log(response);
         this.setState({
           isAuthenticated: true,
           userDetails: response.data
@@ -47,7 +46,11 @@ class App extends Component {
   }
 
   render() {
-    const router = (
+    if (this.state.isAuthenticated == null) {
+      return null;
+    }
+
+    return (
       <Router>
         <Header />
         <div className='container-xl'>
@@ -57,15 +60,10 @@ class App extends Component {
           <Route exact path='/login'>
             <Login onUserLogin={this.onUserLogin} />
           </Route>
-          {/* <ProtectedRoute exact authenticated={this.state.isAuthenticated} path="/">  </ProtectedRoute> */}
-          <Route exact path='/'>
-            <HomePage />
-          </Route>
+          <ProtectedRoute exact path="/" isAuthenticated={this.state.isAuthenticated} component={HomePage} />
         </div>
       </Router>
     );
-
-    return router;
   }
 }
 
