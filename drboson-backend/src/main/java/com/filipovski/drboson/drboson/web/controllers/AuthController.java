@@ -3,7 +3,7 @@ package com.filipovski.drboson.drboson.web.controllers;
 import com.filipovski.drboson.drboson.model.jwt.AuthenticationRequest;
 import com.filipovski.drboson.drboson.model.jwt.AuthenticationResponse;
 import com.filipovski.drboson.drboson.service.UserService;
-import com.filipovski.drboson.drboson.service.UserServiceImpl;
+import com.filipovski.drboson.drboson.service.impl.UserServiceImpl;
 import com.filipovski.drboson.drboson.service.dtos.UserRegistrationDto;
 import com.filipovski.drboson.drboson.service.exceptions.UsernameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "*"}, allowCredentials = "true")
 @RequestMapping(path = "/auth", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
 public class AuthController {
 

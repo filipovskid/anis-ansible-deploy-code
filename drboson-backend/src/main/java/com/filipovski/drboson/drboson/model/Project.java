@@ -1,5 +1,6 @@
 package com.filipovski.drboson.drboson.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class Project {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+               cascade = CascadeType.ALL)
+    @JsonBackReference
     private User owner;
 }

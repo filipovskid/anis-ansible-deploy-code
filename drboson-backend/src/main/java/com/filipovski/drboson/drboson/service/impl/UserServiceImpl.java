@@ -1,9 +1,10 @@
-package com.filipovski.drboson.drboson.service;
+package com.filipovski.drboson.drboson.service.impl;
 
 import com.filipovski.drboson.drboson.model.User;
 import com.filipovski.drboson.drboson.model.jwt.AuthenticationRequest;
 import com.filipovski.drboson.drboson.model.jwt.AuthenticationResponse;
 import com.filipovski.drboson.drboson.repository.UserRepository;
+import com.filipovski.drboson.drboson.service.UserService;
 import com.filipovski.drboson.drboson.service.dtos.UserProjection;
 import com.filipovski.drboson.drboson.service.dtos.UserRegistrationDto;
 import com.filipovski.drboson.drboson.service.exceptions.UsernameAlreadyExistsException;
