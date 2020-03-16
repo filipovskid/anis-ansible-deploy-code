@@ -4,9 +4,9 @@ import ProjectContainer from '../../Projects/ProjectContainer/projectContainer';
 
 const HomePage = (props) => {
     return (
-        <div class="content row">
+        <div className="content row">
             <ProfileSidebar />
-            <div class="user-assets col-lg-9 col-md-8 col-12 pl-md-4 mt-md-4 p-3">
+            <div className="user-assets col-lg-9 col-md-8 col-12 pl-md-4 mt-md-4 p-3">
                 <ProjectContainer />
             </div>
         </div>

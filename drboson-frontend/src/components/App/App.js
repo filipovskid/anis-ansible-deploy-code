@@ -8,7 +8,7 @@ import Header from '../Header/header';
 import Registration from '../Auth/Registration'
 import Login from '../Auth/Login'
 import AuthenticationService from '../../actions/auth';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+// import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../Page/HomePage/homePage';
 
 class App extends Component {
@@ -17,7 +17,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      userDetails: {}
     }
   }
 
@@ -26,16 +27,22 @@ class App extends Component {
   }
 
   onUserLogin = (successful) => {
-    successful ? this.setState({ isAuthenticated: true })
-      : this.setState({ isAuthenticated: false });
+    this.checkLoginStatus();
   }
 
   checkLoginStatus = () => {
     AuthenticationService.checkLoginStatus()
       .then(response => {
-        this.setState({ isAuthenticated: true });
+        console.log(response);
+        this.setState({
+          isAuthenticated: true,
+          userDetails: response.data
+        });
       }).catch(error => {
-        this.setState({ isAuthenticated: false });
+        this.setState({
+          isAuthenticated: false,
+          userDetails: {}
+        });
       });
   }
 
@@ -51,7 +58,7 @@ class App extends Component {
             <Login onUserLogin={this.onUserLogin} />
           </Route>
           {/* <ProtectedRoute exact authenticated={this.state.isAuthenticated} path="/">  </ProtectedRoute> */}
-          <Route>
+          <Route exact path='/'>
             <HomePage />
           </Route>
         </div>

@@ -6,12 +6,12 @@ const Header = (props) => {
     return (
         <header className="d-flex align-items-center px-3 py-2">
             <div className="header-item header-logo flex-grow-1">
-                <img src={logo} />
+                <img src={logo} alt="" />
             </div>
 
             <div className="header-item avatar">
                 <div data-toggle="dropdown">
-                    <img src="https://avatars1.githubusercontent.com/u/37289276" />
+                    <img alt="" src="https://avatars1.githubusercontent.com/u/37289276" />
                 </div>
                 <div className="dropdown-menu dropdown-menu-right">
                     <button className="dropdown-item" type="button">Action</button>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     Redirect,
-    BrowserRouter as Router, Route,
+    BrowserRouter as Route,
     // Switch,
     // Route,
     // Link
