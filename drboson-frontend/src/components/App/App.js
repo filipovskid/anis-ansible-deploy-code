@@ -10,6 +10,7 @@ import Login from '../Auth/Login'
 import AuthenticationService from '../../actions/auth';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../Page/HomePage/homePage';
+import CreateProject from '../Projects/CreateProject/CreateProject';
 
 class App extends Component {
 
@@ -26,12 +27,12 @@ class App extends Component {
     this.checkLoginStatus();
   }
 
-  onUserLogin = (successful) => {
-    this.checkLoginStatus();
+  onUserLogin = () => {
+    return this.checkLoginStatus();
   }
 
   checkLoginStatus = () => {
-    AuthenticationService.checkLoginStatus()
+    return AuthenticationService.checkLoginStatus()
       .then(response => {
         this.setState({
           isAuthenticated: true,
@@ -60,7 +61,12 @@ class App extends Component {
           <Route exact path='/login'>
             <Login onUserLogin={this.onUserLogin} />
           </Route>
-          <ProtectedRoute exact path="/" isAuthenticated={this.state.isAuthenticated} component={HomePage} />
+          <ProtectedRoute exact path='/' userDetails={this.state.userDetails}
+            isAuthenticated={this.state.isAuthenticated} component={HomePage} />
+          <Route exact path='/project/create'>
+            <CreateProject />
+          </Route>
+
         </div>
       </Router>
     );

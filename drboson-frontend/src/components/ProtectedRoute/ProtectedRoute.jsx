@@ -4,14 +4,14 @@ import {
 } from "react-router-dom";
 
 const ProtectedRoute = ({ component: Component, isAuthenticated, ...rest }) => {
-    console.log(isAuthenticated + " - isAuthenticated");
 
     return (
-        <Route {...rest} render={(props) => {
-            if (isAuthenticated) {
-                return <Component />;
-            } else return <Redirect to='/login' />
-        }} />
+        <Route {...rest}
+            render={(props) => {
+                if (isAuthenticated) {
+                    return <Component {...props} {...rest} />;
+                } else return <Redirect to='/login' />
+            }} />
     );
 }
 

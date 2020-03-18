@@ -21,8 +21,7 @@ public class Project {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-               cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private User owner;
 }
