@@ -29,12 +29,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project createUserProject(User user, String name, String description) throws Exception {
+    public Project createUserProject(User user, String name, String description, String repository) throws Exception {
         User projectOwner = userRepository.findByUsername(user.getUsername()).orElseThrow(Exception::new);
         Project project = new Project();
         project.setOwner(projectOwner);
         project.setName(name);
         project.setDescription(description);
+        project.setRepository(repository);
 
         projectRepository.save(project);
 
@@ -47,11 +48,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project updateProject(UUID projectId, String name, String description) throws Exception {
+    public Project updateProject(UUID projectId, String name, String description, String repository) throws Exception {
         Project project = projectRepository.findById(projectId).orElseThrow(Exception::new);
 
         project.setName(name);
         project.setDescription(description);
+        project.setRepository(repository);
         projectRepository.save(project);
 
         return project;

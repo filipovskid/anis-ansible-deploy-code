@@ -21,6 +21,8 @@ public class Project {
 
     private String description;
 
+    private String repository;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private User owner;

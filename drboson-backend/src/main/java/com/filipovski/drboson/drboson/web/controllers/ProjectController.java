@@ -28,8 +28,9 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public Project createProject(String name, String description, @AuthenticationPrincipal User user) throws Exception {
-        return projectService.createUserProject(user, name, description);
+    public Project createProject(String name, String description, String repository,
+                                 @AuthenticationPrincipal User user) throws Exception {
+        return projectService.createUserProject(user, name, description, repository);
     }
 
     @GetMapping("/{projectId}")
@@ -38,8 +39,8 @@ public class ProjectController {
     }
 
     @PatchMapping("/{projectId}")
-    public Project updateProject(@PathVariable UUID projectId, String name, String description) throws Exception {
-        return projectService.updateProject(projectId, name, description);
+    public Project updateProject(@PathVariable UUID projectId, String name, String description, String repository) throws Exception {
+        return projectService.updateProject(projectId, name, description, repository);
     }
 
     @DeleteMapping("{projectId}")

@@ -63,10 +63,9 @@ class App extends Component {
           </Route>
           <ProtectedRoute exact path='/' userDetails={this.state.userDetails}
             isAuthenticated={this.state.isAuthenticated} component={HomePage} />
-          <Route exact path='/project/create'>
+          <Route exact path='/new'>
             <CreateProject />
           </Route>
-
         </div>
       </Router>
     );
