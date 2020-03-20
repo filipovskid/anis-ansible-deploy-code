@@ -1,5 +1,6 @@
 package com.filipovski.drboson.drboson.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,9 @@ public class Dataset {
 
     private String description;
 
+    private String location;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Project project;
 }

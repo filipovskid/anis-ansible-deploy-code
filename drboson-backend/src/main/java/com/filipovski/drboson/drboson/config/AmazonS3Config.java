@@ -2,6 +2,7 @@ package com.filipovski.drboson.drboson.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.Data;
@@ -14,28 +15,17 @@ import javax.annotation.PostConstruct;
 
 @Data
 @Configuration
-@PropertySource("classpath:security/aws.yml")
+@PropertySource("classpath:security/aws.properties")
 public class AmazonS3Config {
-    @Value("${amazonProperties.awsAccessKeyId}")
+    @Value("${aws.AccessKeyId}")
     private String accessKeyId;
 
-    @Value("${amazonProperties.awsSecretKey}")
+    @Value("${aws.SecretKey}")
     private String secretKey;
 
-    @Value("${amazonProperties.datasetBucketName}")
+    @Value("${aws.datasetBucketName}")
     private String datasetBucketName;
 
-    @Value("${amazonProperties.imagesBucketName}")
+    @Value("${aws.imagesBucketName}")
     private String imagesBucketName;
-
-    @Bean
-    @PostConstruct
-    public AmazonS3 amazonS3() {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(this.accessKeyId, this.secretKey);
-        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                .build();
-
-        return s3Client;
-    }
 }
