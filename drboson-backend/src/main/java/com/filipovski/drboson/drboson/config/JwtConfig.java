@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-@PropertySource("classpath:security/secret.properties")
 @Data
+@PropertySource("classpath:security/jwt.properties")
 public class JwtConfig {
 
     @Value("${jwt.header:Authorization}")
