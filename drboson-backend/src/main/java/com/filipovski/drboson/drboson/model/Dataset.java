@@ -1,19 +1,17 @@
 package com.filipovski.drboson.drboson.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-public class Project {
+public class Dataset {
     @Id
     @GeneratedValue(generator = "uuid2")
     private UUID id;
@@ -22,12 +20,6 @@ public class Project {
 
     private String description;
 
-    private String repository;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    private User owner;
-
-    @OneToMany(mappedBy = "project")
-    private Set<Dataset> datasets;
+    private Project project;
 }
