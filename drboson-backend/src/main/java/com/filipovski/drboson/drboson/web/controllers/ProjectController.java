@@ -21,13 +21,13 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<Project> getUserProjects(@AuthenticationPrincipal User user) {
         return projectService.getUserProjects(user);
     }
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public Project createProject(String name, String description, String repository,
                                  @AuthenticationPrincipal User user) throws Exception {
         return projectService.createUserProject(user, name, description, repository);
