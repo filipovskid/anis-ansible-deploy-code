@@ -120,7 +120,10 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public void deleteDataset(UUID datasetId) {
+    public void deleteDataset(UUID datasetId) throws Exception {
+        Dataset dataset = datasetRepository.findById(datasetId).orElseThrow(Exception::new);
+        fileStore.delete(amazonS3Config.getDatasetBucketName(), dataset.getLocation());
+
         datasetRepository.deleteById(datasetId);
     }
 }

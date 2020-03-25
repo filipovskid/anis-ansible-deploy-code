@@ -27,11 +27,22 @@ public class DatasetController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Dataset createDataset(@PathVariable UUID projectId,
-                                 String name,
+    public Dataset createDataset(@PathVariable UUID projectId, String name,
                                  @RequestParam(required = false, defaultValue = "") String description,
                                  MultipartFile file) throws Exception {
 
         return datasetService.createDataset(projectId, name, description, file);
     }
+
+    @PatchMapping("/{datasetId}")
+    public Dataset updateDataset(@PathVariable UUID datasetId, String name,
+                                 @RequestParam(required = false, defaultValue = "") String description) throws Exception {
+        return datasetService.updateDataset(datasetId, name, description);
+    }
+
+    @DeleteMapping("/{datasetId}")
+    public void deleteDataset(@PathVariable UUID datasetId) throws Exception {
+        datasetService.deleteDataset(datasetId);
+    }
+
 }

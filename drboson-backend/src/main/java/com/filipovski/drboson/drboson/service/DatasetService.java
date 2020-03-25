@@ -16,5 +16,5 @@ public interface DatasetService {
 
     Dataset updateDataset(UUID datasetId, String name, String description) throws Exception;
 
-    void deleteDataset(UUID datasetId);
+    void deleteDataset(UUID datasetId) throws Exception;
 }

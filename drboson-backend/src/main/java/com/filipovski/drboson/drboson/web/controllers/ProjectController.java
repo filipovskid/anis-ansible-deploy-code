@@ -44,7 +44,7 @@ public class ProjectController {
         return projectService.updateUserProject(user.getId(), projectId, name, description, repository);
     }
 
-    @DeleteMapping("{projectId}")
+    @DeleteMapping("/{projectId}")
     public void deleteProject(@PathVariable UUID projectId, @AuthenticationPrincipal User user) throws Exception {
         projectService.deleteUserProject(user.getId(), projectId);
     }
