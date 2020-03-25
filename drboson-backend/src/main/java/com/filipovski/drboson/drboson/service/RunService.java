@@ -16,4 +16,6 @@ public interface RunService {
     Run updateRun(UUID runId, String name, String description) throws Exception;
 
     void deleteRun(UUID runId);
+
+    void startRun(UUID runId) throws Exception;
 }

@@ -1,5 +1,6 @@
 package com.filipovski.drboson.drboson.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filipovski.drboson.drboson.model.Dataset;
 import com.filipovski.drboson.drboson.model.Project;
 import com.filipovski.drboson.drboson.model.Run;
@@ -7,6 +8,8 @@ import com.filipovski.drboson.drboson.repository.DatasetRepository;
 import com.filipovski.drboson.drboson.repository.ProjectRepository;
 import com.filipovski.drboson.drboson.repository.RunRepository;
 import com.filipovski.drboson.drboson.service.RunService;
+import com.filipovski.drboson.drboson.service.dtos.RunDto;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,13 +22,17 @@ public class RunServiceImpl implements RunService {
     private final ProjectRepository projectRepository;
     private final DatasetRepository datasetRepository;
 
+    private final KafkaTemplate<String, RunDto> kafkaTemplate;
+
     public RunServiceImpl(RunRepository runRepository,
                           ProjectRepository projectRepository,
-                          DatasetRepository datasetRepository) {
+                          DatasetRepository datasetRepository,
+                          KafkaTemplate<String, RunDto> kafkaTemplate) {
 
         this.runRepository = runRepository;
         this.projectRepository = projectRepository;
         this.datasetRepository = datasetRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
@@ -68,5 +75,13 @@ public class RunServiceImpl implements RunService {
     @Override
     public void deleteRun(UUID runId) {
         runRepository.deleteById(runId);
+    }
+
+    @Override
+    public void startRun(UUID runId) throws Exception {
+        Run run = runRepository.findById(runId).orElseThrow(Exception::new);
+        RunDto runDto = RunDto.of(run);
+
+        kafkaTemplate.send("runs", String.valueOf(runDto.getName()), runDto);
     }
 }

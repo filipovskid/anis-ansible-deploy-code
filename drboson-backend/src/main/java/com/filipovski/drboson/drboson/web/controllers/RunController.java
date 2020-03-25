@@ -39,4 +39,9 @@ public class RunController {
     public void deleteRun(@PathVariable UUID runId) {
         runService.deleteRun(runId);
     }
+
+    @GetMapping("/{runId}/start")
+    public void startRun(@PathVariable UUID runId) throws Exception {
+        runService.startRun(runId);
+    }
 }
