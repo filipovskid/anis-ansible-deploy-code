@@ -34,17 +34,18 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public Project getProject(@PathVariable UUID projectId) throws Exception {
-        return projectService.getProject(projectId);
+    public Project getProject(@PathVariable UUID projectId, @AuthenticationPrincipal User user) throws Exception {
+        return projectService.getUserProject(user.getId(), projectId);
     }
 
     @PatchMapping("/{projectId}")
-    public Project updateProject(@PathVariable UUID projectId, String name, String description, String repository) throws Exception {
-        return projectService.updateProject(projectId, name, description, repository);
+    public Project updateProject(@PathVariable UUID projectId, String name, String description, String repository,
+                                 @AuthenticationPrincipal User user) throws Exception {
+        return projectService.updateUserProject(user.getId(), projectId, name, description, repository);
     }
 
     @DeleteMapping("{projectId}")
-    public void deleteProject(@PathVariable UUID projectId) throws Exception {
-        projectService.deleteProject(projectId);
+    public void deleteProject(@PathVariable UUID projectId, @AuthenticationPrincipal User user) throws Exception {
+        projectService.deleteUserProject(user.getId(), projectId);
     }
 }

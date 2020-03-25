@@ -20,6 +20,11 @@ public class DatasetController {
         this.datasetService = datasetService;
     }
 
+    @GetMapping("{datasetId}")
+    public Dataset getDataset(@PathVariable UUID projectId, @PathVariable UUID datasetId) throws Exception {
+        return datasetService.getProjectDataset(projectId, datasetId);
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Dataset createDataset(@PathVariable UUID projectId,

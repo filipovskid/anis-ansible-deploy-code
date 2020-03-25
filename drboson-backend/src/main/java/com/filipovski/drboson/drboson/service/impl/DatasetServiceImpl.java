@@ -38,13 +38,13 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public List<Dataset> getProjectDatasets(UUID projectId) {
+    public List<Dataset> getAllProjectDatasets(UUID projectId) {
         return datasetRepository.findDatasetsByProjectId(projectId);
     }
 
     @Override
-    public Dataset getDataset(UUID datasetId) throws Exception {
-        return datasetRepository.findById(datasetId).orElseThrow(Exception::new);
+    public Dataset getProjectDataset(UUID projectId, UUID datasetId) throws Exception {
+        return datasetRepository.findProjectDataset(projectId, datasetId).orElseThrow(Exception::new);
     }
 
     @Override

@@ -13,7 +13,14 @@ public interface ProjectService {
 
     Project getProject(UUID projectId) throws Exception;
 
+    Project getUserProject(UUID userId, UUID projectId) throws Exception;
+
     Project updateProject(UUID projectId, String name, String description, String repository) throws Exception;
 
+    Project updateUserProject(UUID userId, UUID projectId, String name, String description, String repository) throws Exception;
+
     void deleteProject(UUID projectId);
+
+    void deleteUserProject(UUID userId, UUID projectId) throws Exception;
+
 }

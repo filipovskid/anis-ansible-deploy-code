@@ -48,6 +48,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Project getUserProject(UUID userId, UUID projectId) throws Exception {
+        return projectRepository.findUserProject(userId, projectId).orElseThrow(Exception::new);
+        // Possibly Unauthorized
+    }
+
+    @Override
     public Project updateProject(UUID projectId, String name, String description, String repository) throws Exception {
         Project project = projectRepository.findById(projectId).orElseThrow(Exception::new);
 
@@ -60,8 +66,27 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Project updateUserProject(UUID userId, UUID projectId, String name, String description, String repository) throws Exception {
+        Project project = projectRepository.findUserProject(userId, projectId).orElseThrow(Exception::new);
+        // Possibly Unauthorized
+
+        project.setName(name);
+        project.setDescription(description);
+        project.setRepository(repository);
+        projectRepository.save(project);
+
+        return project;
+    }
+
+    @Override
     public void deleteProject(UUID projectId) {
         projectRepository.deleteById(projectId);
+    }
+
+    @Override
+    public void deleteUserProject(UUID userId, UUID projectId) throws Exception {
+        projectRepository.findUserProject(userId, projectId).orElseThrow(Exception::new); // Possibly Unauthorized
+        projectRepository.deleteUserProject(userId, projectId);
     }
 
 }

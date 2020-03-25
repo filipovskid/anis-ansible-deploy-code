@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DatasetService {
-    List<Dataset> getProjectDatasets(UUID projectId);
+    List<Dataset> getAllProjectDatasets(UUID projectId);
 
-    Dataset getDataset(UUID datasetId) throws Exception;
+    Dataset getProjectDataset(UUID projectId, UUID datasetId) throws Exception;
 
     Dataset createDataset(UUID projectId, String name, String description, MultipartFile file) throws Exception;
 
