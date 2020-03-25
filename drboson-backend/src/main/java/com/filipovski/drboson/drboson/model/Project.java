@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -29,7 +31,14 @@ public class Project {
     @JsonBackReference
     private User owner;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project",
+            orphanRemoval = true)
     @JsonManagedReference
     private Set<Dataset> datasets;
+
+    @OneToMany(mappedBy = "project",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Run> runs;
 }
