@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAEQ,QAFA,CACJ,aAAa,CACT,GAAG,CAAC;EACA,KAAK,EAAE,KAAK;CACf;;AAJT,AAOI,QAPI,CAOJ,iBAAiB,CAAC;EACd,SAAS,EAAE,KAAK;CACnB",
+    "sources": [
+        "noData.scss"
+    ],
+    "names": [],
+    "file": "noData.css"
+}

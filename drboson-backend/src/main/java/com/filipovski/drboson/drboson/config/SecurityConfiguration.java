@@ -1,6 +1,11 @@
 package com.filipovski.drboson.drboson.config;
 
-import com.filipovski.drboson.drboson.service.UserDetailsServiceImpl;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.filipovski.drboson.drboson.service.impl.UserDetailsServiceImpl;
 import com.filipovski.drboson.drboson.web.filters.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,13 +18,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
@@ -29,11 +34,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
+    private final AmazonS3Config amazonS3Config;
 
     public SecurityConfiguration(UserDetailsServiceImpl userDetailsService,
-                                 @Lazy JwtRequestFilter jwtRequestFilter) {
+                                 @Lazy JwtRequestFilter jwtRequestFilter,
+                                 AmazonS3Config amazonS3Config) {
         this.userDetailsService = userDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
+        this.amazonS3Config = amazonS3Config;
     }
 
     @Override
@@ -82,6 +90,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtConfig jwtConfig() {
         return new JwtConfig();
+    }
+
+    @PostConstruct
+    @Bean
+    public AmazonS3 init() {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(amazonS3Config.getAccessKeyId(),
+                                                               amazonS3Config.getSecretKey());
+        return AmazonS3ClientBuilder.standard()
+                .withRegion(Regions.EU_CENTRAL_1)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .build();
     }
 
     @Bean

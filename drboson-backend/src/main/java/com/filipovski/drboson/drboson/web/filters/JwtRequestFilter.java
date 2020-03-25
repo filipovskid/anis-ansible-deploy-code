@@ -2,12 +2,10 @@ package com.filipovski.drboson.drboson.web.filters;
 
 import com.filipovski.drboson.drboson.config.JwtConfig;
 import com.filipovski.drboson.drboson.model.User;
-import com.filipovski.drboson.drboson.service.UserDetailsServiceImpl;
+import com.filipovski.drboson.drboson.service.impl.UserDetailsServiceImpl;
 import com.filipovski.drboson.drboson.util.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

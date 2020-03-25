@@ -28,8 +28,9 @@ class Login extends Component {
         AuthenticationService.loginUser({
             ...this.state
         }).then(response => {
-            this.props.onUserLogin(true);
-            this.props.history.push('/');
+            this.props.onUserLogin(true).then(() => {
+                this.props.history.push('/');
+            });
         }).catch(error => {
             this.props.onUserLogin(false);
         });

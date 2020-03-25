@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router, Route
 } from "react-router-dom";
-import './App.css';
+// import './App.css';
+import '../../styles/main.css';
 import Header from '../Header/header';
 import Registration from '../Auth/Registration'
 import Login from '../Auth/Login'
 import AuthenticationService from '../../actions/auth';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import HomePage from '../Page/HomePage/homePage';
+import CreateProject from '../Projects/CreateProject/CreateProject';
 
 class App extends Component {
 
@@ -15,7 +18,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: null,
+      userDetails: {}
     }
   }
 
@@ -23,22 +27,31 @@ class App extends Component {
     this.checkLoginStatus();
   }
 
-  onUserLogin = (successful) => {
-    successful ? this.setState({ isAuthenticated: true })
-      : this.setState({ isAuthenticated: false });
+  onUserLogin = () => {
+    return this.checkLoginStatus();
   }
 
   checkLoginStatus = () => {
-    AuthenticationService.checkLoginStatus()
+    return AuthenticationService.checkLoginStatus()
       .then(response => {
-        this.setState({ isAuthenticated: true });
+        this.setState({
+          isAuthenticated: true,
+          userDetails: response.data
+        });
       }).catch(error => {
-        this.setState({ isAuthenticated: false });
+        this.setState({
+          isAuthenticated: false,
+          userDetails: {}
+        });
       });
   }
 
   render() {
-    const router = (
+    if (this.state.isAuthenticated == null) {
+      return null;
+    }
+
+    return (
       <Router>
         <Header />
         <div className='container-xl'>
@@ -48,12 +61,14 @@ class App extends Component {
           <Route exact path='/login'>
             <Login onUserLogin={this.onUserLogin} />
           </Route>
-          <ProtectedRoute exact authenticated={this.state.isAuthenticated} path="/"> </ProtectedRoute>
+          <ProtectedRoute exact path='/' userDetails={this.state.userDetails}
+            isAuthenticated={this.state.isAuthenticated} component={HomePage} />
+          <Route exact path='/new'>
+            <CreateProject />
+          </Route>
         </div>
       </Router>
     );
-
-    return router;
   }
 }
 

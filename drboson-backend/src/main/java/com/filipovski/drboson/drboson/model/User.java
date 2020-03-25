@@ -1,5 +1,6 @@
 package com.filipovski.drboson.drboson.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.CredentialsContainer;
@@ -28,6 +29,10 @@ public class User implements UserDetails, CredentialsContainer {
 
     private String name;
 
+    @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
+    private Set<Project> projects;
+
     private boolean accountNonExpired;
 
     private boolean accountNonLocked;
@@ -54,6 +59,16 @@ public class User implements UserDetails, CredentialsContainer {
         this.credentialsNonExpired = credentialsNonExpired;
         this.accountNonLocked = accountNonLocked;
     }
+
+//    public void addProject(Project project) {
+//        projects.add(project);
+//        project.setOwner(this);
+//    }
+//
+//    public void removeProject(Project project) {
+//        projects.remove(project);
+//        project.setOwner(null);
+//    }
 
     @Override
     public void eraseCredentials() {

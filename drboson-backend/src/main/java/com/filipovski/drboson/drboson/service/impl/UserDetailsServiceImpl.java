@@ -1,4 +1,4 @@
-package com.filipovski.drboson.drboson.service;
+package com.filipovski.drboson.drboson.service.impl;
 
 import com.filipovski.drboson.drboson.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
