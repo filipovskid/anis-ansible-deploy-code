@@ -17,6 +17,7 @@ config = {
         'runs-topic': 'runs',
         'statuses-topic': 'run_statuses',
         'logs-topic': 'run_logs',
-        'files-topic': 'run_files'
+        'files-topic': 'run_files',
+        'communication-topic': 'run_messages'
     }
 }

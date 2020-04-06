@@ -1,8 +1,11 @@
 from file_management import prepare_workspace, prepare_dataset, prepare_code
 from config import config
 from pathlib import Path
+from confluent_kafka import Producer
+import socket
 import copy
 import json
+import sys
 
 
 def __run_setup(run_item):
@@ -36,3 +39,78 @@ def handle_run_execution(container_manager, run_bytes):
     }
 
     container_manager.create_run_container(safe_run, dockerfile_conf, opts)
+
+# {
+#     'id': 'run-id',
+#     'type': 'type',
+#     'payload': 'status | filename | log'
+# }
+
+
+def __delivery_callback(err, msg):
+    if err:
+        sys.stderr.write('%% Message failed delivery: %s\n' % err)
+    else:
+        sys.stderr.write('%% Message delivered to %s [%d] @ %d\n' %
+                         (msg.topic(), msg.partition(), msg.offset()))
+
+
+def __navigate_communication(producer, topic, message, **kwargs):
+    json_message = json.dumps(message)
+
+    try:
+        producer.produce(topic, value=json_message, **kwargs)
+        producer.poll(1)
+    except BufferError as e:
+        producer.poll(10)
+        producer.produce(topic, value=json_message, **kwargs)
+
+
+def __handle_status_change(producer, message):
+    run_status = {
+        'id': message['id'],
+        'status': message['payload']
+    }
+    topic = config['kafka']['statuses-topic']
+
+    __navigate_communication(producer, topic=topic, message=run_status, key=message['id'], callback=__delivery_callback)
+
+
+def __handle_file_creation(producer, message):
+    file_creation_message = {
+        'id': message['id'],
+        'file_name': message['payload']
+    }
+    topic = config['kafka']['files-topic']
+
+    __navigate_communication(producer, topic=topic, message=file_creation_message, callback=__delivery_callback)
+
+
+def __handle_metric_logs(producer, message):
+    metric_log = {
+        'id': message['id'],
+        'log': message['payload']
+    }
+    topic = config['kafka']['logs-topic']
+
+    __navigate_communication(producer, topic=topic, message=metric_log, callback=__delivery_callback)
+
+
+def handle_run_communication(message_bytes):
+    type_handlers = {
+        'status': __handle_status_change,
+        'file': __handle_file_creation,
+        'log': __handle_metric_logs
+    }
+    conf = {'bootstrap.servers': '192.168.1.4',
+            'client.id': socket.gethostname(),
+            'retries': 10,
+            'retry.backoff.ms': 1000,
+            'queue.buffering.max.ms': 100}
+
+    producer = Producer(conf)
+
+    message = json.loads(message_bytes.decode('utf-8'))
+
+    if 'type' in message and message['type'] in type_handlers:
+        type_handlers[message['type']](producer, message)
