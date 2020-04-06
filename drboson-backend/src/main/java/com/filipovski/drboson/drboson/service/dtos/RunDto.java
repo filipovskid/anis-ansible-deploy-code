@@ -17,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class RunDto {
+    private UUID id;
     private String name;
     private String description;
     private ObjectNode project;
@@ -35,6 +36,7 @@ public class RunDto {
         datasetNode.put("location", dataset.getLocation());
 
         return RunDto.builder()
+                .id(run.getId())
                 .description(run.getDescription())
                 .name(run.getName())
                 .project(projectNode)
