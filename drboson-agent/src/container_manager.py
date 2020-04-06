@@ -9,9 +9,10 @@ class ContainerManager:
 
     def create_run_container(self, run, dockerfile_conf, opts):
         image_name = f"{run['id']}-image"
+        volumes = {opts['workdir']: {'bind': opts['workdir'], 'mode': 'rw'}}
 
         self.__build_image(image_name, dockerfile_conf, opts)
-        container = self.client.containers.run(image_name, command='sleep 20', detach=True)
+        container = self.client.containers.run(image_name, volumes=volumes, detach=True)
 
         return container.id
 

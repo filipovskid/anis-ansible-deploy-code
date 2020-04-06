@@ -6,7 +6,8 @@ config = {
         'dir': '/Users/darko/run-workspaces',
         'dataset': {
             'dir': 'dataset'
-        }
+        },
+        'data': 'data'
     },
     'docker': {
         'dockerfiles_dir': '/Users/darko/Documents/Projects/DRBoson/drboson-agent/',

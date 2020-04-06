@@ -2,6 +2,7 @@ import boto3
 import magic
 from pathlib import Path
 import zipfile
+from git import Repo
 
 
 def prepare_dataset(bucket_name, dataset_key, dataset_path):
@@ -22,11 +23,19 @@ def decompress_archive(file_path):
         zip_file.extractall(file_path.parent)
 
 
-def prepare_workspace(workspaces_path, dataset_dir, run_name):
+def prepare_code(repo_url, workdir_path, branch='master'):
+    repo = Repo.init(workdir_path)
+    remote = repo.create_remote('origin', repo_url)
+    remote.pull(branch)
+
+
+def prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name):
     run_directory = Path(str(workspaces_path)).joinpath(run_name)
     dataset_directory = run_directory.joinpath(dataset_dir)
+    data_directory = run_directory.joinpath(data_dir)
 
     run_directory.mkdir()
     dataset_directory.mkdir()
+    data_directory.mkdir()
 
-    return {'workdir_path': run_directory, 'dataset_path': dataset_directory}
+    return {'workdir_path': run_directory, 'dataset_path': dataset_directory, 'data_path': data_directory}
