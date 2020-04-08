@@ -1,6 +1,7 @@
 from confluent_kafka import Producer
 import abc
 import sys
+import json
 
 
 class DRBosonProducer(metaclass=abc.ABCMeta):
@@ -31,7 +32,7 @@ class RemoteProducer(DRBosonProducer):
         return message
 
     def produce(self, message):
-        preprocessed_message = RemoteProducer.preprocess_message(message)
+        preprocessed_message = RemoteProducer.__preprocess_message(message)
 
         try:
             self.producer.produce(self.topic, value=preprocessed_message, callback=RemoteProducer.__delivery_callback)
@@ -56,6 +57,7 @@ class ClientProducer(DRBosonProducer):
 
     @staticmethod
     def __preprocess_message(message):
+        message = json.loads(message)
         types = {
             'file': ClientProducer.__file_message,
             'log': ClientProducer.__log_message

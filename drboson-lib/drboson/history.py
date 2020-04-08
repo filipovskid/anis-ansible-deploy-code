@@ -42,7 +42,7 @@ class History:
                 self.__write()
 
     def update(self, new_log):
-        for key, value in new_log:
+        for key, value in new_log.items():
             key = key.strip()
             self.log[key] = value
 
