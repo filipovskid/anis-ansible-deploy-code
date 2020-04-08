@@ -22,6 +22,6 @@ config = {
         'communication-topic': 'run_messages'
     },
     'exec': {
-        'executor': '/Users/darko/Documents/Projects/DRBoson/drboson-lib/tester.py'
+        'executor': '/Users/darko/Documents/Projects/DRBoson/drboson-agent/executor.py'
     }
 }

@@ -3,6 +3,7 @@ import magic
 from pathlib import Path
 import zipfile
 from git import Repo
+import shutil
 
 
 def prepare_dataset(bucket_name, dataset_key, dataset_path):
@@ -23,10 +24,12 @@ def decompress_archive(file_path):
         zip_file.extractall(file_path.parent)
 
 
-def prepare_code(repo_url, workdir_path, branch='master'):
+def prepare_code(repo_url, workdir_path, executor_path, branch='master'):
     repo = Repo.init(workdir_path)
     remote = repo.create_remote('origin', repo_url)
     remote.pull(branch)
+
+    shutil.copy2(executor_path, workdir_path)
 
 
 def prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name):

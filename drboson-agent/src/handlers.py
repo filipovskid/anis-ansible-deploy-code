@@ -18,7 +18,9 @@ def __run_setup(run_item):
     dataset_path = dir_paths['dataset_path']
     prepare_dataset(datasets_bucket, dataset_key, dataset_path)
 
-    prepare_code('https://github.com/filipovskid/run-conformant-repo.git', dir_paths['workdir_path'])
+    repo_url = 'https://github.com/filipovskid/run-conformant-repo.git'
+    executor_path = Path(config['exec']['executor'])
+    prepare_code(repo_url, workdir_path=dir_paths['workdir_path'], executor_path=executor_path)
 
     return dir_paths
 

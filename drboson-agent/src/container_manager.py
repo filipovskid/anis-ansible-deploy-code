@@ -13,7 +13,7 @@ class ContainerManager:
         volumes = {opts['workdir']: {'bind': opts['workdir'], 'mode': 'rw'}}
 
         self.__build_image(image_name, opts)
-        container = self.client.containers.run(image_name, 'sleep 15', volumes=volumes, detach=True)
+        container = self.client.containers.run(image_name, volumes=volumes, detach=True)
 
         return container.id
 
