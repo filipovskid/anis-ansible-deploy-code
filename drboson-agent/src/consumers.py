@@ -2,13 +2,10 @@ from confluent_kafka import Consumer
 from confluent_kafka.cimpl import KafkaException
 from config import config
 import handlers
-import uuid
-import string
-import random
 
 
 def run_consumer(container_manager):
-    conf = {'bootstrap.servers': '192.168.1.4',
+    conf = {'bootstrap.servers': config['kafka']['servers'],
             'group.id': "runs-consumers",
             'auto.offset.reset': 'earliest',
             'enable.auto.commit': 'false'}
@@ -34,7 +31,7 @@ def run_consumer(container_manager):
 
 
 def run_communication_consumer():
-    conf = {'bootstrap.servers': '192.168.1.4',
+    conf = {'bootstrap.servers': config['kafka']['servers'],
             'group.id': "communication",
             'auto.offset.reset': 'earliest',
             'enable.auto.commit': 'false'}

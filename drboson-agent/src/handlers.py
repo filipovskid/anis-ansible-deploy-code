@@ -1,8 +1,7 @@
 from file_management import prepare_workspace, prepare_dataset, prepare_code
 from config import config
+import producers
 from pathlib import Path
-from confluent_kafka import Producer
-import socket
 import copy
 import json
 import sys
@@ -102,13 +101,7 @@ def handle_run_communication(message_bytes):
         'file': __handle_file_creation,
         'log': __handle_metric_logs
     }
-    conf = {'bootstrap.servers': '192.168.1.4',
-            'client.id': socket.gethostname(),
-            'retries': 10,
-            'retry.backoff.ms': 1000,
-            'queue.buffering.max.ms': 100}
-
-    producer = Producer(conf)
+    producer = producers.messages_producer()
 
     message = json.loads(message_bytes.decode('utf-8'))
 
