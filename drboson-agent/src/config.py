@@ -20,5 +20,8 @@ config = {
         'logs-topic': 'run_logs',
         'files-topic': 'run_files',
         'communication-topic': 'run_messages'
+    },
+    'exec': {
+        'executor': '/Users/darko/Documents/Projects/DRBoson/drboson-lib/tester.py'
     }
 }
