@@ -5,8 +5,8 @@ import threading
 
 def main():
     container_manager = ContainerManager()
-    consumers.run_consumer(container_manager)
-    # consumers.run_communication_consumer()
+    threading.Thread(consumers.run_consumer(container_manager)).start()
+    threading.Thread(target=consumers.run_communication_consumer()).start()
     # docker_event_consumer
 
 if __name__ == '__main__':

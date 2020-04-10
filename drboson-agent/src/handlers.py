@@ -20,26 +20,23 @@ def __run_setup(run_item):
 
     repo_url = 'https://github.com/filipovskid/run-conformant-repo.git'
     executor_path = Path(config['exec']['executor'])
-    prepare_code(repo_url, workdir_path=dir_paths['workdir_path'], executor_path=executor_path)
+    workdir_path = dir_paths['workdir_path']
+    prepare_code(repo_url, workdir_path=workdir_path, executor_path=executor_path)
 
-    return dir_paths
+    environment_file = workdir_path.joinpath(config['exec']['env_file'])
+
+    if environment_file.exists() is False:
+        pass
+
+    return dir_paths, environment_file
 
 
 def handle_run_execution(container_manager, run_bytes):
     run_item = json.loads(run_bytes.decode('utf-8'))
-    dir_paths = __run_setup(run_item)
+    dir_paths, env_file = __run_setup(run_item)
     safe_run = copy.deepcopy(run_item)
 
-    dockerfile_conf = {
-        'dir': config['docker']['dockerfiles_dir'],
-        'name': config['docker']['dockerfile_name'],
-    }
-    opts = {
-        'workdir': str(dir_paths['workdir_path']),
-        # 'data': str(dir_paths['data_path'])
-    }
-
-    container_manager.create_run_container(safe_run, dockerfile_conf, opts)
+    container_manager.create_run_container(safe_run, dir_paths['workdir_path'], env_file)
 
 # {
 #     'id': 'run-id',

@@ -22,6 +22,7 @@ config = {
         'communication-topic': 'run_messages'
     },
     'exec': {
-        'executor': '/Users/darko/Documents/Projects/DRBoson/drboson-agent/executor.py'
+        'executor': '/Users/darko/Documents/Projects/DRBoson/drboson-agent/executor.py',
+        'env_file': 'environment.yml'
     }
 }
