@@ -9,4 +9,4 @@ def messages_producer():
             'retry.backoff.ms': 1000,
             'queue.buffering.max.ms': 100}
 
-    producer = Producer(conf)
+    return Producer(conf)

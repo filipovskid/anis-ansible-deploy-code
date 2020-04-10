@@ -2,6 +2,7 @@ from file_management import prepare_workspace, prepare_dataset, prepare_code
 from config import config
 import producers
 from pathlib import Path
+import messages
 import copy
 import json
 import sys
@@ -45,64 +46,55 @@ def handle_run_execution(container_manager, run_bytes):
 # }
 
 
-def __delivery_callback(err, msg):
-    if err:
-        sys.stderr.write('%% Message failed delivery: %s\n' % err)
-    else:
-        sys.stderr.write('%% Message delivered to %s [%d] @ %d\n' %
-                         (msg.topic(), msg.partition(), msg.offset()))
+class CommunicationHandler:
+    def __init__(self):
+        self.producer = producers.messages_producer()
 
+    @staticmethod
+    def __delivery_callback(err, msg):
+        if err:
+            sys.stderr.write('%% Message failed delivery: %s\n' % err)
+        else:
+            sys.stderr.write('%% Message delivered to %s [%d] @ %d\n' %
+                             (msg.topic(), msg.partition(), msg.offset()))
 
-def __navigate_communication(producer, topic, message, **kwargs):
-    json_message = json.dumps(message)
+    def __navigate_communication(self, topic, message, **kwargs):
+        try:
+            self.producer.produce(topic, value=message, **kwargs)
+            self.producer.poll(1)
+        except BufferError as e:
+            self.producer.poll(10)
+            self.producer.produce(topic, value=message, **kwargs)
 
-    try:
-        producer.produce(topic, value=json_message, **kwargs)
-        producer.poll(1)
-    except BufferError as e:
-        producer.poll(10)
-        producer.produce(topic, value=json_message, **kwargs)
+    def handle_status_change(self, run_id, payload):
+        run_status = messages.create_status_change_json_message(run_id=run_id, status=payload)
+        topic = config['kafka']['statuses-topic']
 
+        self.__navigate_communication(topic=topic, message=run_status, key=run_id,
+                                      callback=CommunicationHandler.__delivery_callback)
 
-def __handle_status_change(producer, message):
-    run_status = {
-        'id': message['id'],
-        'status': message['payload']
-    }
-    topic = config['kafka']['statuses-topic']
+    def handle_file_creation(self, run_id, payload):
+        file_creation_message = messages.create_file_creation_json_message(run_id=run_id, file_key=payload)
+        topic = config['kafka']['files-topic']
 
-    __navigate_communication(producer, topic=topic, message=run_status, key=message['id'], callback=__delivery_callback)
+        self.__navigate_communication(topic=topic, message=file_creation_message,
+                                      callback=CommunicationHandler.__delivery_callback)
 
+    def handle_metric_logs(self, run_id, payload):
+        metric_log = messages.create_log_json_message(run_id=run_id, log=payload)
+        topic = config['kafka']['logs-topic']
 
-def __handle_file_creation(producer, message):
-    file_creation_message = {
-        'id': message['id'],
-        'file_name': message['payload']
-    }
-    topic = config['kafka']['files-topic']
+        self.__navigate_communication(topic=topic, message=metric_log,
+                                      callback=CommunicationHandler.__delivery_callback)
 
-    __navigate_communication(producer, topic=topic, message=file_creation_message, callback=__delivery_callback)
+    def handle_run_communication(self, message_bytes):
+        type_handlers = {
+            'status': self.handle_status_change,
+            'file': self.handle_file_creation,
+            'log': self.handle_metric_logs
+        }
 
+        message = json.loads(message_bytes.decode('utf-8'))
 
-def __handle_metric_logs(producer, message):
-    metric_log = {
-        'id': message['id'],
-        'log': message['payload']
-    }
-    topic = config['kafka']['logs-topic']
-
-    __navigate_communication(producer, topic=topic, message=metric_log, callback=__delivery_callback)
-
-
-def handle_run_communication(message_bytes):
-    type_handlers = {
-        'status': __handle_status_change,
-        'file': __handle_file_creation,
-        'log': __handle_metric_logs
-    }
-    producer = producers.messages_producer()
-
-    message = json.loads(message_bytes.decode('utf-8'))
-
-    if 'type' in message and message['type'] in type_handlers:
-        type_handlers[message['type']](producer, message)
+        if 'type' in message and message['type'] in type_handlers:
+            type_handlers[message['type']](message['id'], message['payload'])

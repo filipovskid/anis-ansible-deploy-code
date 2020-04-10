@@ -10,6 +10,7 @@ def run_consumer(container_manager):
             'auto.offset.reset': 'earliest',
             'enable.auto.commit': 'false'}
     consumer = Consumer(conf)
+    print('RUN')
 
     try:
         consumer_topics = [config['kafka']['runs-topic']]
@@ -30,12 +31,13 @@ def run_consumer(container_manager):
         consumer.close()
 
 
-def run_communication_consumer():
+def run_communication_consumer(communication_handler):
     conf = {'bootstrap.servers': config['kafka']['servers'],
             'group.id': "communication",
             'auto.offset.reset': 'earliest',
             'enable.auto.commit': 'false'}
     consumer = Consumer(conf)
+    print('COMMUNICATION')
 
     try:
         consumer_topics = [config['kafka']['communication-topic']]
@@ -52,6 +54,6 @@ def run_communication_consumer():
             else:
                 print(msg.value())
                 consumer.commit(asynchronous=False)
-                handlers.handle_run_communication(msg.value())
+                communication_handler.handle_run_communication(msg.value())
     finally:
         consumer.close()
