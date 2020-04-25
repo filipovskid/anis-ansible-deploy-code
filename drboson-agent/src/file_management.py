@@ -1,4 +1,5 @@
 import boto3
+from botocore.exceptions import ClientError
 import magic
 from pathlib import Path
 import zipfile
@@ -6,11 +7,25 @@ from git import Repo
 import shutil
 
 
-def prepare_dataset(bucket_name, dataset_key, dataset_path):
+def download_file_from_s3(file_path, bucket, object_name):
     s3 = boto3.client('s3')
+    s3.download_file(bucket, object_name, str(file_path))
 
+
+def upload_file_to_s3(file_path, bucket, object_name):
+    s3 = boto3.client('s3')
+    try:
+        response = s3.upload_file(str(file_path), bucket, object_name)
+    except ClientError as e:
+        print(e)
+        return False
+
+    return True
+
+
+def prepare_dataset(bucket_name, dataset_key, dataset_path):
     file_path = Path.joinpath(dataset_path, dataset_key)
-    s3.download_file(bucket_name, dataset_key, str(file_path))
+    download_file_from_s3(file_path, bucket_name, dataset_key)
 
     mime_type = magic.from_file(str(file_path), mime=True)
 
