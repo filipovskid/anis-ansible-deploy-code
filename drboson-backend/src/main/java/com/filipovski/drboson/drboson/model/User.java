@@ -29,7 +29,9 @@ public class User implements UserDetails, CredentialsContainer {
 
     private String name;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<Project> projects;
 
