@@ -1,0 +1,27 @@
+@import '../../styles/pallete';
+
+.nav-sidebar {
+    width: 50px;
+    height: 100vh;
+    background-color: white;
+    border-right: solid 1px rgb(167, 164, 164);
+
+    .nav-sidebar__items {
+        .nav-sidebar__items__item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 50px;
+
+            svg {
+                width: 30px;
+                stroke: $icon-color;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
