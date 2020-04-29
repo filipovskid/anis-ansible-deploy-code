@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NavItem from '../NavItem/navItem'
 import '../navSidebar.css';
 import info from '../../../images/info.svg';
