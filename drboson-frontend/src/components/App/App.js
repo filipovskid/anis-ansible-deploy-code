@@ -12,9 +12,8 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../Page/HomePage/homePage';
 import CreateProject from '../Projects/CreateProject/CreateProject';
 import ProjectPage from '../Project/ProjectPage/projectPage';
-import LineSeriesConfigurer from '../Visualization/LineSeriesConfigurer/lineSeriesConfigurer';
-import Modal from 'react-modal';
-
+import VisPane from '../Visualization/VisPlane/visPlane';
+import VisPlane from '../Visualization/VisPlane/visPlane';
 
 class App extends Component {
 
@@ -72,9 +71,7 @@ class App extends Component {
         </div>
         <Route exact path='/test'>
           <ProjectPage>
-            <Modal isOpen={true} style={{ content: { padding: 0 } }}>
-              <LineSeriesConfigurer />
-            </Modal>
+            <VisPlane />
           </ProjectPage>
         </Route>
       </Router >

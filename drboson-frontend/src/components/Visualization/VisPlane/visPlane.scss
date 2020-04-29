@@ -1,0 +1,31 @@
+@import '../../../styles/pallete';
+
+.visualization-plane {
+    .visualization-plane__header {
+        display: flex;
+        align-items: center;
+
+        .visualization-plane__header--title {
+            vertical-align: middle;
+            margin: 0;
+        }
+
+        .visualization-plane__header--actions {
+            margin-left: auto;
+
+            .vis-action {
+                cursor: pointer;
+
+                svg {
+                    stroke: gray;
+                }
+            }
+
+            .vis-action:hover svg {
+                stroke: $accent-color-light;
+            }
+        }
+    }
+
+    .visualization-plane__content {}
+}

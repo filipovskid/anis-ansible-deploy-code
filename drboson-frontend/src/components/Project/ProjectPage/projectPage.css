@@ -4,4 +4,8 @@
   display: -ms-flexbox;
   display: flex;
 }
+
+.project-page .project-page__content {
+  width: 100%;
+}
 /*# sourceMappingURL=projectPage.css.map */

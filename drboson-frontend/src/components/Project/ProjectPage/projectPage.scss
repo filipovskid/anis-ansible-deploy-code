@@ -1,4 +1,8 @@
 .project-page {
     background-color: #f7f8fa;
     display: flex;
+
+    .project-page__content {
+        width: 100%;
+    }
 }

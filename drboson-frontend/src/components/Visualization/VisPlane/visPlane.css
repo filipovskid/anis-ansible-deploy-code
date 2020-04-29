@@ -1,0 +1,30 @@
+.visualization-plane .visualization-plane__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.visualization-plane .visualization-plane__header .visualization-plane__header--title {
+  vertical-align: middle;
+  margin: 0;
+}
+
+.visualization-plane .visualization-plane__header .visualization-plane__header--actions {
+  margin-left: auto;
+}
+
+.visualization-plane .visualization-plane__header .visualization-plane__header--actions .vis-action {
+  cursor: pointer;
+}
+
+.visualization-plane .visualization-plane__header .visualization-plane__header--actions .vis-action svg {
+  stroke: gray;
+}
+
+.visualization-plane .visualization-plane__header .visualization-plane__header--actions .vis-action:hover svg {
+  stroke: #a7c0cd;
+}
+/*# sourceMappingURL=visPlane.css.map */
