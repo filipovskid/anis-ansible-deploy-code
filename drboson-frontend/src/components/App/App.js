@@ -12,7 +12,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../Page/HomePage/homePage';
 import CreateProject from '../Projects/CreateProject/CreateProject';
 import ProjectPage from '../Project/ProjectPage/projectPage';
-import ProjectWorkspace from '../Project/ProjectWorkspace/projectWorkspace';
+import ProjectData from '../Project/ProjectData/projectData';
 
 
 class App extends Component {
@@ -71,7 +71,7 @@ class App extends Component {
         </div>
         <Route exact path='/test'>
           <ProjectPage>
-            <ProjectWorkspace />
+            <ProjectData />
           </ProjectPage>
         </Route>
       </Router >
