@@ -4,7 +4,8 @@ import VisTypeSelector from '../VisTypeSelector/visTypeSelector';
 
 
 const VisBuilder = (props) => {
-    const [isTypeModalOpen, setIsTypeOpen] = useState(true);
+    const [isTypeModalOpen, setIsTypeOpen] = useState(false);
+    const [isConfigModalOpen, setIsConfigOpen] = useState(false);
 
     const typeModalStyles = {
         content: {

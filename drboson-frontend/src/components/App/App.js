@@ -12,8 +12,8 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../Page/HomePage/homePage';
 import CreateProject from '../Projects/CreateProject/CreateProject';
 import ProjectPage from '../Project/ProjectPage/projectPage';
-import VisPane from '../Visualization/VisPlane/visPlane';
-import VisPlane from '../Visualization/VisPlane/visPlane';
+import ProjectWorkspace from '../Project/ProjectWorkspace/projectWorkspace';
+
 
 class App extends Component {
 
@@ -71,7 +71,7 @@ class App extends Component {
         </div>
         <Route exact path='/test'>
           <ProjectPage>
-            <VisPlane />
+            <ProjectWorkspace />
           </ProjectPage>
         </Route>
       </Router >

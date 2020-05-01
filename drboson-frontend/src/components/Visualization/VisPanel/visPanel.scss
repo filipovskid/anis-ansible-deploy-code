@@ -2,11 +2,11 @@
 
 .panel {
     height: 400px;
-    width: 400px;
+    // width: 400px;
     background-color: white;
     border: 1px solid $border;
     padding: 10px;
-    margin: 20px;
+    // margin: 20px;
     position: relative;
 
     .panel__actions {
@@ -64,5 +64,9 @@
 
     .panel__actions--action svg {
         stroke: $icon-soft !important;
+    }
+
+    .panel__actions--action:hover svg {
+        stroke: $accent-color-dark !important;
     }
 }

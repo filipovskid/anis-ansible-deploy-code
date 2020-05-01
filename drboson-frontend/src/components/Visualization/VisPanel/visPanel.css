@@ -1,10 +1,8 @@
 .panel {
   height: 400px;
-  width: 400px;
   background-color: white;
   border: 1px solid #dbdbdb;
   padding: 10px;
-  margin: 20px;
   position: relative;
 }
 
@@ -69,5 +67,9 @@
 
 .max-panel .panel__actions--action svg {
   stroke: #aaa !important;
+}
+
+.max-panel .panel__actions--action:hover svg {
+  stroke: #4b636e !important;
 }
 /*# sourceMappingURL=visPanel.css.map */
