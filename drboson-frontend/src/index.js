@@ -4,6 +4,7 @@ import './index.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
+import '../node_modules/react-vis/dist/style.css';
 // import $ from 'jquery';
 // import Popper from 'popper.js';
 import App from './components/App/App';

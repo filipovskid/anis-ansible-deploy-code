@@ -2,6 +2,8 @@ package com.filipovski.drboson.drboson.web.controllers.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.filipovski.drboson.drboson.service.exceptions.GithubNotAvailableException;
+import com.filipovski.drboson.drboson.service.exceptions.GithubRepoNotFoundException;
 import com.filipovski.drboson.drboson.service.exceptions.UsernameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -44,12 +46,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler({ UsernameAlreadyExistsException.class })
-    public ResponseEntity<Object> handleUsernameAlreadyExist(UsernameAlreadyExistsException ex, WebRequest request) {
-        ObjectNode responseBody = createUsernameExistsExceptionResponse(ex, request);
-        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
-
     private ObjectNode createBindExceptionResponse(BindingResult result) {
         List<ObjectNode> responseObjects = result.getAllErrors().stream().map(e -> {
             ObjectNode node = mapper.createObjectNode();
@@ -69,10 +65,44 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return response;
     }
 
+    @ExceptionHandler({ UsernameAlreadyExistsException.class })
+    public ResponseEntity<Object> handleUsernameAlreadyExist(UsernameAlreadyExistsException ex, WebRequest request) {
+        ObjectNode responseBody = createUsernameExistsExceptionResponse(ex, request);
+        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
     private ObjectNode createUsernameExistsExceptionResponse(UsernameAlreadyExistsException ex, WebRequest request) {
         ObjectNode response = mapper.createObjectNode();
         response.put("message", ex.getMessage());
         response.put("error", "UsernameAlreadyExists");
+
+        return response;
+    }
+
+    @ExceptionHandler({ GithubRepoNotFoundException.class })
+    public ResponseEntity<Object> handleGithubRepoNotFound(GithubRepoNotFoundException ex, WebRequest request) {
+        ObjectNode responseBody = createGithubRepoNotFoundResponse(ex, request);
+        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    private ObjectNode createGithubRepoNotFoundResponse(GithubRepoNotFoundException ex, WebRequest request) {
+        ObjectNode response = mapper.createObjectNode();
+        response.put("message", "Owner or repository not found !");
+        response.put("error", "GithubRepoNotFound");
+
+        return response;
+    }
+
+    @ExceptionHandler({ GithubNotAvailableException.class })
+    public ResponseEntity<Object> handleGithubNotAvailable(GithubRepoNotFoundException ex, WebRequest request) {
+        ObjectNode responseBody = createGithubNotAvailableResponse(ex, request);
+        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    private ObjectNode createGithubNotAvailableResponse(GithubRepoNotFoundException ex, WebRequest request) {
+        ObjectNode response = mapper.createObjectNode();
+        response.put("message", "GitHub is not available !");
+        response.put("error", "GithubRepoNotFound");
 
         return response;
     }

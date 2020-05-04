@@ -37,7 +37,7 @@ const ProjectContainer = (props) => {
                     src={projectIcon} style={{ width: '30px' }} />
                 <span>Projects</span>
 
-                <Link className="float-right" to="/new"><img src={plus} /></Link>
+                <Link className="float-right" to="/new"><img src={plus} alt="" /></Link>
                 <hr />
             </div>
             {containerContent()}

@@ -11,6 +11,9 @@ import AuthenticationService from '../../actions/auth';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import HomePage from '../Page/HomePage/homePage';
 import CreateProject from '../Projects/CreateProject/CreateProject';
+import ProjectPage from '../Project/ProjectPage/projectPage';
+import ProjectData from '../Project/ProjectData/projectData';
+
 
 class App extends Component {
 
@@ -63,11 +66,15 @@ class App extends Component {
           </Route>
           <ProtectedRoute exact path='/' userDetails={this.state.userDetails}
             isAuthenticated={this.state.isAuthenticated} component={HomePage} />
-          <Route exact path='/new'>
-            <CreateProject />
-          </Route>
+          <ProtectedRoute exact path='/new'
+            isAuthenticated={this.state.isAuthenticated} component={CreateProject} />
         </div>
-      </Router>
+        <Route exact path='/test'>
+          <ProjectPage>
+            <ProjectData />
+          </ProjectPage>
+        </Route>
+      </Router >
     );
   }
 }

@@ -1,0 +1,29 @@
+.nav-sidebar {
+  width: 50px;
+  height: 100vh;
+  background-color: white;
+  border-right: solid 1px #a7a4a4;
+}
+
+.nav-sidebar .nav-sidebar__items .nav-sidebar__items__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 50px;
+}
+
+.nav-sidebar .nav-sidebar__items .nav-sidebar__items__item svg {
+  width: 30px;
+  stroke: #374957;
+}
+
+.nav-sidebar .nav-sidebar__items .nav-sidebar__items__item:hover {
+  cursor: pointer;
+}
+/*# sourceMappingURL=navSidebar.css.map */

@@ -1,0 +1,21 @@
+.line-series-config label {
+  font-weight: lighter;
+}
+
+.line-series-config .config-title {
+  font-weight: 400;
+}
+
+.line-series-config hr {
+  margin-top: 0;
+}
+
+.plot-title {
+  color: #4b636e;
+  text-align: center;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0 0 3px;
+}
+/*# sourceMappingURL=lineSeriesConfigurer.css.map */
