@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.util.*;
 import java.util.function.Function;
 
-@Entity
+@Entity(name="users")
 @NoArgsConstructor
 @Data
 public class User implements UserDetails, CredentialsContainer {
