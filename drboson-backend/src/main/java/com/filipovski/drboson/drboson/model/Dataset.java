@@ -3,6 +3,7 @@ package com.filipovski.drboson.drboson.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(exclude = {"project"})
 public class Dataset {
     @Id
     @GeneratedValue(generator = "uuid2")

@@ -1,10 +1,7 @@
 package com.filipovski.drboson.drboson.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
+@EqualsAndHashCode(exclude = {"project", "dataset"})
 public class Run {
     @Id
     @GeneratedValue(generator = "uuid2")

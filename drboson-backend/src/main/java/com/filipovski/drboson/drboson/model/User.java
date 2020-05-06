@@ -2,6 +2,7 @@ package com.filipovski.drboson.drboson.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.function.Function;
 @Entity(name="users")
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(exclude = {"projects"})
 public class User implements UserDetails, CredentialsContainer {
 
     @Id

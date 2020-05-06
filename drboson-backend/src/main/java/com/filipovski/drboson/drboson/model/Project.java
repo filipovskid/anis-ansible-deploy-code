@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(exclude = {"owner", "datasets", "runs"})
 public class Project {
     @Id
     @GeneratedValue(generator = "uuid2")
