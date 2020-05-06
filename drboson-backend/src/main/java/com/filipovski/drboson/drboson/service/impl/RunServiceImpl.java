@@ -80,7 +80,7 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public void startRun(UUID runId) throws Exception {
-        Run run = runRepository.findById(runId).orElseThrow(Exception::new);
+            Run run = runRepository.findById(runId).orElseThrow(Exception::new);
 
         RunRecord runRecord = RunRecord.newBuilder()
                 .setId(run.getId().toString())

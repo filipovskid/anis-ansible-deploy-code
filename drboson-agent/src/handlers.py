@@ -15,7 +15,7 @@ def __run_setup(run_item):
     dir_paths = prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name=run_item['id'])
 
     datasets_bucket = config['buckets']['dataset']
-    dataset_key = run_item['dataset']['location']
+    dataset_key = run_item['dataset_location']
     dataset_path = dir_paths['dataset_path']
     prepare_dataset(datasets_bucket, dataset_key, dataset_path)
 
@@ -32,8 +32,8 @@ def __run_setup(run_item):
     return dir_paths, environment_file
 
 
-def handle_run_execution(container_manager, run_bytes):
-    run_item = json.loads(run_bytes.decode('utf-8'))
+def handle_run_execution(container_manager, run_item):
+    # run_item = json.loads(run_bytes.decode('utf-8'))
     dir_paths, env_file = __run_setup(run_item)
     safe_run = copy.deepcopy(run_item)
 
