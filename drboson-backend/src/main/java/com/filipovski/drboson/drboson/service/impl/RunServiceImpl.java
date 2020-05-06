@@ -1,6 +1,7 @@
 package com.filipovski.drboson.drboson.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.filipovski.drboson.drboson.avro.RunRecord;
 import com.filipovski.drboson.drboson.model.Dataset;
 import com.filipovski.drboson.drboson.model.Project;
 import com.filipovski.drboson.drboson.model.Run;
@@ -22,12 +23,12 @@ public class RunServiceImpl implements RunService {
     private final ProjectRepository projectRepository;
     private final DatasetRepository datasetRepository;
 
-    private final KafkaTemplate<String, RunDto> kafkaTemplate;
+    private final KafkaTemplate<String, RunRecord> kafkaTemplate;
 
     public RunServiceImpl(RunRepository runRepository,
                           ProjectRepository projectRepository,
                           DatasetRepository datasetRepository,
-                          KafkaTemplate<String, RunDto> kafkaTemplate) {
+                          KafkaTemplate<String, RunRecord> kafkaTemplate) {
 
         this.runRepository = runRepository;
         this.projectRepository = projectRepository;
@@ -80,8 +81,13 @@ public class RunServiceImpl implements RunService {
     @Override
     public void startRun(UUID runId) throws Exception {
         Run run = runRepository.findById(runId).orElseThrow(Exception::new);
-        RunDto runDto = RunDto.of(run);
 
-        kafkaTemplate.send("runs", String.valueOf(runDto.getName()), runDto);
+        RunRecord runRecord = RunRecord.newBuilder()
+                .setId(run.getId().toString())
+                .setProjectId(run.getProject().getId().toString())
+                .setDatasetLocation(run.getDataset().getLocation())
+                .build();
+
+        kafkaTemplate.send("runs", String.valueOf(runRecord.getId()), runRecord);
     }
 }
