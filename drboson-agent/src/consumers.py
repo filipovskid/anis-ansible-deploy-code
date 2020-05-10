@@ -1,4 +1,5 @@
 from confluent_kafka import Consumer
+from confluent_kafka.error import ConsumeError
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka import DeserializingConsumer
 from confluent_kafka.schema_registry.avro import AvroDeserializer
@@ -46,8 +47,8 @@ def run_consumer(container_manager):
                     threading.Thread(target=handlers.handle_run_execution,
                                      args=(container_manager, msg.value())).start()
                     print('Passed thread')
-            except KafkaError as e:
-                print(e)
+            except ConsumeError as e:
+                print(f'[Exception] error_code: {e.code()} message: {e.message()} exception: {e}')
     finally:
         consumer.close()
 
