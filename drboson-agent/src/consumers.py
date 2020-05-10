@@ -5,6 +5,7 @@ from confluent_kafka.schema_registry.avro import AvroDeserializer
 from confluent_kafka.serialization import StringDeserializer
 from confluent_kafka.cimpl import KafkaException
 from config import config
+import threading
 import schemas
 import handlers
 
@@ -40,7 +41,10 @@ def run_consumer(container_manager):
             else:
                 print(msg.value())
                 consumer.commit(asynchronous=False)
-                handlers.handle_run_execution(container_manager, msg.value())
+                # handlers.handle_run_execution(container_manager, msg.value())
+                threading.Thread(target=handlers.handle_run_execution,
+                                 args=(container_manager, msg.value())).start()
+                print('Passed thread')
     finally:
         consumer.close()
 

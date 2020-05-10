@@ -19,11 +19,14 @@ class ContainerManager:
         return container.id
 
     def __build_image(self, name, workdir, env_file):
+        print(f"[-] Building the {name} image")
         with NamedTemporaryFile(dir=workdir) as dockerfile:
             dockerfile_name = Path(dockerfile.name).name
             dockerfile.write(templates.create_dockerfile(workdir=workdir, env_file_path=env_file))
             dockerfile.seek(0)
             self.client.images.build(path=str(workdir), dockerfile=dockerfile_name, custom_context=False, tag=name)
+
+        print(f"[+] Image {name} built")
 
     # def consume_events(self):
     #     event_filter = {'type': 'container'}

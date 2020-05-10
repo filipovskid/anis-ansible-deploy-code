@@ -2,6 +2,7 @@ package com.filipovski.drboson.drboson.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filipovski.drboson.drboson.avro.RunRecord;
+import com.filipovski.drboson.drboson.common.RunStatus;
 import com.filipovski.drboson.drboson.model.Dataset;
 import com.filipovski.drboson.drboson.model.Project;
 import com.filipovski.drboson.drboson.model.Run;
@@ -51,6 +52,7 @@ public class RunServiceImpl implements RunService {
                 .dataset(dataset)
                 .name(name)
                 .description(description)
+                .status(RunStatus.PENDING)
                 .build();
         runRepository.save(run);
 

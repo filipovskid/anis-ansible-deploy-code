@@ -3,6 +3,7 @@ from config import config
 import producers
 from pathlib import Path
 import messages
+import schemas
 import copy
 import json
 import sys
@@ -48,7 +49,10 @@ def handle_run_execution(container_manager, run_item):
 
 class CommunicationHandler:
     def __init__(self):
-        self.producer = producers.messages_producer()
+        self.producer = producers.json_messages_producer()
+        self.status_producer = producers.avro_messages_producer(schemas.status_record_schema)
+        self.log_producer = producers.avro_messages_producer(schemas.log_record_schema)
+        self.file_producer = producers.avro_messages_producer(schemas.file_record_schema)
 
     @staticmethod
     def __delivery_callback(err, msg):
@@ -58,43 +62,44 @@ class CommunicationHandler:
             sys.stderr.write('%% Message delivered to %s [%d] @ %d\n' %
                              (msg.topic(), msg.partition(), msg.offset()))
 
-    def __navigate_communication(self, topic, message, **kwargs):
+    @staticmethod
+    def __navigate_communication(producer, topic, message, **kwargs):
         try:
-            self.producer.produce(topic, value=message, **kwargs)
-            self.producer.poll(1)
+            producer.produce(topic, value=message, **kwargs)
+            producer.poll(1)
         except BufferError as e:
-            self.producer.poll(10)
-            self.producer.produce(topic, value=message, **kwargs)
+            producer.poll(10)
+            producer.produce(topic, value=message, **kwargs)
 
     def handle_status_change(self, run_id, payload):
-        run_status = messages.create_status_change_json_message(run_id=run_id, status=payload)
+        run_status = messages.create_status_message(run_id=run_id, status=payload)
         topic = config['kafka']['statuses-topic']
 
-        self.__navigate_communication(topic=topic, message=run_status, key=run_id,
-                                      callback=CommunicationHandler.__delivery_callback)
-
-    def handle_file_creation(self, run_id, payload):
-        file_creation_message = messages.create_file_creation_json_message(run_id=run_id, file_key=payload)
-        topic = config['kafka']['files-topic']
-
-        self.__navigate_communication(topic=topic, message=file_creation_message,
-                                      callback=CommunicationHandler.__delivery_callback)
+        self.__navigate_communication(producer=self.status_producer, topic=topic, message=run_status, key=run_id,
+                                      on_delivery=CommunicationHandler.__delivery_callback)
 
     def handle_metric_logs(self, run_id, payload):
-        metric_log = messages.create_log_json_message(run_id=run_id, log=payload)
+        metric_log = messages.create_log_message(run_id=run_id, log=payload)
         topic = config['kafka']['logs-topic']
 
-        self.__navigate_communication(topic=topic, message=metric_log,
-                                      callback=CommunicationHandler.__delivery_callback)
+        self.__navigate_communication(producer=self.log_producer, topic=topic, message=metric_log,
+                                      on_delivery=CommunicationHandler.__delivery_callback)
+
+    def handle_file_creation(self, run_id, payload):
+        file_creation_message = messages.create_file_message(run_id=run_id, file_key=payload)
+        topic = config['kafka']['files-topic']
+
+        self.__navigate_communication(producer=self.file_producer, topic=topic, message=file_creation_message,
+                                      on_delivery=CommunicationHandler.__delivery_callback)
 
     def handle_run_communication(self, message_bytes):
         type_handlers = {
             'status': self.handle_status_change,
-            'file': self.handle_file_creation,
-            'log': self.handle_metric_logs
+            'log': self.handle_metric_logs,
+            'file': self.handle_file_creation
         }
 
         message = json.loads(message_bytes.decode('utf-8'))
 
         if 'type' in message and message['type'] in type_handlers:
-            type_handlers[message['type']](message['id'], message['payload'])
+            type_handlers[message['type']]("1113e2bd-92b6-4524-8713-f3b2654d0e25", message['payload'])

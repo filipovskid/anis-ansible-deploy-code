@@ -1,6 +1,7 @@
 package com.filipovski.drboson.drboson.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.filipovski.drboson.drboson.common.RunStatus;
 import lombok.*;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 
@@ -29,4 +30,7 @@ public class Run {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Dataset dataset;
+
+    @Enumerated(EnumType.STRING)
+    private RunStatus status;
 }
