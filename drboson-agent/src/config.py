@@ -1,13 +1,16 @@
 config = {
     'buckets': {
-        'dataset': 'dataset-filipovski'
+        'dataset': 'dataset-filipovski',
+        'files': 'files-filipovski',
+        'logs': 'logs-filipovski'
     },
     'workspace': {
         'dir': '/Users/darko/run-workspaces',
         'dataset': {
             'dir': 'dataset'
         },
-        'data': 'data'
+        'data': 'data',
+        'container': '/drboson/workdir'
     },
     'docker': {
         'dockerfiles_dir': '/Users/darko/Documents/Projects/DRBoson/drboson-agent/',

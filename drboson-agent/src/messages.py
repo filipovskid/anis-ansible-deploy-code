@@ -30,7 +30,7 @@ def create_file_creation_json_message(run_id, file_key):
 
 def create_status_message(run_id, status):
     message = {
-        'id': run_id,
+        'run_id': run_id,
         'status': status.upper()
     }
 
@@ -39,16 +39,17 @@ def create_status_message(run_id, status):
 
 def create_log_message(run_id, log):
     message = {
-        'id': run_id,
+        'run_id': run_id,
         'log': json.dumps(log)
     }
 
     return message
 
 
-def create_file_message(run_id, file_key):
+def create_file_message(run_id, file_id, file_key):
     message = {
-        'id': run_id,
+        'run_id': run_id,
+        'file_id': file_id,
         'file_key': file_key
     }
 

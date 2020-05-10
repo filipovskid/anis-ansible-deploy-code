@@ -1,44 +1,47 @@
-from file_management import prepare_workspace, prepare_dataset, prepare_code
+from file_management import prepare_workspace, prepare_dataset, prepare_code, upload_file_to_s3
 from config import config
 import producers
-from pathlib import Path
+import pathlib
 import messages
 import schemas
+import uuid
 import copy
 import json
 import sys
 
 
 def __run_setup(run_item):
-    workspaces_path = Path(config['workspace']['dir'])
+    workspaces_path = pathlib.Path(config['workspace']['dir'])
     dataset_dir = config['workspace']['dataset']['dir']
     data_dir = config['workspace']['data']
-    dir_paths = prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name=run_item['id'])
+    local_dir_paths = prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name=run_item['id'])
 
     datasets_bucket = config['buckets']['dataset']
     dataset_key = run_item['dataset_location']
-    dataset_path = dir_paths['dataset_path']
+    dataset_path = local_dir_paths['dataset_path']
     prepare_dataset(datasets_bucket, dataset_key, dataset_path)
 
     repo_url = 'https://github.com/filipovskid/run-conformant-repo.git'
-    executor_path = Path(config['exec']['executor'])
-    workdir_path = dir_paths['workdir_path']
-    prepare_code(repo_url, workdir_path=workdir_path, executor_path=executor_path)
+    executor_path = pathlib.Path(config['exec']['executor'])
+    local_workdir_path = local_dir_paths['workdir_path']
+    prepare_code(repo_url, workdir_path=local_workdir_path, executor_path=executor_path)
 
-    environment_file = workdir_path.joinpath(config['exec']['env_file'])
+    environment_file = local_workdir_path.joinpath(config['exec']['env_file'])
+    container_workdir_path = config['workspace']['container']
 
     if environment_file.exists() is False:
         pass
 
-    return dir_paths, environment_file
+    return local_dir_paths, container_workdir_path, environment_file
 
 
 def handle_run_execution(container_manager, run_item):
     # run_item = json.loads(run_bytes.decode('utf-8'))
-    dir_paths, env_file = __run_setup(run_item)
+    local_dir_paths, container_workdir_path, env_file = __run_setup(run_item)
     safe_run = copy.deepcopy(run_item)
 
-    container_manager.create_run_container(safe_run, dir_paths['workdir_path'], env_file)
+    container_manager.create_run_container(safe_run, local_workdir=local_dir_paths['workdir_path'],
+                                           container_workdir=container_workdir_path, env_file=env_file)
 
 # {
 #     'id': 'run-id',
@@ -86,9 +89,32 @@ class CommunicationHandler:
                                       on_delivery=CommunicationHandler.__delivery_callback)
 
     def handle_file_creation(self, run_id, payload):
-        file_creation_message = messages.create_file_message(run_id=run_id, file_key=payload)
         topic = config['kafka']['files-topic']
+        files_bucket = config['buckets']['files']
+        container_workspace = pathlib.Path(config['workspace']['container'])
+        run_workspaces = pathlib.Path(config['workspace']['dir'])
+        run_workspace_path = run_workspaces.joinpath(run_id)
+        container_file_path = pathlib.Path(payload)
+        file_path = run_workspace_path.joinpath(container_file_path.relative_to(container_workspace))
 
+        if not run_workspace_path.exists():
+            print(f'{run_id} Run workspace: {run_workspace_path} does not exist')
+
+        if not file_path.exists():
+            print(f'[{run_id}] Run file: {file_path} does not exist')
+
+        if not file_path.is_file():
+            print(f'[{run_id}] {file_path} is not a file')
+
+        s3_file_name = f'{uuid.uuid4()}--{file_path.name}'
+
+        uploaded = upload_file_to_s3(file_path, files_bucket, s3_file_name)
+
+        if not uploaded:
+            print(f'[{run_id}] {file_path} upload failed')
+            return
+
+        file_creation_message = messages.create_file_message(run_id=run_id, file_id=str(uuid.uuid4()), file_key=s3_file_name)
         self.__navigate_communication(producer=self.file_producer, topic=topic, message=file_creation_message,
                                       on_delivery=CommunicationHandler.__delivery_callback)
 

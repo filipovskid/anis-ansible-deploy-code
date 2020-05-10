@@ -16,22 +16,18 @@ status_record_schema = """
   "type": "record",
   "name": "StatusRecord",
   "fields": [
-    { "name": "id", "type":  "string" },
-    { "name": "status" , "type":  { "name": "RunStatus", "type": "enum", "symbols": ["PENDING", "STARTED", "COMPLETED", "FAILED"] } }
+    { "name": "run_id", "type":  "string" },
+    { "name": "status" , "type":  { "name": "RunStatus", "type": "enum", "symbols": ["PENDING", "RUNNING", "COMPLETED", "FAILED"] } }
   ]
 }
 """
 
 log_record_schema = """
-
-
-
-
 {
   "type": "record",
-  "name": "StatusRecord",
+  "name": "LogRecord",
   "fields": [
-    { "name": "id", "type":  "string" },
+    { "name": "run_id", "type":  "string" },
     { "name": "log" , "type":  "string" }
   ]
 }
@@ -40,9 +36,10 @@ log_record_schema = """
 file_record_schema = """
 {
   "type": "record",
-  "name": "StatusRecord",
+  "name": "FileRecord",
   "fields": [
-    { "name": "id", "type":  "string" },
+    { "name": "run_id", "type":  "string" },
+    { "name": "file_id", "type":  "string" },
     { "name": "file_key" , "type":  "string" }
   ]
 }
