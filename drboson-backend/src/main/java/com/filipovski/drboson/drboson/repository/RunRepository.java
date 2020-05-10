@@ -9,6 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RunRepository extends JpaRepository<Run, UUID> {
+public interface RunRepository extends JpaRepository<Run, String> {
     List<Run> findRunsByProjectId(UUID projectId);
 }

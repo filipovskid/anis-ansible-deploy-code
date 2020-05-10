@@ -61,12 +61,12 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public Run getRun(UUID runId) throws Exception {
-        return runRepository.findById(runId).orElseThrow(Exception::new);
+        return runRepository.findById(runId.toString()).orElseThrow(Exception::new);
     }
 
     @Override
     public Run updateRun(UUID runId, String name, String description) throws Exception {
-        Run run = runRepository.findById(runId).orElseThrow(Exception::new);
+        Run run = runRepository.findById(runId.toString()).orElseThrow(Exception::new);
 
         run.setName(name);
         run.setDescription(description);
@@ -77,15 +77,15 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public void deleteRun(UUID runId) {
-        runRepository.deleteById(runId);
+        runRepository.deleteById(runId.toString());
     }
 
     @Override
     public void startRun(UUID runId) throws Exception {
-            Run run = runRepository.findById(runId).orElseThrow(Exception::new);
+            Run run = runRepository.findById(runId.toString()).orElseThrow(Exception::new);
 
         RunRecord runRecord = RunRecord.newBuilder()
-                .setId(run.getId().toString())
+                .setId(run.getId())
                 .setProjectId(run.getProject().getId().toString())
                 .setDatasetLocation(run.getDataset().getLocation())
                 .build();

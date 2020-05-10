@@ -3,7 +3,7 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka import DeserializingConsumer
 from confluent_kafka.schema_registry.avro import AvroDeserializer
 from confluent_kafka.serialization import StringDeserializer
-from confluent_kafka.cimpl import KafkaException
+from confluent_kafka.cimpl import KafkaException, KafkaError
 from config import config
 import threading
 import schemas
@@ -32,19 +32,22 @@ def run_consumer(container_manager):
         consumer.subscribe(consumer_topics)
 
         while True:
-            msg = consumer.poll(timeout=1.0)
-            if msg is None:
-                continue
+            try:
+                msg = consumer.poll(timeout=1.0)
+                if msg is None:
+                    continue
 
-            if msg.error():
-                raise KafkaException(msg.error())
-            else:
-                print(msg.value())
-                consumer.commit(asynchronous=False)
-                # handlers.handle_run_execution(container_manager, msg.value())
-                threading.Thread(target=handlers.handle_run_execution,
-                                 args=(container_manager, msg.value())).start()
-                print('Passed thread')
+                if msg.error():
+                    raise KafkaException(msg.error())
+                else:
+                    print(msg.value())
+                    consumer.commit(asynchronous=False)
+                    # handlers.handle_run_execution(container_manager, msg.value())
+                    threading.Thread(target=handlers.handle_run_execution,
+                                     args=(container_manager, msg.value())).start()
+                    print('Passed thread')
+            except KafkaError as e:
+                print(e)
     finally:
         consumer.close()
 

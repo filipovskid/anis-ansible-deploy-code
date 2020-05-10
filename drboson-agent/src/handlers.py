@@ -102,4 +102,4 @@ class CommunicationHandler:
         message = json.loads(message_bytes.decode('utf-8'))
 
         if 'type' in message and message['type'] in type_handlers:
-            type_handlers[message['type']]("1113e2bd-92b6-4524-8713-f3b2654d0e25", message['payload'])
+            type_handlers[message['type']](message['id'], message['payload'])

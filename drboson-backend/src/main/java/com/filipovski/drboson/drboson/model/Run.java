@@ -3,6 +3,7 @@ package com.filipovski.drboson.drboson.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.filipovski.drboson.drboson.common.RunStatus;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 
 import javax.persistence.*;
@@ -16,8 +17,10 @@ import java.util.UUID;
 @EqualsAndHashCode(exclude = {"project", "dataset"})
 public class Run {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    private UUID id;
+//    @GeneratedValue(generator = "uuid2")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
 
     private String name;
 
