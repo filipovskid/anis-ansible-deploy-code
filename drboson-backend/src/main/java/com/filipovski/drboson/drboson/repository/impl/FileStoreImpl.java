@@ -3,12 +3,11 @@ package com.filipovski.drboson.drboson.repository.impl;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.filipovski.drboson.drboson.repository.FileStore;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +38,28 @@ public class FileStoreImpl implements FileStore {
             // couldn't parse the response from Amazon S3.
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Optional<S3Object> download(String bucketName, String fileKey) throws IOException {
+        S3Object object = null;
+
+        try {
+            GetObjectRequest request = new GetObjectRequest(bucketName, fileKey);
+            object = s3Client.getObject(request);
+
+            return Optional.of(object);
+        } catch (AmazonServiceException e) {
+            // The call was transmitted successfully, but Amazon S3 couldn't process
+            // it, so it returned an error response.
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            // Amazon S3 couldn't be contacted for a response, or the client
+            // couldn't parse the response from Amazon S3.
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 
     @Override

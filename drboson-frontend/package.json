@@ -9,6 +9,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "jquery": "^3.4.1",
+    "js-file-download": "^0.4.12",
     "popper.js": "^1.16.1",
     "qs": "^6.9.1",
     "react": "^16.13.0",
@@ -19,7 +20,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-svg": "^11.0.20",
-    "react-vis": "^1.11.7"
+    "react-vis": "^1.11.7",
+    "shortid": "^2.2.15"
   },
   "scripts": {
     "start": "react-scripts start",

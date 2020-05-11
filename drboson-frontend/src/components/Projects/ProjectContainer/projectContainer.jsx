@@ -10,9 +10,7 @@ const ProjectContainer = (props) => {
     const [projects, setProjects] = useState([]);
 
     useEffect(() => {
-        console.log('effect');
         ProjectService.fetchProjects().then((response) => {
-            console.log(response);
             setProjects(response.data);
         })
     }, []);

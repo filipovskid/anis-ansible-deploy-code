@@ -6,7 +6,7 @@ const NavItem = (props) => {
 
     return (
         <Link to='/'>
-            <div class="nav-sidebar__items__item">
+            <div className="nav-sidebar__items__item">
                 {/* <img src={props.item.icon} alt={props.item.name} /> */}
                 <ReactSVG src={props.item.icon} />
             </div>

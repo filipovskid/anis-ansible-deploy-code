@@ -1,3 +1,7 @@
+.dataset-creator__wrapper {
+  margin-bottom: 15px;
+}
+
 .dataset-creator {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -45,6 +49,10 @@
   border-bottom: 2px solid #4b636e;
 }
 
+.dataset-creator input[type="text"] {
+  text-align: center;
+}
+
 .dataset-creator .dataset-creator--action {
   float: right;
   padding: 5px;
@@ -63,6 +71,15 @@
 .dataset-creator .dataset-creator--action:focus {
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
+}
+
+.dataset-creator .dataset-creator--action.submit:hover {
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-transform: translateX(3px);
+          transform: translateX(3px);
 }
 
 .dataset-creator .dataset-creator__actions {

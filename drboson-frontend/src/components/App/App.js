@@ -69,7 +69,7 @@ class App extends Component {
           <ProtectedRoute exact path='/new'
             isAuthenticated={this.state.isAuthenticated} component={CreateProject} />
         </div>
-        <Route exact path='/test'>
+        <Route exact path='/:projectId/data'>
           <ProjectPage>
             <ProjectData />
           </ProjectPage>
