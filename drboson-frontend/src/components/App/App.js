@@ -13,6 +13,7 @@ import HomePage from '../Page/HomePage/homePage';
 import CreateProject from '../Projects/CreateProject/CreateProject';
 import ProjectPage from '../Project/ProjectPage/projectPage';
 import ProjectData from '../Project/ProjectData/projectData';
+import RepositorySearch from '../Repository/RepositorySearch/repositorySearch';
 
 
 class App extends Component {
@@ -69,9 +70,14 @@ class App extends Component {
           <ProtectedRoute exact path='/new'
             isAuthenticated={this.state.isAuthenticated} component={CreateProject} />
         </div>
-        <Route exact path='/:projectId/data'>
+        <ProtectedRoute exact path='/:projectId/data'>
           <ProjectPage>
             <ProjectData />
+          </ProjectPage>
+        </ProtectedRoute>
+        <Route exact path='/test'>
+          <ProjectPage>
+            <RepositorySearch />
           </ProjectPage>
         </Route>
       </Router >
