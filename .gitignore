@@ -72,3 +72,6 @@ fabric.properties
 
 # OSX
 .DS_Store
+
+# Other
+notes/

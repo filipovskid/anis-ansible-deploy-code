@@ -1,6 +1,7 @@
 import sys
 sys.path.append('./drboson')
 from drboson.drboson import DRBoson
+from drboson.drboson import Run
 from drboson.DRBosonProducer import RemoteProducer
 import socket
 import run
@@ -9,10 +10,17 @@ import os
 
 def main():
 
-    bootstrap_servers = os.environ.get('BOOTSTRAP_SERVERS')
-    producer_topic = os.environ.get('PRODUCER_TOPIC')
-    run_id = os.environ.get("RUN_ID")
-    project_id = os.environ.get("PROJECT_ID")
+    bootstrap_servers = os.environ.get('DRBOSON_BOOTSTRAP_SERVERS')
+    producer_topic = os.environ.get('DRBOSON_PRODUCER_TOPIC')
+    run_id = os.environ.get('DRBOSON_RUN_ID')
+    project_id = os.environ.get('DRBOSON_PROJECT_ID')
+    workspace_dir = os.environ.get('DRBOSON_WORKSPACE')
+    dataset_dir = os.environ.get('DRBOSON_DATASET_DIR')
+
+    _run = Run(run_id=run_id,
+              project_id=project_id,
+              work_dir=workspace_dir,
+              dataset_dir=dataset_dir)
 
     conf = {
         'bootstrap.servers': bootstrap_servers,
@@ -23,11 +31,11 @@ def main():
     }
 
     producer = RemoteProducer(conf, topic=producer_topic)
-    drboson = DRBoson(producer)
+    drboson = DRBoson(run=_run, producer=producer)
     drboson.started()
 
     try:
-        run.run(drboson)
+        run.run(drboson, dataset_dir)
     finally:
         drboson.completed()
 

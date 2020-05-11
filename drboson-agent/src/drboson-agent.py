@@ -2,10 +2,11 @@ from container_manager import ContainerManager
 import consumers
 from handlers import CommunicationHandler
 import threading
+from config import config
 
 
 def main():
-    container_manager = ContainerManager()
+    container_manager = ContainerManager(config)
     communication_handler = CommunicationHandler()
 
     threading.Thread(target=consumers.run_consumer, args=(container_manager,)).start()

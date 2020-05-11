@@ -1,6 +1,8 @@
 package com.filipovski.drboson.drboson.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.filipovski.drboson.drboson.avro.RunRecord;
+import com.filipovski.drboson.drboson.common.RunStatus;
 import com.filipovski.drboson.drboson.model.Dataset;
 import com.filipovski.drboson.drboson.model.Project;
 import com.filipovski.drboson.drboson.model.Run;
@@ -22,12 +24,12 @@ public class RunServiceImpl implements RunService {
     private final ProjectRepository projectRepository;
     private final DatasetRepository datasetRepository;
 
-    private final KafkaTemplate<String, RunDto> kafkaTemplate;
+    private final KafkaTemplate<String, RunRecord> kafkaTemplate;
 
     public RunServiceImpl(RunRepository runRepository,
                           ProjectRepository projectRepository,
                           DatasetRepository datasetRepository,
-                          KafkaTemplate<String, RunDto> kafkaTemplate) {
+                          KafkaTemplate<String, RunRecord> kafkaTemplate) {
 
         this.runRepository = runRepository;
         this.projectRepository = projectRepository;
@@ -50,6 +52,7 @@ public class RunServiceImpl implements RunService {
                 .dataset(dataset)
                 .name(name)
                 .description(description)
+                .status(RunStatus.PENDING)
                 .build();
         runRepository.save(run);
 
@@ -58,12 +61,12 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public Run getRun(UUID runId) throws Exception {
-        return runRepository.findById(runId).orElseThrow(Exception::new);
+        return runRepository.findById(runId.toString()).orElseThrow(Exception::new);
     }
 
     @Override
     public Run updateRun(UUID runId, String name, String description) throws Exception {
-        Run run = runRepository.findById(runId).orElseThrow(Exception::new);
+        Run run = runRepository.findById(runId.toString()).orElseThrow(Exception::new);
 
         run.setName(name);
         run.setDescription(description);
@@ -74,14 +77,19 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public void deleteRun(UUID runId) {
-        runRepository.deleteById(runId);
+        runRepository.deleteById(runId.toString());
     }
 
     @Override
     public void startRun(UUID runId) throws Exception {
-        Run run = runRepository.findById(runId).orElseThrow(Exception::new);
-        RunDto runDto = RunDto.of(run);
+            Run run = runRepository.findById(runId.toString()).orElseThrow(Exception::new);
 
-        kafkaTemplate.send("runs", String.valueOf(runDto.getName()), runDto);
+        RunRecord runRecord = RunRecord.newBuilder()
+                .setId(run.getId())
+                .setProjectId(run.getProject().getId().toString())
+                .setDatasetLocation(run.getDataset().getLocation())
+                .build();
+
+        kafkaTemplate.send("runs", String.valueOf(runRecord.getId()), runRecord);
     }
 }
