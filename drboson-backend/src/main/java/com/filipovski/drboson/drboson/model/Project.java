@@ -34,13 +34,15 @@ public class Project {
     private User owner;
 
     @OneToMany(mappedBy = "project",
-            orphanRemoval = true)
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Dataset> datasets;
 
     @OneToMany(mappedBy = "project",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Run> runs;
 }

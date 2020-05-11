@@ -114,7 +114,8 @@ class CommunicationHandler:
             print(f'[{run_id}] {file_path} upload failed')
             return
 
-        file_creation_message = messages.create_file_message(run_id=run_id, file_id=str(uuid.uuid4()), file_key=s3_file_name)
+        file_creation_message = messages.create_file_message(run_id=run_id, file_id=str(uuid.uuid4()),
+                                                             file_name=file_path.name, file_key=s3_file_name)
         self.__navigate_communication(producer=self.file_producer, topic=topic, message=file_creation_message,
                                       on_delivery=CommunicationHandler.__delivery_callback)
 

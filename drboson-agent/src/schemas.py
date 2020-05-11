@@ -40,6 +40,7 @@ file_record_schema = """
   "fields": [
     { "name": "run_id", "type":  "string" },
     { "name": "file_id", "type":  "string" },
+    { "name": "file_name", "type": "string" }, 
     { "name": "file_key" , "type":  "string" }
   ]
 }

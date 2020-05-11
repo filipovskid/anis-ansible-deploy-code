@@ -46,10 +46,11 @@ def create_log_message(run_id, log):
     return message
 
 
-def create_file_message(run_id, file_id, file_key):
+def create_file_message(run_id, file_id, file_name, file_key):
     message = {
         'run_id': run_id,
         'file_id': file_id,
+        'file_name': file_name,
         'file_key': file_key
     }
 
