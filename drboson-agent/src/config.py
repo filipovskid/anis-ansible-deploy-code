@@ -17,7 +17,7 @@ config = {
         'dockerfile_name': 'Dockerfile'
     },
     'kafka': {
-        'servers': '192.168.1.6',
+        'servers': '192.168.1.100',
         'runs-topic': 'runs',
         'statuses-topic': 'run_statuses',
         'logs-topic': 'run_logs',
