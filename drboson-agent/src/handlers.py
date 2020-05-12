@@ -74,21 +74,21 @@ class CommunicationHandler:
             producer.poll(10)
             producer.produce(topic, value=message, **kwargs)
 
-    def handle_status_change(self, run_id, payload):
-        run_status = messages.create_status_message(run_id=run_id, status=payload)
+    def handle_status_change(self, run_id, project_id, payload):
+        run_status = messages.create_status_message(run_id=run_id, project_id=project_id, status=payload)
         topic = config['kafka']['statuses-topic']
 
         self.__navigate_communication(producer=self.status_producer, topic=topic, message=run_status, key=run_id,
                                       on_delivery=CommunicationHandler.__delivery_callback)
 
-    def handle_metric_logs(self, run_id, payload):
-        metric_log = messages.create_log_message(run_id=run_id, log=payload)
+    def handle_metric_logs(self, run_id, project_id, payload):
+        metric_log = messages.create_log_message(run_id=run_id, project_id=project_id, log=payload)
         topic = config['kafka']['logs-topic']
 
         self.__navigate_communication(producer=self.log_producer, topic=topic, message=metric_log,
                                       on_delivery=CommunicationHandler.__delivery_callback)
 
-    def handle_file_creation(self, run_id, payload):
+    def handle_file_creation(self, run_id, project_id, payload):
         topic = config['kafka']['files-topic']
         files_bucket = config['buckets']['files']
         container_workspace = pathlib.Path(config['workspace']['container'])
@@ -114,7 +114,7 @@ class CommunicationHandler:
             print(f'[{run_id}] {file_path} upload failed')
             return
 
-        file_creation_message = messages.create_file_message(run_id=run_id, file_id=str(uuid.uuid4()),
+        file_creation_message = messages.create_file_message(run_id=run_id, project_id=project_id, file_id=str(uuid.uuid4()),
                                                              file_name=file_path.name, file_key=s3_file_name)
         self.__navigate_communication(producer=self.file_producer, topic=topic, message=file_creation_message,
                                       on_delivery=CommunicationHandler.__delivery_callback)
@@ -129,4 +129,6 @@ class CommunicationHandler:
         message = json.loads(message_bytes.decode('utf-8'))
 
         if 'type' in message and message['type'] in type_handlers:
-            type_handlers[message['type']](message['run_id'], message['payload'])
+            type_handlers[message['type']](run_id=message['run_id'],
+                                           project_id=message['project_id'],
+                                           payload=message['payload'])

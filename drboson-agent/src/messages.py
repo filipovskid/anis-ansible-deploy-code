@@ -28,27 +28,30 @@ def create_file_creation_json_message(run_id, file_key):
     return json.dumps(message)
 
 
-def create_status_message(run_id, status):
+def create_status_message(run_id, project_id, status):
     message = {
         'run_id': run_id,
+        'project_id': project_id,
         'status': status.upper()
     }
 
     return message
 
 
-def create_log_message(run_id, log):
+def create_log_message(run_id, project_id, log):
     message = {
         'run_id': run_id,
+        'project_id': project_id,
         'log': json.dumps(log)
     }
 
     return message
 
 
-def create_file_message(run_id, file_id, file_name, file_key):
+def create_file_message(run_id, project_id, file_id, file_name, file_key):
     message = {
         'run_id': run_id,
+        'project_id': project_id,
         'file_id': file_id,
         'file_name': file_name,
         'file_key': file_key
