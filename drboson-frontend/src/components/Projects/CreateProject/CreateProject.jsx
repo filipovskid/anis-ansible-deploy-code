@@ -45,7 +45,7 @@ class CreateProject extends Component {
                             <input type="text" className="form-control col-md-4"
                                 id="name"
                                 name="name"
-                                value={this.state.username}
+                                value={this.state.name}
                                 onChange={this.handleChange} />
                         </div>
                         <div className="form-group">
@@ -53,7 +53,7 @@ class CreateProject extends Component {
                             <input type="text" className="form-control"
                                 id="description"
                                 name="description"
-                                value={this.state.password}
+                                value={this.state.description}
                                 onChange={this.handleChange} />
                         </div>
                         <hr />
@@ -62,7 +62,7 @@ class CreateProject extends Component {
                             <input type="text" className="form-control"
                                 id="repository"
                                 name="repository"
-                                value={this.state.password}
+                                value={this.state.repository}
                                 onChange={this.handleChange} />
                         </div>
                         <hr />

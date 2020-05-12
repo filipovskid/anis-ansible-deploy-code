@@ -13,7 +13,9 @@ import HomePage from '../Page/HomePage/homePage';
 import CreateProject from '../Projects/CreateProject/CreateProject';
 import ProjectPage from '../Project/ProjectPage/projectPage';
 import ProjectData from '../Project/ProjectData/projectData';
-import RepositorySearch from '../Repository/RepositorySearch/repositorySearch';
+import ProjectInfo from '../Project/ProjectInfo/projectInfo';
+import CreateRun from '../Run/CreateRun/createRun';
+// import RepositorySearch from '../Repository/RepositorySearch/repositorySearch';
 
 
 class App extends Component {
@@ -69,17 +71,21 @@ class App extends Component {
             isAuthenticated={this.state.isAuthenticated} component={HomePage} />
           <ProtectedRoute exact path='/new'
             isAuthenticated={this.state.isAuthenticated} component={CreateProject} />
+          <ProtectedRoute exact path='/:projectId/run/new'
+            isAuthenticated={this.state.isAuthenticated} component={CreateRun} />
         </div>
+
         <ProtectedRoute exact path='/:projectId/data'>
           <ProjectPage>
             <ProjectData />
           </ProjectPage>
         </ProtectedRoute>
-        <Route exact path='/test'>
+
+        <ProtectedRoute exact path='/:projectId/info'>
           <ProjectPage>
-            <RepositorySearch />
+            <ProjectInfo />
           </ProjectPage>
-        </Route>
+        </ProtectedRoute>
       </Router >
     );
   }
