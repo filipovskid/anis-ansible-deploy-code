@@ -1,7 +1,7 @@
 import React from 'react';
-import { ReactSVG } from 'react-svg';
+// import { ReactSVG } from 'react-svg';
 import VisPanel from '../VisPanel/visPanel';
-import plus from '../../../images/plus.svg';
+// import plus from '../../../images/plus.svg';
 import './visPlane.css';
 
 

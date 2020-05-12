@@ -14,6 +14,7 @@ import CreateProject from '../Projects/CreateProject/CreateProject';
 import ProjectPage from '../Project/ProjectPage/projectPage';
 import ProjectData from '../Project/ProjectData/projectData';
 import ProjectInfo from '../Project/ProjectInfo/projectInfo';
+import ProjectWorkspace from '../Project/ProjectWorkspace/projectWorkspace';
 import CreateRun from '../Run/CreateRun/createRun';
 // import RepositorySearch from '../Repository/RepositorySearch/repositorySearch';
 
@@ -86,6 +87,12 @@ class App extends Component {
             <ProjectInfo />
           </ProjectPage>
         </ProtectedRoute>
+
+        <Route exact path='/test'>
+          <ProjectPage>
+            <ProjectWorkspace />
+          </ProjectPage>
+        </Route>
       </Router >
     );
   }

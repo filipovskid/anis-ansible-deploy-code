@@ -5,15 +5,14 @@ import lineChart from '../chart-art/line-chart.svg';
 
 
 const VisTypeItem = (props) => {
+    const { visType, onSelect } = props;
 
     return (
-        <div onClick={props.onClick} className="vis-type-selector__item">
+        <div onClick={() => onSelect(visType.type)} className="vis-type-selector__item">
             <div className="vis-type-selector__item--type">
-                <img src={lineChart} alt="" />
+                <img src={visType.icon} alt="" />
             </div>
-            <div className="vis-type-selector__item--name">
-                Item text
-            </div>
+            <div className="vis-type-selector__item--name">{visType.name}</div>
         </div>
     );
 }

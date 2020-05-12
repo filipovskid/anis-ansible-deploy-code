@@ -1,36 +1,47 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
+import { visTypeConfigs, visTypeConfigurers } from '../VisTypeSelector/VisTypes';
 import VisTypeSelector from '../VisTypeSelector/visTypeSelector';
+import VisConfigurer from '../VisConfigurer/visConfigurer';
 
+const defaultConfigurer = {
+    isOpen: false,
+    configurer: VisConfigurer,
+}
 
 const VisBuilder = (props) => {
-    const [isTypeModalOpen, setIsTypeOpen] = useState(false);
-    const [isConfigModalOpen, setIsConfigOpen] = useState(false);
+    const [isSelectorOpen, setIsSelectorOpen] = useState(true);
+    const [configurer, setConfigurer] = useState(defaultConfigurer);
 
-    const typeModalStyles = {
-        content: {
-            width: '740px',
-            height: 'auto',
-            minHeight: '500px',
-            maxHeight: '80vh',
-            overflow: 'auto',
-            margin: 'auto',
-            position: 'relative',
-            top: '10%'
-        },
-        overlay: {
-            // display: 'flex',
-            // justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)'
-        }
+    const closeBuilder = () => {
+        setIsSelectorOpen(false);
+        setConfigurer(defaultConfigurer);
     }
 
+    const selectVisualizationType = (visType) => {
+        const newConfigurer = {
+            isOpen: true,
+            configurer: visTypeConfigurers[visType],
+        }
+        setIsSelectorOpen(false);
+        setConfigurer(newConfigurer);
+    }
+
+    const Configurer = configurer.configurer;
+
     return (
-        // <Modal isOpen={isTypeModalOpen} style={typeModalStyles}>
-        //     <VisTypeSelector />
-        // </Modal>
-        <Modal isOpen={isTypeModalOpen}>
-        </Modal>
+        <React.Fragment>
+            <VisTypeSelector
+                isOpen={isSelectorOpen}
+                visTypeConfigs={visTypeConfigs}
+                onTypeSelection={selectVisualizationType}
+                onRequestClose={closeBuilder}
+            />
+
+            <Configurer
+                isOpen={configurer.isOpen}
+                onRequestClose={closeBuilder}
+            />
+        </React.Fragment>
     );
 }
 

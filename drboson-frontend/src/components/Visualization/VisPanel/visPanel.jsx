@@ -9,9 +9,9 @@ import {
     // XYPlot,
     XAxis,
     YAxis,
-    ChartLabel,
+    // ChartLabel,
     HorizontalGridLines,
-    VerticalGridLines,
+    // VerticalGridLines,
     LineSeries,
     FlexibleXYPlot,
 } from 'react-vis';

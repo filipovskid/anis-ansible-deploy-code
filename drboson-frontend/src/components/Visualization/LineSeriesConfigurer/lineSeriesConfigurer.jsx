@@ -87,7 +87,12 @@ const LineSeriesConfigurer = (props) => {
     );
 
     return (
-        <VisConfigurer preview={lineSeriesPreview} configurer={lineSeriesConfigurer} />
+        <VisConfigurer
+            isOpen={props.isOpen}
+            preview={lineSeriesPreview}
+            configurer={lineSeriesConfigurer}
+            onRequestClose={props.onRequestClose}
+        />
     );
 }
 

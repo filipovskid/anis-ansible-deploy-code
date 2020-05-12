@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAGA,AACI,UADM,CACN,kBAAkB,CAAC;EACf,QAAQ,EAAE,IAAI;CASjB;;AAXL,AAIQ,UAJE,CACN,kBAAkB,CAGd,2BAA2B,CAAC;EACxB,KAAK,EAAE,IAAI;CACd;;AANT,AAQQ,UARE,CACN,kBAAkB,CAOd,2BAA2B,CAAC;EACxB,KAAK,EAAE,KAAK;CACf;;AAIT,AACI,OADG,CACH,GAAG,CAAC;EACA,MAAM,ECXF,IAAI;CDYX;;AAGL,AAAA,OAAO,AAAA,MAAM,CAAC;EACV,MAAM,EAAE,OAAO;CAKlB;;AAND,AAGI,OAHG,AAAA,MAAM,CAGT,GAAG,CAAC;EACA,MAAM,ECrBM,OAAO;CDsBtB",
+    "sources": [
+        "projectWorkspace.scss",
+        "../../../styles/_pallete.scss"
+    ],
+    "names": [],
+    "file": "projectWorkspace.css"
+}
