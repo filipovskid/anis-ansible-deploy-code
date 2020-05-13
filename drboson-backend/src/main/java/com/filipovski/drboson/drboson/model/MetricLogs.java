@@ -13,10 +13,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="metric_logs")
-@TypeDef(
-        name = "jsonb",
-        typeClass = JsonBinaryType.class
-)
+//@TypeDef(
+//        name = "jsonb",
+//        typeClass = JsonBinaryType.class
+//)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -30,7 +30,8 @@ public class MetricLogs {
 
     private String projectId;
 
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
+//    @Type(type = "jsonb")
+//    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "text")
     private String log;
 }

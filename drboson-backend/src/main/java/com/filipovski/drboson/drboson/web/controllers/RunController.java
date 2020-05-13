@@ -1,21 +1,27 @@
 package com.filipovski.drboson.drboson.web.controllers;
 
 import com.filipovski.drboson.drboson.model.Run;
+import com.filipovski.drboson.drboson.service.MetricLogsService;
 import com.filipovski.drboson.drboson.service.RunService;
+import com.filipovski.drboson.drboson.service.dtos.ProjectMetricLogs;
+import com.filipovski.drboson.drboson.service.dtos.RunMetricLogs;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "*"}, allowCredentials = "true")
-@RequestMapping("/{projectId}/run")
+@RequestMapping(value = "/{projectId}/run", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RunController {
 
     private final RunService runService;
+    private final MetricLogsService metricLogsService;
 
-    public RunController(RunService runService) {
+    public RunController(RunService runService, MetricLogsService metricLogsService) {
         this.runService = runService;
+        this.metricLogsService = metricLogsService;
     }
 
     @GetMapping("/{runId}")
@@ -44,5 +50,15 @@ public class RunController {
     @GetMapping("/{runId}/start")
     public void startRun(@PathVariable UUID runId) throws Exception {
         runService.startRun(runId);
+    }
+
+    @GetMapping("/logs")
+    public ProjectMetricLogs projectRunMetrics(@PathVariable UUID projectId) {
+        return metricLogsService.getProjectMetricLogs(projectId);
+    }
+
+    @GetMapping("/{runId}/logs")
+    public RunMetricLogs projectRunMetrics(@PathVariable UUID projectId, @PathVariable UUID runId) {
+        return metricLogsService.getRunMetricLogs(projectId, runId);
     }
 }
