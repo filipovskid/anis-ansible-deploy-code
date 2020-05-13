@@ -83,9 +83,10 @@ class CommunicationHandler:
 
     def handle_metric_logs(self, run_id, project_id, payload):
         metric_log = messages.create_log_message(run_id=run_id, project_id=project_id, log=payload)
+        log_key = str(uuid.uuid4()) # Necessary for ksqldb table
         topic = config['kafka']['logs-topic']
 
-        self.__navigate_communication(producer=self.log_producer, topic=topic, message=metric_log,
+        self.__navigate_communication(producer=self.log_producer, topic=topic, message=metric_log, key=log_key,
                                       on_delivery=CommunicationHandler.__delivery_callback)
 
     def handle_file_creation(self, run_id, project_id, payload):
