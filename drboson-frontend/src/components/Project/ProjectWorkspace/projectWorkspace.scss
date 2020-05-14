@@ -4,6 +4,8 @@
 .workspace {
     .workspace__header {
         overflow: auto;
+        margin: 5px 0;
+        padding: 0 10px;
 
         .workspace__header--heading {
             float: left;

@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { visTypeConfigs, visTypeConfigurers } from '../VisTypeSelector/VisTypes';
 import VisTypeSelector from '../VisTypeSelector/visTypeSelector';
-import VisConfigurer from '../VisConfigurer/visConfigurer';
 
 const defaultConfigurer = {
     isOpen: false,
-    configurer: VisConfigurer,
+    configurer: null,
 }
 
 const VisBuilder = (props) => {
-    const [isSelectorOpen, setIsSelectorOpen] = useState(true);
+    const [isSelectorOpen, setIsSelectorOpen] = useState(props.isOpen);
     const [configurer, setConfigurer] = useState(defaultConfigurer);
+    const { runLogs } = props;
+    const fields = [...new Set(runLogs.map(run => run.logs).flat()
+        .map(log => Object.keys(log)).flat())]
+
 
     const closeBuilder = () => {
-        setIsSelectorOpen(false);
+        // setIsSelectorOpen(false);
         setConfigurer(defaultConfigurer);
+        props.closeBuilder();
     }
 
     const selectVisualizationType = (visType) => {
@@ -26,7 +30,15 @@ const VisBuilder = (props) => {
         setConfigurer(newConfigurer);
     }
 
-    const Configurer = configurer.configurer;
+    let Configurer = configurer.configurer;
+    Configurer = Configurer ?
+        <Configurer
+            isOpen={configurer.isOpen}
+            onRequestClose={closeBuilder}
+            fields={fields}
+            data={runLogs}
+            onCreate={props.onVisualizationCreate}
+        /> : null;
 
     return (
         <React.Fragment>
@@ -36,11 +48,7 @@ const VisBuilder = (props) => {
                 onTypeSelection={selectVisualizationType}
                 onRequestClose={closeBuilder}
             />
-
-            <Configurer
-                isOpen={configurer.isOpen}
-                onRequestClose={closeBuilder}
-            />
+            {Configurer}
         </React.Fragment>
     );
 }

@@ -88,7 +88,7 @@ class App extends Component {
           </ProjectPage>
         </ProtectedRoute>
 
-        <Route exact path='/test'>
+        <Route exact path='/:projectId/test'>
           <ProjectPage>
             <ProjectWorkspace />
           </ProjectPage>

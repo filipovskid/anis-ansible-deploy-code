@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface MetricLogsRepository extends JpaRepository<MetricLogs, String> {
     List<MetricLogs> findMetricLogsByProjectId(String projectId);
+//    List<MetricLogsProjection> findMetricLogsByProjectId(String projectId);
 
     List<MetricLogs> findMetricLogsByProjectIdAndRunId(String projectId, String runId);
+//    List<MetricLogsProjection> findMetricLogsByProjectIdAndRunId(String projectId, String runId);
 }

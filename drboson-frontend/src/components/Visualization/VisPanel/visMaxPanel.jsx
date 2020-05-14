@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ReactSVG } from 'react-svg';
 import Modal from 'react-modal';
 import x from '../../../images/x.svg';
 import './visPanel.css';
 
-const VisMaxPanel = (props) => {
-    const maxPanelModalStyles = {
-        content: {
-            padding: 0,
-            // zIndex: 100,
-        },
-        overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.85)'
-        }
+const maxPanelModalStyles = {
+    content: {
+        padding: 0,
+    },
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.85)'
     }
+}
+
+const VisMaxPanel = (props) => {
+    const { preview } = props;
 
     return (
-        <Modal isOpen={props.isMaximized}
+        <Modal ariaHideApp={false} isOpen={props.isMaximized}
             style={maxPanelModalStyles}
             onRequestClose={props.minimizePanel}>
 
@@ -27,9 +28,9 @@ const VisMaxPanel = (props) => {
                     </span>
                 </div>
                 <div className="panel__content">
-                    <h6 className="panel__content--title">Darko Filipovski</h6>
+                    <h6 className="panel__content--title">{preview.title}</h6>
                     <div className="panel__content--vis">
-                        {props.visualization}
+                        {preview.plot}
                     </div>
                 </div>
             </div>

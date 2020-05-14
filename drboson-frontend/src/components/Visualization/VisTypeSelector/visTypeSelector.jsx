@@ -15,8 +15,6 @@ const modalStyle = {
         top: '10%'
     },
     overlay: {
-        // display: 'flex',
-        // justifyContent: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.85)'
     }
 }

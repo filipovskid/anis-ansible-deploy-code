@@ -1,7 +1,5 @@
 import React from 'react';
 import '../visType.css';
-import { ReactSVG } from 'react-svg'
-import lineChart from '../chart-art/line-chart.svg';
 
 
 const VisTypeItem = (props) => {

@@ -127,6 +127,7 @@ class CommunicationHandler:
             'file': self.handle_file_creation
         }
 
+
         message = json.loads(message_bytes.decode('utf-8'))
 
         if 'type' in message and message['type'] in type_handlers:

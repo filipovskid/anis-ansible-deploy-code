@@ -2,12 +2,6 @@ import axios_instance from '../axios/axios-config'
 import qs from 'qs';
 
 const RunService = {
-    // fetchProjects: () => {
-    //     return axios_instance.get('/project');
-    // },
-    // fetchProject: (projectId) => {
-    //     return axios_instance.get(`/project/${projectId}`);
-    // },
     createRun: (projectId, run) => {
         const formParams = qs.stringify(run);
 
@@ -16,6 +10,12 @@ const RunService = {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
+    },
+    fetchProjectRunMetrics: (projectId) => {
+        return axios_instance.get(`/${projectId}/run/logs`);
+    },
+    fetchRunMetrics: (projectId, runId) => {
+        return axios_instance.get(`/${projectId}/run/${runId}/logs`);
     }
 };
 

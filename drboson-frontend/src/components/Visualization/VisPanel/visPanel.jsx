@@ -16,9 +16,9 @@ import {
     FlexibleXYPlot,
 } from 'react-vis';
 
-const VisPanel = (params) => {
-
+const VisPanel = (props) => {
     const [isPanelMaximized, setMaximizedState] = useState(false);
+    const { preview } = props;
 
     const maximizePanel = () => {
         setMaximizedState(true);
@@ -27,36 +27,6 @@ const VisPanel = (params) => {
     const minimizePanel = () => {
         setMaximizedState(false);
     }
-
-    const lineSeriesPreview = (
-        <FlexibleXYPlot margin={{ bottom: 34, left: 50, right: 20, top: 10 }}>
-            <HorizontalGridLines style={{ strokeWidth: 0.5 }} />
-            {/* <VerticalGridLines /> */}
-            <XAxis />
-            <YAxis style={{ line: { stroke: "none" } }} />
-
-            <LineSeries
-                className="first-series"
-                data={[{ x: 1, y: 3 }, { x: 2, y: 5 }, { x: 3, y: 15 }, { x: 4, y: 12 }]}
-            />
-            <LineSeries className="second-series" data={null} />
-            <LineSeries
-                className="third-series"
-                curve={'curveMonotoneX'}
-                data={[{ x: 1, y: 10 }, { x: 2, y: 4 }, { x: 3, y: 2 }, { x: 4, y: 15 }]}
-                strokeDasharray={'7, 3'}
-            />
-            <LineSeries
-                className="fourth-series"
-                curve={curveCatmullRom.alpha(0.5)}
-                style={{
-                    // note that this can not be translated to the canvas version
-                    strokeDasharray: '2 2'
-                }}
-                data={[{ x: 1, y: 7 }, { x: 2, y: 11 }, { x: 3, y: 9 }, { x: 4, y: 2 }]}
-            />
-        </FlexibleXYPlot >
-    );
 
     return (
         <React.Fragment>
@@ -67,14 +37,14 @@ const VisPanel = (params) => {
                     </span>
                 </div>
                 <div className="panel__content">
-                    <h6 className="panel__content--title">Darko Filipovski</h6>
+                    <h6 className="panel__content--title">{preview.title}</h6>
                     <div className="panel__content--vis">
-                        {lineSeriesPreview}
+                        {preview.plot}
                     </div>
                 </div>
             </div>
 
-            <VisMaxPanel visualization={lineSeriesPreview}
+            <VisMaxPanel preview={preview}
                 isMaximized={isPanelMaximized}
                 minimizePanel={minimizePanel} />
 

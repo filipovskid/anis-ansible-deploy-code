@@ -9,11 +9,11 @@
 .panel .panel__actions {
   position: absolute;
   top: 4px;
-  right: 0px;
+  right: 4px;
 }
 
 .panel .panel__actions .panel__actions--action {
-  margin-right: 1.7rem;
+  display: block;
   cursor: pointer;
 }
 
@@ -63,6 +63,15 @@
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+.max-panel .panel__content {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.max-panel .panel__actions {
+  z-index: 1000;
 }
 
 .max-panel .panel__actions--action svg {
