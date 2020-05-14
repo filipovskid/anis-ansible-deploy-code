@@ -1,6 +1,7 @@
 package com.filipovski.drboson.drboson.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,19 +31,22 @@ public class Project {
     private String repository;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private User owner;
 
     @OneToMany(mappedBy = "project",
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private Set<Dataset> datasets;
 
     @OneToMany(mappedBy = "project",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private Set<Run> runs;
 }

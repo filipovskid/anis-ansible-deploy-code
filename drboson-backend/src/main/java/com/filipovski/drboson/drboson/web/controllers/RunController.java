@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,6 +23,11 @@ public class RunController {
     public RunController(RunService runService, MetricLogsService metricLogsService) {
         this.runService = runService;
         this.metricLogsService = metricLogsService;
+    }
+
+    @GetMapping
+    public List<Run> getProjectRuns(@PathVariable UUID projectId) {
+        return runService.getProjectRuns(projectId);
     }
 
     @GetMapping("/{runId}")
