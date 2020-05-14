@@ -1,36 +1,55 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
+import { visTypeConfigs, visTypeConfigurers } from '../VisTypeSelector/VisTypes';
 import VisTypeSelector from '../VisTypeSelector/visTypeSelector';
 
+const defaultConfigurer = {
+    isOpen: false,
+    configurer: null,
+}
 
 const VisBuilder = (props) => {
-    const [isTypeModalOpen, setIsTypeOpen] = useState(false);
-    const [isConfigModalOpen, setIsConfigOpen] = useState(false);
+    const [isSelectorOpen, setIsSelectorOpen] = useState(props.isOpen);
+    const [configurer, setConfigurer] = useState(defaultConfigurer);
+    const { runLogs } = props;
+    const fields = [...new Set(runLogs.map(run => run.logs).flat()
+        .map(log => Object.keys(log)).flat())]
 
-    const typeModalStyles = {
-        content: {
-            width: '740px',
-            height: 'auto',
-            minHeight: '500px',
-            maxHeight: '80vh',
-            overflow: 'auto',
-            margin: 'auto',
-            position: 'relative',
-            top: '10%'
-        },
-        overlay: {
-            // display: 'flex',
-            // justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)'
-        }
+
+    const closeBuilder = () => {
+        // setIsSelectorOpen(false);
+        setConfigurer(defaultConfigurer);
+        props.closeBuilder();
     }
 
+    const selectVisualizationType = (visType) => {
+        const newConfigurer = {
+            isOpen: true,
+            configurer: visTypeConfigurers[visType],
+        }
+        setIsSelectorOpen(false);
+        setConfigurer(newConfigurer);
+    }
+
+    let Configurer = configurer.configurer;
+    Configurer = Configurer ?
+        <Configurer
+            isOpen={configurer.isOpen}
+            onRequestClose={closeBuilder}
+            fields={fields}
+            data={runLogs}
+            onCreate={props.onVisualizationCreate}
+        /> : null;
+
     return (
-        // <Modal isOpen={isTypeModalOpen} style={typeModalStyles}>
-        //     <VisTypeSelector />
-        // </Modal>
-        <Modal isOpen={isTypeModalOpen}>
-        </Modal>
+        <React.Fragment>
+            <VisTypeSelector
+                isOpen={isSelectorOpen}
+                visTypeConfigs={visTypeConfigs}
+                onTypeSelection={selectVisualizationType}
+                onRequestClose={closeBuilder}
+            />
+            {Configurer}
+        </React.Fragment>
     );
 }
 

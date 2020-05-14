@@ -13,6 +13,9 @@ import HomePage from '../Page/HomePage/homePage';
 import CreateProject from '../Projects/CreateProject/CreateProject';
 import ProjectPage from '../Project/ProjectPage/projectPage';
 import ProjectData from '../Project/ProjectData/projectData';
+import ProjectInfo from '../Project/ProjectInfo/projectInfo';
+import ProjectWorkspace from '../Project/ProjectWorkspace/projectWorkspace';
+import CreateRun from '../Run/CreateRun/createRun';
 
 
 class App extends Component {
@@ -68,12 +71,21 @@ class App extends Component {
             isAuthenticated={this.state.isAuthenticated} component={HomePage} />
           <ProtectedRoute exact path='/new'
             isAuthenticated={this.state.isAuthenticated} component={CreateProject} />
+          <ProtectedRoute exact path='/:projectId/run/new'
+            isAuthenticated={this.state.isAuthenticated} component={CreateRun} />
         </div>
-        <Route exact path='/test'>
-          <ProjectPage>
-            <ProjectData />
-          </ProjectPage>
-        </Route>
+
+        <ProtectedRoute exact path='/:projectId/info'>
+          <ProjectPage component={ProjectInfo} />
+        </ProtectedRoute>
+
+        <ProtectedRoute exact path='/:projectId/workspace'>
+          <ProjectPage component={ProjectWorkspace} />
+        </ProtectedRoute>
+
+        <ProtectedRoute exact path='/:projectId/data'>
+          <ProjectPage component={ProjectData} />
+        </ProtectedRoute>
       </Router >
     );
   }

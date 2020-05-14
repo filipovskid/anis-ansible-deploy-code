@@ -1,10 +1,12 @@
-
 import axios_instance from '../axios/axios-config'
 import qs from 'qs';
 
 const ProjectService = {
     fetchProjects: () => {
         return axios_instance.get('/project');
+    },
+    fetchProject: (projectId) => {
+        return axios_instance.get(`/project/${projectId}`);
     },
     createProject: (project) => {
         const formParams = qs.stringify(project);

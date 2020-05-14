@@ -17,6 +17,7 @@ status_record_schema = """
   "name": "StatusRecord",
   "fields": [
     { "name": "run_id", "type":  "string" },
+    { "name": "project_id", "type":  "string" },
     { "name": "status" , "type":  { "name": "RunStatus", "type": "enum", "symbols": ["PENDING", "RUNNING", "COMPLETED", "FAILED"] } }
   ]
 }
@@ -28,6 +29,7 @@ log_record_schema = """
   "name": "LogRecord",
   "fields": [
     { "name": "run_id", "type":  "string" },
+    { "name": "project_id", "type":  "string" },
     { "name": "log" , "type":  "string" }
   ]
 }
@@ -39,6 +41,7 @@ file_record_schema = """
   "name": "FileRecord",
   "fields": [
     { "name": "run_id", "type":  "string" },
+    { "name": "project_id", "type":  "string" },
     { "name": "file_id", "type":  "string" },
     { "name": "file_name", "type": "string" }, 
     { "name": "file_key" , "type":  "string" }

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ReactSVG } from 'react-svg';
 import upload from '../../../../images/upload.svg';
@@ -6,13 +6,17 @@ import './dataUploader.css';
 
 const DataUploader = (props) => {
 
+    const onDrop = useCallback(acceptedFiles => {
+        props.onFileAttach(acceptedFiles[0]);
+    }, [props])
+
     const {
         getRootProps,
         getInputProps,
         isDragActive,
         isDragAccept,
         isDragReject
-    } = useDropzone({ accept: 'image/*' });
+    } = useDropzone({ onDrop });
 
     const classes = useMemo(() => (
         'data-uploader' +
@@ -24,6 +28,7 @@ const DataUploader = (props) => {
         isDragReject,
         isDragAccept
     ]);
+
 
     return (
         <div {...getRootProps({ className: classes })}>

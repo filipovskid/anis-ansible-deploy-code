@@ -1,6 +1,7 @@
 package com.filipovski.drboson.drboson.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +27,7 @@ public class Dataset {
     private String location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private Project project;
 }

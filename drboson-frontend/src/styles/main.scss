@@ -4,6 +4,12 @@
     }
 }
 
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 label {
     font-weight: 600;
 }
@@ -15,4 +21,18 @@ label {
 .no-focus:focus {
     border-color: #ced4da;
     box-shadow: none !important;
+}
+
+.header {
+    font-size: 24px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: "Source Sans Pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    // margin-bottom: 0; // this
 }

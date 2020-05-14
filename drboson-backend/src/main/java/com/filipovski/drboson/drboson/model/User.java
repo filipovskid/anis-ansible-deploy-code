@@ -1,5 +1,6 @@
 package com.filipovski.drboson.drboson.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +35,8 @@ public class User implements UserDetails, CredentialsContainer {
     @OneToMany(mappedBy = "owner",
             orphanRemoval = true,
             cascade = CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private Set<Project> projects;
 
     private boolean accountNonExpired;

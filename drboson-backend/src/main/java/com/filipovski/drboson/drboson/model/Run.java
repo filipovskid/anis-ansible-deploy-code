@@ -1,6 +1,7 @@
 package com.filipovski.drboson.drboson.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.filipovski.drboson.drboson.common.RunStatus;
 import lombok.*;
@@ -28,11 +29,13 @@ public class Run {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private Dataset dataset;
 
     @Enumerated(EnumType.STRING)
@@ -42,6 +45,7 @@ public class Run {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private List<DRBosonFile> files;
 }

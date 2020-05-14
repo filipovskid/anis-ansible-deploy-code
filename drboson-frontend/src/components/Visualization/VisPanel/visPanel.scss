@@ -13,10 +13,12 @@
         position: absolute;
         // z-index: 100;
         top: 4px;
-        right: 0px;
+        right: 4px;
 
         .panel__actions--action {
-            margin-right: 1.7rem;
+            // overflow: auto;
+            display: block;
+            // margin-right: 1.7rem;
             cursor: pointer;
         }
 
@@ -61,6 +63,15 @@
     margin: 0;
     padding: 0;
     border: 0;
+
+    .panel__content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .panel__actions {
+        z-index: 1000;
+    }
 
     .panel__actions--action svg {
         stroke: $icon-soft !important;

@@ -1,5 +1,7 @@
 package com.filipovski.drboson.drboson.service.impl;
 
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.filipovski.drboson.drboson.config.AmazonS3Config;
 import com.filipovski.drboson.drboson.model.Dataset;
 import com.filipovski.drboson.drboson.model.Project;
@@ -11,12 +13,18 @@ import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.apache.tika.Tika;
 import org.apache.tika.mime.MimeType;
 import org.apache.tika.mime.MimeTypes;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -58,7 +66,7 @@ public class DatasetServiceImpl implements DatasetService {
         dataset.setDescription(description);
         dataset.setProject(project);
 
-        String filename = String.format("%s-%s", name, UUID.randomUUID());
+        String filename = String.format("%s--%s", UUID.randomUUID(), name);
         Map<String, String> metadata = extractMetadata(file);
 
         try {
@@ -125,5 +133,28 @@ public class DatasetServiceImpl implements DatasetService {
         fileStore.delete(amazonS3Config.getDatasetBucketName(), dataset.getLocation());
 
         datasetRepository.deleteById(datasetId);
+    }
+
+    @Override
+    public StreamingResponseBody downloadDataset(UUID datasetId) throws Exception {
+        Dataset dataset = datasetRepository.findById(datasetId).orElseThrow(Exception::new);
+        S3Object object = fileStore.download(amazonS3Config.getDatasetBucketName(), dataset.getLocation())
+                .orElseThrow(Exception::new);
+
+        InputStream inputStream = object.getObjectContent().getDelegateStream();
+
+        StreamingResponseBody responseBody = outputStream -> {
+
+            int numberOfBytesToWrite;
+            byte[] data = new byte[1024];
+            while ((numberOfBytesToWrite = inputStream.read(data, 0, data.length)) != -1) {
+                outputStream.write(data, 0, numberOfBytesToWrite);
+            }
+
+            inputStream.close();
+            object.close();
+        };
+
+        return responseBody;
     }
 }

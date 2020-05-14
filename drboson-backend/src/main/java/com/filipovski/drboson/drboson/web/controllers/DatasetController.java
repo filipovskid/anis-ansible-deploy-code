@@ -2,15 +2,21 @@ package com.filipovski.drboson.drboson.web.controllers;
 
 import com.filipovski.drboson.drboson.model.Dataset;
 import com.filipovski.drboson.drboson.service.DatasetService;
+import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000", "*"}, allowCredentials = "true")
 @RequestMapping("/{projectId}/dataset")
 public class DatasetController {
 
@@ -18,6 +24,11 @@ public class DatasetController {
 
     public DatasetController(DatasetService datasetService) {
         this.datasetService = datasetService;
+    }
+
+    @GetMapping
+    public List<Dataset> getProjectDatasets(@PathVariable UUID projectId) {
+        return datasetService.getAllProjectDatasets(projectId);
     }
 
     @GetMapping("{datasetId}")
@@ -43,6 +54,16 @@ public class DatasetController {
     @DeleteMapping("/{datasetId}")
     public void deleteDataset(@PathVariable UUID datasetId) throws Exception {
         datasetService.deleteDataset(datasetId);
+    }
+
+    @GetMapping("/{datasetId}/download")
+    public ResponseEntity<StreamingResponseBody> downloadData(@PathVariable UUID datasetId) throws Exception {
+        StreamingResponseBody responseBody = datasetService.downloadDataset(datasetId);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(responseBody);
     }
 
 }

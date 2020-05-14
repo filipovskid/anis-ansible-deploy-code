@@ -7,18 +7,10 @@
 
     .config-title {
         font-weight: 400;
+        margin-bottom: 0.5rem;
     }
 
     hr {
         margin-top: 0;
     }
-}
-
-.plot-title {
-    color: $accent-color-dark;
-    text-align: center;
-    text-overflow: ellipsis;
-    font-weight: 600;
-    font-size: 14px;
-    margin: 0 0 3px;
 }
