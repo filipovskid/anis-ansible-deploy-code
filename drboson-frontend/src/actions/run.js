@@ -11,6 +11,9 @@ const RunService = {
             }
         })
     },
+    fetchProjectRuns: (projectId) => {
+        return axios_instance.get(`${projectId}/run`);
+    },
     fetchProjectRunMetrics: (projectId) => {
         return axios_instance.get(`/${projectId}/run/logs`);
     },

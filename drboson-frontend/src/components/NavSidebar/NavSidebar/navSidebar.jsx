@@ -1,16 +1,12 @@
 import React from 'react';
 import NavItem from '../NavItem/navItem'
 import '../navSidebar.css';
-import info from '../../../images/info.svg';
-import analytics from '../../../images/analytics.svg';
+
 
 const NavSidebar = (props) => {
-    const testItems = [
-        { name: 'Info', icon: info },
-        { name: 'Workspace', icon: analytics }
-    ]
+    const { details } = props;
 
-    const navItems = testItems.map(item => <NavItem item={item} />)
+    const navItems = details.map(item => <NavItem name={item.name} icon={item.icon} to={item.to} />)
 
     return (
         <div className="nav-sidebar">

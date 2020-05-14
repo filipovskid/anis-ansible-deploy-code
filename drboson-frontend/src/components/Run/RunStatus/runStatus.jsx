@@ -9,14 +9,10 @@ const RunStatus = (props) => {
         FAILED: { value: "Failed", className: "failed" },
         DEFAULT: { value: "Unknown", className: "default" }
     })
-    console.log(props.status)
-    console.log(props.status.toUpperCase())
 
     const status = props.status.toUpperCase() in StatusEnum
         ? StatusEnum[props.status.toUpperCase()]
         : StatusEnum.DEFAULT;
-
-    console.log(status)
 
     return (
         <div className={`status ${status.className}`}>{status.value}</div>

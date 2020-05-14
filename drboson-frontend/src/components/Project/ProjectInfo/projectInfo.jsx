@@ -4,6 +4,7 @@ import { ReactSVG } from 'react-svg';
 import OverviewPlane from '../../OverviewPlane/overviewPlane';
 import RunItem from '../../Run/RunItem/runItem';
 import ProjectService from '../../../actions/project';
+import RunService from '../../../actions/run';
 import plus from '../../../images/plus.svg';
 import './projectInfo.css';
 
@@ -16,17 +17,20 @@ const ProjectInfo = (props) => {
     useEffect(() => {
         ProjectService.fetchProject(projectId)
             .then(response => {
-                console.log(response.data)
                 const projectData = {
                     name: response.data.name,
                     desc: response.data.description,
                     repo: response.data.repository
                 };
 
-                const runsData = response.data.runs;
-
                 setProject(projectData);
-                setRuns(runsData);
+            });
+    }, [projectId]);
+
+    useEffect(() => {
+        RunService.fetchProjectRuns(projectId)
+            .then(response => {
+                setRuns(response.data);
             });
     }, [projectId]);
 

@@ -4,6 +4,12 @@
     }
 }
 
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 label {
     font-weight: 600;
 }

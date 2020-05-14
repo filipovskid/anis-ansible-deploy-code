@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import VisPanel from '../VisPanel/visPanel';
 import './visPlane.css';
 

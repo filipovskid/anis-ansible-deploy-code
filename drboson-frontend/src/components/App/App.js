@@ -16,7 +16,6 @@ import ProjectData from '../Project/ProjectData/projectData';
 import ProjectInfo from '../Project/ProjectInfo/projectInfo';
 import ProjectWorkspace from '../Project/ProjectWorkspace/projectWorkspace';
 import CreateRun from '../Run/CreateRun/createRun';
-// import RepositorySearch from '../Repository/RepositorySearch/repositorySearch';
 
 
 class App extends Component {
@@ -76,23 +75,17 @@ class App extends Component {
             isAuthenticated={this.state.isAuthenticated} component={CreateRun} />
         </div>
 
-        <ProtectedRoute exact path='/:projectId/data'>
-          <ProjectPage>
-            <ProjectData />
-          </ProjectPage>
-        </ProtectedRoute>
-
         <ProtectedRoute exact path='/:projectId/info'>
-          <ProjectPage>
-            <ProjectInfo />
-          </ProjectPage>
+          <ProjectPage component={ProjectInfo} />
         </ProtectedRoute>
 
-        <Route exact path='/:projectId/test'>
-          <ProjectPage>
-            <ProjectWorkspace />
-          </ProjectPage>
-        </Route>
+        <ProtectedRoute exact path='/:projectId/workspace'>
+          <ProjectPage component={ProjectWorkspace} />
+        </ProtectedRoute>
+
+        <ProtectedRoute exact path='/:projectId/data'>
+          <ProjectPage component={ProjectData} />
+        </ProtectedRoute>
       </Router >
     );
   }

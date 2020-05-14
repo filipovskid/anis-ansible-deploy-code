@@ -9,8 +9,8 @@ import {
     // ChartLabel,
     HorizontalGridLines,
     // VerticalGridLines,
-    Highlight,
-    Crosshair,
+    // Highlight,
+    // Crosshair,
     LineSeriesCanvas,
     FlexibleXYPlot,
 } from 'react-vis';
@@ -30,9 +30,6 @@ const LineSeriesConfigurer = (props) => {
     //     setCrosshairValues(dataBatches.map(line => line.data[index]));
     // };
     //
-
-    var shortid = require('shortid');
-
     const { data, fields } = props;
     const x_options = fields
         .filter(field => field.startsWith('_'))
@@ -56,6 +53,8 @@ const LineSeriesConfigurer = (props) => {
         }
 
         const compatibleData = data.map(runData => {
+            var shortid = require('shortid');
+
             const compatibleDataPerRun = runData.logs.filter(data => {
                 return [x, y].every(param => Object.keys(data).includes(param));
             }).map(data => {

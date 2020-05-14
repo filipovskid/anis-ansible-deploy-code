@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
 import { ReactSVG } from 'react-svg';
-import { curveCatmullRom } from 'd3-shape';
 import VisMaxPanel from './visMaxPanel';
 import maximize from '../../../images/maximize.svg';
 import './visPanel.css';
-
-import {
-    // XYPlot,
-    XAxis,
-    YAxis,
-    // ChartLabel,
-    HorizontalGridLines,
-    // VerticalGridLines,
-    LineSeries,
-    FlexibleXYPlot,
-} from 'react-vis';
 
 const VisPanel = (props) => {
     const [isPanelMaximized, setMaximizedState] = useState(false);

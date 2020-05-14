@@ -67,7 +67,8 @@ const ProjectData = (props) => {
 
     const datasets = dataItems.map(dataset => <DatasetItem onDatasetRemove={removeDataset}
         onDatasetDownload={downloadDataset}
-        dataset={dataset} />);
+        dataset={dataset}
+        key={dataset.id} />);
 
     return (
         <div className="project-data">
