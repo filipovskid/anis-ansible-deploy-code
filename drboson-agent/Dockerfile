@@ -22,6 +22,6 @@ ENV DRBOSON_PROJECT_ID {{project_id}}
 
 ENV DRBOSON_WORKSPACE {{workdir}}
 
-ENV DRBOSON_DATASET_DIR {{dataset_dir}}
+ENV DRBOSON_DATASET_LOCATION {{dataset_location}}
 
 CMD python executor.py

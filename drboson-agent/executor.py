@@ -15,12 +15,12 @@ def main():
     run_id = os.environ.get('DRBOSON_RUN_ID')
     project_id = os.environ.get('DRBOSON_PROJECT_ID')
     workspace_dir = os.environ.get('DRBOSON_WORKSPACE')
-    dataset_dir = os.environ.get('DRBOSON_DATASET_DIR')
+    dataset_location = os.environ.get('DRBOSON_DATASET_LOCATION')
 
     _run = Run(run_id=run_id,
               project_id=project_id,
               work_dir=workspace_dir,
-              dataset_dir=dataset_dir)
+              dataset_location=dataset_location)
 
     conf = {
         'bootstrap.servers': bootstrap_servers,
@@ -35,7 +35,7 @@ def main():
     drboson.started()
 
     try:
-        run.run(drboson, dataset_dir)
+        run.run(drboson, dataset_location)
     finally:
         drboson.completed()
 

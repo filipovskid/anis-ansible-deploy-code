@@ -54,8 +54,9 @@ public class RunController {
     }
 
     @GetMapping("/{runId}/start")
-    public void startRun(@PathVariable UUID runId) throws Exception {
-        runService.startRun(runId);
+    public void startRun(@PathVariable UUID projectId,
+                         @PathVariable UUID runId) throws Exception {
+        runService.startRun(projectId, runId);
     }
 
     @GetMapping("/logs")

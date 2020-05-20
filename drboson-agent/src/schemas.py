@@ -6,7 +6,8 @@ run_record_schema = """
   "fields": [
     { "name": "id", "type":  "string" },
     { "name": "project_id", "type": "string" },
-    { "name": "dataset_location" , "type":  "string" }
+    { "name": "dataset_location" , "type":  "string" },
+    { "name": "repository" , "type":  "string" }
   ]
 }
 """
