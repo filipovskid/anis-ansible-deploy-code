@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import AuthenticationService from '../../actions/auth';
 
 class Registration extends Component {
@@ -34,10 +34,14 @@ class Registration extends Component {
     }
 
     render() {
+        if (this.props.isAuthenticated) {
+            return <Redirect to="/" />
+        }
+
         return (
             <div className="auth-form mx-auto mt-5" style={{ width: '500px' }}>
                 <form onSubmit={this.registerUser}>
-                    <div className="auth-form__body border rounded p-4">
+                    <div className="auth-form__body border rounded p-4 overflow-auto">
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
                             <input type="text" className="form-control" aria-describedby="emailHelp"
@@ -73,7 +77,7 @@ class Registration extends Component {
                                 value={this.state.passwordConfirmation}
                                 onChange={this.handleChange} />
                         </div>
-                        <button type="submit" className="btn btn-primary">Register</button>
+                        <button type="submit" className="btn btn-ok float-right">Register</button>
                     </div>
                 </form>
             </div>

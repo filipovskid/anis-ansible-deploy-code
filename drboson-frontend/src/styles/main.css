@@ -33,6 +33,45 @@ label {
   font-size: 24px;
 }
 
+.accent-btn {
+  background-color: none;
+  color: #fdd703;
+  border: 1px solid #fdd703;
+}
+
+.accent-btn:hover {
+  color: #998201;
+  border-color: #998201;
+}
+
+.pale-btn {
+  color: #fdd703;
+}
+
+.pale-btn:hover {
+  color: #998201;
+}
+
+.btn-ok {
+  background-color: #78909c;
+  border: 1px solid #4b636e;
+  color: white;
+}
+
+.btn-ok:hover {
+  color: white;
+}
+
+.btn-cancel {
+  background-color: white;
+  border: 1px solid #4b636e;
+  color: #4b636e;
+}
+
+.btn-cancel:hover {
+  color: #4b636e;
+}
+
 h1,
 h2,
 h3,

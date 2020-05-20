@@ -1,15 +1,14 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import './header.css'
 import logo from '../../images/logos/drboson-light-yl.svg';
 
 const Header = (props) => {
-    return (
-        <header className="d-flex align-items-center px-3 py-2">
-            <div className="header-item header-logo flex-grow-1">
-                <img src={logo} alt="" />
-            </div>
+    const isAuthenticated = props.isAuthenticated;
 
-            <div className="header-item avatar">
+    const avatar = (
+        <div className="header-actions actions-right">
+            <div className="header-actions__item avatar">
                 <div data-toggle="dropdown">
                     <img alt="" src="https://avatars1.githubusercontent.com/u/37289276" />
                 </div>
@@ -19,6 +18,39 @@ const Header = (props) => {
                     <button className="dropdown-item" type="button">Something else here</button>
                 </div>
             </div>
+        </div>
+    )
+
+    const actions = (
+        <div className="header-actions actions-right">
+            <div className="header-actions__item d-inline">
+                <Link to="/login">
+                    <button className="btn pale-btn">Login</button>
+                </Link>
+            </div>
+            <div className="header-actions__item d-inline">
+                <Link to="/join">
+                    <button className="btn accent-btn">Join</button>
+                </Link>
+            </div>
+        </div>
+    )
+
+    return (
+        <header>
+            <div className="header-actions actions-left">
+                <div className="header-actions__item">
+                    <div className="header-logo">
+                        <img src={logo} alt="" />
+                    </div>
+                </div>
+            </div>
+
+            {isAuthenticated
+                ? avatar
+                : actions
+            }
+
         </header>
     );
 }

@@ -1,6 +1,9 @@
 @import "../../styles/pallete";
 
 header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: $header-color;
     height: 50px;
 
@@ -8,15 +11,26 @@ header {
         height: 100%;
 
         img {
-            height: 100%;
+            height: 40px;
+            max-width: 100%;
         }
     }
 
-    .header-item.avatar img {
+    .avatar img {
         width: 30px;
         height: 30px;
         border: 1 solid white;
         border-radius: 2px;
+    }
+
+    .header-actions {
+        margin: 0 10px;
+    }
+
+    .actions-right {
+        .header-actions__item {
+            margin-left: 10px;
+        }
     }
 }
 
