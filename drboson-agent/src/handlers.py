@@ -14,34 +14,37 @@ def __run_setup(run_item):
     workspaces_path = pathlib.Path(config['workspace']['dir'])
     dataset_dir = config['workspace']['dataset']['dir']
     data_dir = config['workspace']['data']
-    local_dir_paths = prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name=run_item['id'])
+    local_workdir_path, dataset_path, data_path = \
+        prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name=run_item['id'])
 
     datasets_bucket = config['buckets']['dataset']
     dataset_key = run_item['dataset_location']
-    dataset_path = local_dir_paths['dataset_path']
-    prepare_dataset(datasets_bucket, dataset_key, dataset_path)
+    run_dataset_location = prepare_dataset(datasets_bucket, dataset_key, dataset_path)
 
-    repo_url = 'https://github.com/filipovskid/run-conformant-repo.git'
+    repo_url = run_item['repository']
     executor_path = pathlib.Path(config['exec']['executor'])
-    local_workdir_path = local_dir_paths['workdir_path']
     prepare_code(repo_url, workdir_path=local_workdir_path, executor_path=executor_path)
 
     environment_file = local_workdir_path.joinpath(config['exec']['env_file'])
-    container_workdir_path = config['workspace']['container']
+    container_workdir_path = pathlib.Path(config['workspace']['container'])
+    container_dataset_location = container_workdir_path.joinpath(run_dataset_location.relative_to(local_workdir_path))
 
     if environment_file.exists() is False:
         pass
 
-    return local_dir_paths, container_workdir_path, environment_file
+    return local_workdir_path, dataset_path, data_path, container_workdir_path, environment_file, container_dataset_location
 
 
 def handle_run_execution(container_manager, run_item):
-    # run_item = json.loads(run_bytes.decode('utf-8'))
-    local_dir_paths, container_workdir_path, env_file = __run_setup(run_item)
+    local_workdir_path, dataset_path, data_path, container_workdir_path, env_file, container_dataset_location = \
+        __run_setup(run_item)
     safe_run = copy.deepcopy(run_item)
 
-    container_manager.create_run_container(safe_run, local_workdir=local_dir_paths['workdir_path'],
-                                           container_workdir=container_workdir_path, env_file=env_file)
+    container_manager.create_run_container(run=safe_run,
+                                           local_workdir=local_workdir_path,
+                                           container_workdir=container_workdir_path,
+                                           dataset_location=container_dataset_location,
+                                           env_file=env_file)
 
 # {
 #     'id': 'run-id',

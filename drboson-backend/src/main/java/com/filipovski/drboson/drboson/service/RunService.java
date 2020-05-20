@@ -17,5 +17,5 @@ public interface RunService {
 
     void deleteRun(UUID runId);
 
-    void startRun(UUID runId) throws Exception;
+    void startRun(UUID projectId, UUID runId) throws Exception;
 }

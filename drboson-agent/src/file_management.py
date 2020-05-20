@@ -24,7 +24,7 @@ def upload_file_to_s3(file_path, bucket, object_name):
 
 
 def prepare_dataset(bucket_name, dataset_key, dataset_path):
-    file_path = Path.joinpath(dataset_path, dataset_key)
+    file_path = dataset_path.joinpath(dataset_key)
     download_file_from_s3(file_path, bucket_name, dataset_key)
 
     mime_type = magic.from_file(str(file_path), mime=True)
@@ -32,6 +32,9 @@ def prepare_dataset(bucket_name, dataset_key, dataset_path):
     archive_mime_types = ['application/zip']
     if mime_type in archive_mime_types:
         decompress_archive(file_path)
+        return dataset_path
+
+    return file_path
 
 
 def decompress_archive(file_path):
@@ -56,4 +59,5 @@ def prepare_workspace(workspaces_path, dataset_dir, data_dir, run_name):
     dataset_directory.mkdir()
     data_directory.mkdir()
 
-    return {'workdir_path': run_directory, 'dataset_path': dataset_directory, 'data_path': data_directory}
+    return run_directory, dataset_directory, data_directory
+        # {'workdir_path': run_directory, 'dataset_path': dataset_directory, 'data_path': data_directory}

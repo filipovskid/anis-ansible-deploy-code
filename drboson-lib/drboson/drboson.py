@@ -56,19 +56,21 @@ class DRBoson:
         message = self.__prepare_message(message_type='status', payload='completed')
         self.producer.produce(message)
 
+    def failed(self):
+        message = self.__prepare_message(message_type='status', payload='failed')
+        self.producer.produce(message)
+
 
 class Run(object):
-    def __init__(self, run_id=None, project_id=None, work_dir=None, dataset_dir=None):
+    def __init__(self, run_id=None, project_id=None, work_dir=None, dataset_location=None):
         self.id = run_id
         self.project_id = project_id
         self.work_dir = pathlib.Path(work_dir)
-        self.dataset_dir = pathlib.Path(dataset_dir)
+        self.dataset_location = pathlib.Path(dataset_location)
 
         if self.work_dir.is_dir() is False:
             raise NotADirectoryError('drboson: Work directory is supposed to be a directory')
 
-        if self.dataset_dir.is_dir() is False:
-            raise NotADirectoryError('drboson: Data directory is supposed to be a directory')
-
-
+        # if self.dataset_location.is_dir() is False:
+        #     raise NotADirectoryError('drboson: Data directory is supposed to be a directory')
 

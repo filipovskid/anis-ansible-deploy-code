@@ -4,7 +4,6 @@ from drboson.drboson import DRBoson
 from drboson.drboson import Run
 from drboson.DRBosonProducer import RemoteProducer
 import socket
-import run
 import os
 
 
@@ -15,12 +14,12 @@ def main():
     run_id = os.environ.get('DRBOSON_RUN_ID')
     project_id = os.environ.get('DRBOSON_PROJECT_ID')
     workspace_dir = os.environ.get('DRBOSON_WORKSPACE')
-    dataset_dir = os.environ.get('DRBOSON_DATASET_DIR')
+    dataset_location = os.environ.get('DRBOSON_DATASET_LOCATION')
 
     _run = Run(run_id=run_id,
               project_id=project_id,
               work_dir=workspace_dir,
-              dataset_dir=dataset_dir)
+              dataset_location=dataset_location)
 
     conf = {
         'bootstrap.servers': bootstrap_servers,
@@ -35,9 +34,14 @@ def main():
     drboson.started()
 
     try:
-        run.run(drboson, dataset_dir)
-    finally:
-        drboson.completed()
+        import run
+        run.run(drboson, dataset_location)
+    except Exception as e:
+        print(e)
+        drboson.failed()
+        return
+
+    drboson.completed()
 
     # run.run()
 
