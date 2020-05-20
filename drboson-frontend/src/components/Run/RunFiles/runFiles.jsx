@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { ReactSVG } from 'react-svg';
+import NoFiles from '../../NoData/NoFiles/noFiles';
 import RunService from '../../../actions/run';
 import download from '../../../images/download.svg';
 import fileIcon from '../../../images/file-text.svg';
@@ -43,15 +44,23 @@ const RunFiles = (props) => {
         </tr>
     ));
 
+    const table = (
+        <div className="run-files__table">
+            <table className="table">
+                <tbody>
+                    {fileTableItems}
+                </tbody>
+            </table>
+        </div>
+    )
+
     return (
         <div className="run-files">
-            <div className="run-files__table">
-                <table className="table">
-                    <tbody>
-                        {fileTableItems}
-                    </tbody>
-                </table>
-            </div>
+            {
+                !Array.isArray(fileTableItems) || !fileTableItems.length
+                    ? <NoFiles />
+                    : table
+            }
         </div>
 
     );

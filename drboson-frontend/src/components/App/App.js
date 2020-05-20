@@ -19,6 +19,7 @@ import CreateRun from '../Run/CreateRun/createRun';
 import RunPage from '../Run/RunPage/runPage';
 import RunInfo from '../Run/RunInfo/runInfo';
 import RunFiles from '../Run/RunFiles/runFiles';
+import RunLogs from '../Run/RunLogs/runLogs';
 
 
 class App extends Component {
@@ -97,12 +98,12 @@ class App extends Component {
           <RunPage component={RunInfo} />
         </ProtectedRoute>
 
-        <ProtectedRoute exact path='/:projectId/run/:runId/workspace' isAuthenticated={this.state.isAuthenticated}>
-          <RunPage component={ProjectWorkspace} />
-        </ProtectedRoute>
-
         <ProtectedRoute exact path='/:projectId/run/:runId/files' isAuthenticated={this.state.isAuthenticated}>
           <RunPage component={RunFiles} />
+        </ProtectedRoute>
+
+        <ProtectedRoute exact path='/:projectId/run/:runId/logs' isAuthenticated={this.state.isAuthenticated}>
+          <RunPage component={RunLogs} />
         </ProtectedRoute>
       </Router >
     );

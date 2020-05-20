@@ -3,6 +3,7 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { ReactSVG } from 'react-svg';
 import OverviewPlane from '../../OverviewPlane/overviewPlane';
 import RunItem from '../../Run/RunItem/runItem';
+import NoRuns from '../../NoData/NoRuns/noRuns';
 import ProjectService from '../../../actions/project';
 import RunService from '../../../actions/run';
 import plus from '../../../images/plus.svg';
@@ -65,7 +66,11 @@ const ProjectInfo = (props) => {
                         </div>
                     </div>
                     <div className="runs-info__content">
-                        {runItems}
+                        {
+                            !Array.isArray(runItems) || !runItems.length
+                                ? <NoRuns />
+                                : runItems
+                        }
                     </div>
                 </div>
             </div>

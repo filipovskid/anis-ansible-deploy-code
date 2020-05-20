@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { ReactSVG } from 'react-svg';
 import VisPlane from '../../Visualization/VisPlane/visPlane';
 import VisBuilder from '../../Visualization/VisBuilder/visBuilder';
+import NoVisualization from '../../NoData/NoVisualization/noVisualization';
 import RunService from '../../../actions/run';
 import plus from '../../../images/plus.svg';
 import './projectWorkspace.css';
@@ -52,7 +53,11 @@ const ProjectWorkspace = (props) => {
                 </div>
             </div>
             <div className="workspace__content">
-                <VisPlane previews={previews} />
+                {
+                    !Array.isArray(previews) || !previews.length
+                        ? <NoVisualization />
+                        : <VisPlane previews={previews} />
+                }
                 <VisBuilder
                     isOpen={isBuilderOpen}
                     runLogs={runLogs}

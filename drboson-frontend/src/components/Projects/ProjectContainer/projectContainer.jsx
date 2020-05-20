@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import ProjectCard from '../ProjectCard/projectCard';
 import projectIcon from '../../../images/project.svg';
 import ProjectService from '../../../actions/project';
-import NoProjects from '../../NoData/NoProjects/NoProjects';
+import NoProjects from '../../NoData/NoProjects/noProjects';
 import plus from '../../../images/plus.svg';
 
 const ProjectContainer = (props) => {

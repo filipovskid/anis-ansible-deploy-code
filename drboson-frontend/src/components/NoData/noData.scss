@@ -1,4 +1,8 @@
 .no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     .no-data__art {
         img {
             width: 250px;
@@ -7,5 +11,7 @@
 
     .no-data__content {
         max-width: 250px;
+        margin-left: 20px;
+        margin-top: 10px;
     }
 }

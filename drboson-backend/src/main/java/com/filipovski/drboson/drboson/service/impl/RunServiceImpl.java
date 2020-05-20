@@ -107,9 +107,6 @@ public class RunServiceImpl implements RunService {
     }
 
     @Override
-    public void startRun(UUID runId) throws Exception {
-            Run run = runRepository.findById(runId.toString()).orElseThrow(Exception::new);
-    public void startRun(UUID runId) throws Exception {
     public void startRun(UUID projectId, UUID runId) throws Exception {
         Project project = projectRepository.findById(projectId).orElseThrow(Exception::new);
         Run run = runRepository.findById(runId.toString()).orElseThrow(Exception::new);

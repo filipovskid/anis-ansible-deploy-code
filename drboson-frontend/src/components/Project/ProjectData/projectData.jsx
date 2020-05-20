@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import DataUploader from './DataUploader/dataUploader';
 import DatasetCreator from './DatasetCreator/datasetCreator';
 import DatasetItem from './DatasetItem/datasetItem';
+import NoDatasets from '../../NoData/NoDatasets/noDatasets';
 import DatasetService from '../../../actions/dataset';
 import './projectData.css';
 
@@ -75,14 +76,21 @@ const ProjectData = (props) => {
             <div className="project-data__uploader">
                 <DataUploader onFileAttach={createDatasetComposer} />
             </div>
-            <div className="project-data__content">
-                <div className="project-data__content--composers">
-                    {composers}
-                </div>
-                <div className="project-data__content--datasets">
-                    {datasets}
-                </div>
-            </div>
+            {
+                (!Array.isArray(composers) || !composers.length) && (!Array.isArray(datasets) || !datasets.length)
+                    ? <NoDatasets />
+                    : (
+                        <div className="project-data__content">
+
+                            <div className="project-data__content--composers">
+                                {composers}
+                            </div>
+                            <div className="project-data__content--datasets">
+                                {datasets}
+                            </div>
+                        </div>
+                    )
+            }
         </div >
     );
 }
