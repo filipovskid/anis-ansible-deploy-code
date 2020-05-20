@@ -4,7 +4,6 @@ from drboson.drboson import DRBoson
 from drboson.drboson import Run
 from drboson.DRBosonProducer import RemoteProducer
 import socket
-import run
 import os
 
 
@@ -35,9 +34,14 @@ def main():
     drboson.started()
 
     try:
+        import run
         run.run(drboson, dataset_location)
-    finally:
-        drboson.completed()
+    except Exception as e:
+        print(e)
+        drboson.failed()
+        return
+
+    drboson.completed()
 
     # run.run()
 
