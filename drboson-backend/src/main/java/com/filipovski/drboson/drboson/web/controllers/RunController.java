@@ -1,13 +1,17 @@
 package com.filipovski.drboson.drboson.web.controllers;
 
+import com.filipovski.drboson.drboson.model.DRBosonFile;
 import com.filipovski.drboson.drboson.model.Run;
 import com.filipovski.drboson.drboson.service.MetricLogsService;
 import com.filipovski.drboson.drboson.service.RunService;
 import com.filipovski.drboson.drboson.service.dtos.ProjectMetricLogs;
 import com.filipovski.drboson.drboson.service.dtos.RunMetricLogs;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.util.List;
 import java.util.UUID;
@@ -66,5 +70,21 @@ public class RunController {
     @GetMapping("/{runId}/logs")
     public RunMetricLogs projectRunMetrics(@PathVariable UUID projectId, @PathVariable UUID runId) {
         return metricLogsService.getRunMetricLogs(projectId, runId);
+    }
+
+    @GetMapping("/{runId}/files")
+    public ResponseEntity<List<DRBosonFile>> getRunFiles(@PathVariable UUID runId) {
+        return ResponseEntity.ok(runService.getRunFiles(runId));
+    }
+
+    @GetMapping("/{runId}/file")
+    public ResponseEntity<StreamingResponseBody> getRunFiles(@PathVariable UUID runId,
+                                                             @RequestParam(name = "file_id") UUID fileId) throws Exception {
+        StreamingResponseBody responseBody = runService.downloadRunFile(runId, fileId);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(responseBody);
     }
 }
