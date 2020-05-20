@@ -16,6 +16,9 @@ import ProjectData from '../Project/ProjectData/projectData';
 import ProjectInfo from '../Project/ProjectInfo/projectInfo';
 import ProjectWorkspace from '../Project/ProjectWorkspace/projectWorkspace';
 import CreateRun from '../Run/CreateRun/createRun';
+import RunPage from '../Run/RunPage/runPage';
+import RunInfo from '../Run/RunInfo/runInfo';
+import RunFiles from '../Run/RunFiles/runFiles';
 
 
 class App extends Component {
@@ -67,24 +70,39 @@ class App extends Component {
           <Route exact path='/login'>
             <Login isAuthenticated={this.state.isAuthenticated} onUserLogin={this.onUserLogin} />
           </Route>
-          <ProtectedRoute exact path='/' userDetails={this.state.userDetails}
-            isAuthenticated={this.state.isAuthenticated} component={HomePage} />
-          <ProtectedRoute exact path='/new'
-            isAuthenticated={this.state.isAuthenticated} component={CreateProject} />
-          <ProtectedRoute exact path='/:projectId/run/new'
-            isAuthenticated={this.state.isAuthenticated} component={CreateRun} />
+          <ProtectedRoute exact path='/' isAuthenticated={this.state.isAuthenticated}>
+            <HomePage userDetails={this.state.userDetails} />
+          </ProtectedRoute>
+          <ProtectedRoute exact path='/new' isAuthenticated={this.state.isAuthenticated}>
+            <CreateProject />
+          </ProtectedRoute>
+          <ProtectedRoute exact path='/:projectId/run/new' isAuthenticated={this.state.isAuthenticated}>
+            <CreateRun />
+          </ProtectedRoute>
         </div>
 
-        <ProtectedRoute exact path='/:projectId/info'>
+        <ProtectedRoute exact path='/:projectId/info' isAuthenticated={this.state.isAuthenticated}>
           <ProjectPage component={ProjectInfo} />
         </ProtectedRoute>
 
-        <ProtectedRoute exact path='/:projectId/workspace'>
+        <ProtectedRoute exact path='/:projectId/workspace' isAuthenticated={this.state.isAuthenticated}>
           <ProjectPage component={ProjectWorkspace} />
         </ProtectedRoute>
 
-        <ProtectedRoute exact path='/:projectId/data'>
+        <ProtectedRoute exact path='/:projectId/data' isAuthenticated={this.state.isAuthenticated}>
           <ProjectPage component={ProjectData} />
+        </ProtectedRoute>
+
+        <ProtectedRoute exact path='/:projectId/run/:runId/info' isAuthenticated={this.state.isAuthenticated}>
+          <RunPage component={RunInfo} />
+        </ProtectedRoute>
+
+        <ProtectedRoute exact path='/:projectId/run/:runId/workspace' isAuthenticated={this.state.isAuthenticated}>
+          <RunPage component={ProjectWorkspace} />
+        </ProtectedRoute>
+
+        <ProtectedRoute exact path='/:projectId/run/:runId/files' isAuthenticated={this.state.isAuthenticated}>
+          <RunPage component={RunFiles} />
         </ProtectedRoute>
       </Router >
     );

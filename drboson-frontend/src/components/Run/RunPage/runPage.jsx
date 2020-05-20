@@ -11,18 +11,19 @@ const RunPage = (props) => {
     const { projectId, runId } = useParams();
 
     const navItemDetails = [
-        { name: 'Info', icon: info, to: `/${projectId}/run/${runId}info` },
+        { name: 'Info', icon: info, to: `/${projectId}/run/${runId}/info` },
         { name: 'Workspace', icon: workspace, to: `/${projectId}/run/${runId}/workspace` },
         { name: 'Files', icon: folder, to: `/${projectId}/run/${runId}/files` },
         { name: 'Logs', icon: terminal, to: `/${projectId}/run/${runId}/logs` },
     ];
 
+    const Component = props.component;
 
     return (
         <div className="run-page">
             <NavSidebar details={navItemDetails} />
             <div className="run-page__content">
-                {props.children}
+                <Component />
             </div>
         </div >
     );
