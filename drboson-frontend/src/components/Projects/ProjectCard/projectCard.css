@@ -1,9 +1,5 @@
 .project:hover {
   cursor: pointer;
-  -webkit-transform: translateY(-3px);
-          transform: translateY(-3px);
-  -webkit-transition-duration: .1s;
-          transition-duration: .1s;
 }
 
 .project .project__owner {

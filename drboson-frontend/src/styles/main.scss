@@ -1,3 +1,5 @@
+@import "./pallete";
+
 @media (min-width: 1200px) {
     .container-xl {
         max-width: 1280px;
@@ -25,6 +27,52 @@ label {
 
 .header {
     font-size: 24px;
+}
+
+.accent-btn {
+    background-color: none;
+    color: $logo-yellow;
+    border: 1px solid $logo-yellow;
+
+    &:hover {
+        color: darken($color: $logo-yellow, $amount: 20);
+        border-color: darken($color: $logo-yellow, $amount: 20);
+    }
+}
+
+.pale-btn {
+    color: $logo-yellow;
+
+    &:hover {
+        color: darken($color: $logo-yellow, $amount: 20);
+    }
+}
+
+.btn-ok {
+    background-color: $accent-color;
+    border: 1px solid $accent-color-dark;
+    color: white;
+
+    &:hover {
+        color: white;
+    }
+}
+
+.btn-cancel {
+    background-color: white;
+    border: 1px solid $accent-color-dark;
+    color: $accent-color-dark;
+
+    &:hover {
+        color: $accent-color-dark;
+        ;
+    }
+}
+
+.btn {
+    &:focus {
+        box-shadow: none;
+    }
 }
 
 h1,

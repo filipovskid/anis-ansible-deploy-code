@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { ReactSVG } from 'react-svg';
 import OverviewPlane from '../../OverviewPlane/overviewPlane';
 import RunItem from '../../Run/RunItem/runItem';
@@ -12,7 +12,9 @@ import './projectInfo.css';
 const ProjectInfo = (props) => {
     const [project, setProject] = useState({});
     const [runs, setRuns] = useState([]);
+
     const { projectId } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
         ProjectService.fetchProject(projectId)
@@ -24,8 +26,11 @@ const ProjectInfo = (props) => {
                 };
 
                 setProject(projectData);
+            })
+            .catch(error => {
+                history.goBack();
             });
-    }, [projectId]);
+    }, [projectId, history]);
 
     useEffect(() => {
         RunService.fetchProjectRuns(projectId)
@@ -44,7 +49,7 @@ const ProjectInfo = (props) => {
         ]
     }
 
-    const runItems = runs.map(run => <RunItem run={run} key={run.id} />)
+    const runItems = runs.map(run => <RunItem projectId={projectId} run={run} key={run.id} />)
 
     return (
         <div className="project-info">
@@ -54,7 +59,9 @@ const ProjectInfo = (props) => {
                     <div className="runs-info__header">
                         <div className="runs-info__header--heading">Runs</div>
                         <div className="runs-info__header--actions">
-                            <Link to={`/${projectId}/run/new`}><span className="action"><ReactSVG src={plus} /></span></Link>
+                            <Link to={`/${projectId}/run/new`}>
+                                <span className="action"><ReactSVG src={plus} /></span>
+                            </Link>
                         </div>
                     </div>
                     <div className="runs-info__content">

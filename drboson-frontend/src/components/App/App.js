@@ -59,13 +59,13 @@ class App extends Component {
 
     return (
       <Router>
-        <Header />
+        <Header isAuthenticated={this.state.isAuthenticated} />
         <div className='container-xl'>
           <Route exact path='/join'>
-            <Registration />
+            <Registration isAuthenticated={this.state.isAuthenticated} />
           </Route>
           <Route exact path='/login'>
-            <Login onUserLogin={this.onUserLogin} />
+            <Login isAuthenticated={this.state.isAuthenticated} onUserLogin={this.onUserLogin} />
           </Route>
           <ProtectedRoute exact path='/' userDetails={this.state.userDetails}
             isAuthenticated={this.state.isAuthenticated} component={HomePage} />

@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './overviewPlane.css';
 
 const OverviewPlane = (props) => {
+    const [items, setItems] = useState([]);
     const { overview } = props;
-    const items = overview.items.map(item => {
+
+    useEffect(() => {
+        const shortid = require('shortid');
+        const newItems = overview.items.map(item => {
+            return { id: shortid.generate(), key: item.key, value: item.value }
+        });
+
+        setItems(newItems);
+    }, [overview.items]);
+
+    const overviewItems = items.map(item => {
+
         return (
-            <div className="overview-item">
+            <div className="overview-item" key={item.id}>
                 <div className="overview-item--key">{item.key}</div>
                 <div className="overview-item--value">{item.value}</div>
             </div>
@@ -20,8 +32,7 @@ const OverviewPlane = (props) => {
                         <h1 className="header">{overview.heading}</h1>
                     </div>
                     <div className="overview-header--desc">{overview.desc}</div>
-
-                    {items}
+                    {overviewItems}
                 </div>
             </div>
         </div>
