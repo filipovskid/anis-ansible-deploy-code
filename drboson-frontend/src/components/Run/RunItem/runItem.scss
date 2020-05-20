@@ -25,6 +25,11 @@
             text-align: center;
             font-size: .84rem;
         }
+
+        .run__info-item--info.active {
+            font-weight: 600;
+            color: $accent-color-dark;
+        }
     }
 
     .run--action {

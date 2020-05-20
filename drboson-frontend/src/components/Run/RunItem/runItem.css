@@ -33,6 +33,11 @@
   font-size: .84rem;
 }
 
+.run .run__info-item .run__info-item--info.active {
+  font-weight: 600;
+  color: #4b636e;
+}
+
 .run .run--action {
   float: right;
   padding: 5px;

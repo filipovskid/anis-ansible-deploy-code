@@ -72,6 +72,11 @@ label {
   color: #4b636e;
 }
 
+.btn:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
 h1,
 h2,
 h3,

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import './projectCard.css'
 
 const ProjectCard = (props) => {
-    const { id, name, description } = props.projectDetails;
+    const { id, name } = props.projectDetails;
     const history = useHistory();
 
     const goToProjectInfo = (projectId) => {
