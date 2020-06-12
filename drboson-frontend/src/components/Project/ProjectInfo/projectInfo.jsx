@@ -40,17 +40,27 @@ const ProjectInfo = (props) => {
             });
     }, [projectId]);
 
+    const deleteRun = (projectId, runId) => {
+        RunService.deleteRun(projectId, runId)
+            .then(response => {
+                setRuns(runs => runs.filter(run => run.id !== runId));
+            });
+    }
+
     const overview = {
         heading: project.name,
         desc: project.desc,
         items: [
             { key: "Owner", value: "N/A" },
             { key: "Ceated", value: "N/A" },
-            { key: "Repository", value: project.repo },
+            { key: "Repository", value: <a href={project.repo}>{project.repo}</a> },
         ]
     }
 
-    const runItems = runs.map(run => <RunItem projectId={projectId} run={run} key={run.id} />)
+    const runItems = runs.map(run => <RunItem
+        projectId={projectId}
+        deleteRun={() => deleteRun(projectId, run.id)}
+        run={run} key={run.id} />)
 
     return (
         <div className="project-info">

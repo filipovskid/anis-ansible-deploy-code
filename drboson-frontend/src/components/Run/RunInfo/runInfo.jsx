@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import OverviewPlane from '../../OverviewPlane/overviewPlane';
 import RunStatus from '../RunStatus/runStatus';
 import RunService from '../../../actions/run';
+import ProjectService from '../../../actions/project';
+
 
 const default_run = {
     id: '',
@@ -13,6 +15,7 @@ const default_run = {
 
 const RunInfo = (props) => {
     const [run, setRun] = useState(default_run);
+    const [project, setProject] = useState({});
     const { projectId, runId } = useParams();
     const history = useHistory();
 
@@ -33,13 +36,30 @@ const RunInfo = (props) => {
             });
     }, [runId, projectId, history]);
 
+    useEffect(() => {
+        ProjectService.fetchProject(projectId)
+            .then(response => {
+                const projectData = {
+                    name: response.data.name,
+                    desc: response.data.description,
+                    repo: response.data.repository
+                };
+
+                setProject(projectData);
+            })
+            .catch(error => {
+                history.goBack();
+            });
+    }, [projectId, history]);
+
     const overview = {
         heading: run.name,
         desc: run.desc,
         items: [
             { key: "Owner", value: "N/A" },
             { key: "Ceated", value: "N/A" },
-            { key: "Status", value: <RunStatus status={run.status} /> },
+            { key: "Project", value: <Link to={`/${projectId}/info`}>{project.name}</Link> },
+            { key: "Status", value: <RunStatus status={run.status} /> }
         ]
     }
 

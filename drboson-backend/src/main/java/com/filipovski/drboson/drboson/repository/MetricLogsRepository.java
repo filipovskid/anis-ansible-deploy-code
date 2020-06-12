@@ -13,4 +13,6 @@ public interface MetricLogsRepository extends JpaRepository<MetricLogs, String> 
 
     List<MetricLogs> findMetricLogsByProjectIdAndRunId(String projectId, String runId);
 //    List<MetricLogsProjection> findMetricLogsByProjectIdAndRunId(String projectId, String runId);
+
+    void deleteAllByRunId(String runId);
 }

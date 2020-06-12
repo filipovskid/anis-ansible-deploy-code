@@ -13,6 +13,7 @@ import com.filipovski.drboson.drboson.service.RunService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.InputStream;
@@ -26,6 +27,7 @@ public class RunServiceImpl implements RunService {
     private final ProjectRepository projectRepository;
     private final DatasetRepository datasetRepository;
     private final RunFilesRepository runFilesRepository;
+    private final MetricLogsRepository metricLogsRepository;
     private final FileStore fileStore;
     private final AmazonS3Config amazonS3Config;
 
@@ -35,6 +37,7 @@ public class RunServiceImpl implements RunService {
                           ProjectRepository projectRepository,
                           DatasetRepository datasetRepository,
                           RunFilesRepository runFilesRepository,
+                          MetricLogsRepository metricLogsRepository,
                           FileStore fileStore,
                           AmazonS3Config amazonS3Config,
                           KafkaTemplate<String, RunRecord> kafkaTemplate) {
@@ -43,6 +46,7 @@ public class RunServiceImpl implements RunService {
         this.projectRepository = projectRepository;
         this.datasetRepository = datasetRepository;
         this.runFilesRepository = runFilesRepository;
+        this.metricLogsRepository = metricLogsRepository;
         this.fileStore = fileStore;
         this.amazonS3Config = amazonS3Config;
         this.kafkaTemplate = kafkaTemplate;
@@ -102,8 +106,14 @@ public class RunServiceImpl implements RunService {
     }
 
     @Override
-    public void deleteRun(UUID runId) {
-        runRepository.deleteById(runId.toString());
+    @Transactional
+    public void deleteRun(UUID userId, UUID projectId, UUID runId) throws Exception {
+        projectRepository.findUserProject(userId, projectId).orElseThrow(Exception::new);
+//        runRepository.deleteById(runId.toString());
+        metricLogsRepository.deleteAllByRunId(runId.toString());
+        runRepository.deleteRunByProjectIdAndId(projectId, runId.toString());
+
+
     }
 
     @Override

@@ -28,6 +28,9 @@ const RunService = {
     },
     downloadRunFile: (projectId, runId, fileId) => {
         return axios_instance.get(`/${projectId}/run/${runId}/file?file_id=${fileId}`)
+    },
+    deleteRun: (projectId, runId) => {
+        return axios_instance.delete(`/${projectId}/run/${runId}`)
     }
 };
 

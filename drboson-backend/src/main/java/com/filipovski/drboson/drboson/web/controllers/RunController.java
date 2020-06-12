@@ -2,6 +2,7 @@ package com.filipovski.drboson.drboson.web.controllers;
 
 import com.filipovski.drboson.drboson.model.DRBosonFile;
 import com.filipovski.drboson.drboson.model.Run;
+import com.filipovski.drboson.drboson.model.User;
 import com.filipovski.drboson.drboson.service.MetricLogsService;
 import com.filipovski.drboson.drboson.service.RunService;
 import com.filipovski.drboson.drboson.service.dtos.ProjectMetricLogs;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -53,8 +55,9 @@ public class RunController {
     }
 
     @DeleteMapping("/{runId}")
-    public void deleteRun(@PathVariable UUID runId) {
-        runService.deleteRun(runId);
+    public void deleteRun(@PathVariable UUID projectId, @PathVariable UUID runId,
+                          @AuthenticationPrincipal User user) throws Exception {
+        runService.deleteRun(user.getId(), projectId, runId);
     }
 
     @GetMapping("/{runId}/start")
