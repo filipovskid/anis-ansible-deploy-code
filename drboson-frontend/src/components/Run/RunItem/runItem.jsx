@@ -38,7 +38,7 @@ const RunItem = (props) => {
                 </div>
 
                 <div className="run__info-item run__actions">
-                    <button onClick={() => { }} className="btn run--action" type="submit">
+                    <button onClick={props.deleteRun} className="btn run--action" type="submit">
                         <ReactSVG src={trash} />
                     </button>
                     <button onClick={() => redirectTo('files')} className="btn run--action">

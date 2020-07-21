@@ -18,6 +18,8 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     RunNameProjection findRunNameById(String runId);
 
+    void deleteRunByProjectIdAndId(UUID projectId, String runId);
+
 //    @Query("SELECT run.name FROM Run run WHERE run.project.id = :projectId")
 //    List<String> getProjectRunNames(UUID projectId);
 

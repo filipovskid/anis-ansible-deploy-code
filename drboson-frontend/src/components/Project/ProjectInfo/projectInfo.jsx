@@ -3,6 +3,7 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { ReactSVG } from 'react-svg';
 import OverviewPlane from '../../OverviewPlane/overviewPlane';
 import RunItem from '../../Run/RunItem/runItem';
+import NoRuns from '../../NoData/NoRuns/noRuns';
 import ProjectService from '../../../actions/project';
 import RunService from '../../../actions/run';
 import plus from '../../../images/plus.svg';
@@ -39,17 +40,27 @@ const ProjectInfo = (props) => {
             });
     }, [projectId]);
 
+    const deleteRun = (projectId, runId) => {
+        RunService.deleteRun(projectId, runId)
+            .then(response => {
+                setRuns(runs => runs.filter(run => run.id !== runId));
+            });
+    }
+
     const overview = {
         heading: project.name,
         desc: project.desc,
         items: [
             { key: "Owner", value: "N/A" },
             { key: "Ceated", value: "N/A" },
-            { key: "Repository", value: project.repo },
+            { key: "Repository", value: <a href={project.repo}>{project.repo}</a> },
         ]
     }
 
-    const runItems = runs.map(run => <RunItem projectId={projectId} run={run} key={run.id} />)
+    const runItems = runs.map(run => <RunItem
+        projectId={projectId}
+        deleteRun={() => deleteRun(projectId, run.id)}
+        run={run} key={run.id} />)
 
     return (
         <div className="project-info">
@@ -65,7 +76,11 @@ const ProjectInfo = (props) => {
                         </div>
                     </div>
                     <div className="runs-info__content">
-                        {runItems}
+                        {
+                            !Array.isArray(runItems) || !runItems.length
+                                ? <NoRuns />
+                                : runItems
+                        }
                     </div>
                 </div>
             </div>

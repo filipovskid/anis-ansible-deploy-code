@@ -28,4 +28,7 @@ public class AmazonS3Config {
 
     @Value("${aws.imagesBucketName}")
     private String imagesBucketName;
+
+    @Value("${aws.runFilesBucketName}")
+    private String runFilesBucketName;
 }

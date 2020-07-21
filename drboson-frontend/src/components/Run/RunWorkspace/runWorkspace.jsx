@@ -9,18 +9,27 @@ import plus from '../../../images/plus.svg';
 import './projectWorkspace.css';
 import shortid from 'shortid';
 
-const ProjectWorkspace = (props) => {
+const RunWorkspace = (props) => {
     const [runLogs, setRunLogs] = useState([]);
     const [previews, setPreviews] = useState([]);
     const [isBuilderOpen, setIsBuilderOpen] = useState(false);
-    const { projectId } = useParams();
+    const { projectId, runId } = useParams();
 
     useEffect(() => {
         RunService.fetchProjectRunMetrics(projectId)
             .then(response => {
-                setRunLogs(response.data.logs);
+                console.log(response.data)
+                // setRunLogs(response.data.logs);
             });
     }, [projectId]);
+
+    useEffect(() => {
+        RunService.fetchRunMetrics(projectId, runId)
+            .then(response => {
+                console.log(response.data)
+                setRunLogs([response.data]);
+            });
+    }, [projectId, runId]);
 
     const openBuilder = () => {
         setIsBuilderOpen(true);
@@ -70,4 +79,4 @@ const ProjectWorkspace = (props) => {
     );
 }
 
-export default ProjectWorkspace;
+export default RunWorkspace;

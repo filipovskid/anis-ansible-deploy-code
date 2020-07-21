@@ -2,6 +2,7 @@ package com.filipovski.drboson.drboson.service.impl;
 
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.filipovski.drboson.drboson.common.Utils;
 import com.filipovski.drboson.drboson.config.AmazonS3Config;
 import com.filipovski.drboson.drboson.model.Dataset;
 import com.filipovski.drboson.drboson.model.Project;
@@ -9,6 +10,7 @@ import com.filipovski.drboson.drboson.repository.DatasetRepository;
 import com.filipovski.drboson.drboson.repository.FileStore;
 import com.filipovski.drboson.drboson.repository.ProjectRepository;
 import com.filipovski.drboson.drboson.service.DatasetService;
+import com.filipovski.drboson.drboson.service.RunService;
 import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.apache.tika.Tika;
 import org.apache.tika.mime.MimeType;
@@ -138,23 +140,6 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public StreamingResponseBody downloadDataset(UUID datasetId) throws Exception {
         Dataset dataset = datasetRepository.findById(datasetId).orElseThrow(Exception::new);
-        S3Object object = fileStore.download(amazonS3Config.getDatasetBucketName(), dataset.getLocation())
-                .orElseThrow(Exception::new);
-
-        InputStream inputStream = object.getObjectContent().getDelegateStream();
-
-        StreamingResponseBody responseBody = outputStream -> {
-
-            int numberOfBytesToWrite;
-            byte[] data = new byte[1024];
-            while ((numberOfBytesToWrite = inputStream.read(data, 0, data.length)) != -1) {
-                outputStream.write(data, 0, numberOfBytesToWrite);
-            }
-
-            inputStream.close();
-            object.close();
-        };
-
-        return responseBody;
+        return Utils.getStreamingResponseBody(fileStore, amazonS3Config.getDatasetBucketName(), dataset.getLocation());
     }
 }

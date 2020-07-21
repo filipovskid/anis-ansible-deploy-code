@@ -26,7 +26,7 @@ def run_consumer(container_manager):
             'enable.auto.commit': 'false'}
 
     consumer = DeserializingConsumer(conf)
-    print('RUN')
+    print('[+] Listening for incoming runs')
 
     try:
         consumer_topics = [config['kafka']['runs-topic']]
@@ -41,12 +41,12 @@ def run_consumer(container_manager):
                 if msg.error():
                     raise KafkaException(msg.error())
                 else:
+                    print('[-] Run initialization')
                     print(msg.value())
                     consumer.commit(asynchronous=False)
                     # handlers.handle_run_execution(container_manager, msg.value())
                     threading.Thread(target=handlers.handle_run_execution,
                                      args=(container_manager, msg.value())).start()
-                    print('Passed thread')
             except ConsumeError as e:
                 print(f'[Exception] error_code: {e.code()} message: {e.message()} exception: {e}')
     finally:
@@ -59,7 +59,7 @@ def run_communication_consumer(communication_handler):
             'auto.offset.reset': 'earliest',
             'enable.auto.commit': 'false'}
     consumer = Consumer(conf)
-    print('COMMUNICATION')
+    print('[+] Listening for communication messages')
 
     try:
         consumer_topics = [config['kafka']['communication-topic']]
@@ -74,6 +74,7 @@ def run_communication_consumer(communication_handler):
             if msg.error():
                 raise KafkaException(msg.error())
             else:
+                print('[+] Communication message received')
                 print(msg.value())
                 consumer.commit(asynchronous=False)
                 communication_handler.handle_run_communication(msg.value())
